@@ -1,0 +1,21 @@
+{
+  "name": "injector",
+  "version": "1.0.0",
+  "description": "Dependency Injector",
+  "main": "src/index.js",
+  "scripts": {
+    "babel": "babel src --out-dir dist --watch",
+    "watch": "npm run babel",
+    "start": "node ./dist"
+  },
+  "keywords": [
+    "Injector"
+  ],
+  "author": "Mateus Oliveira Carvalho <mateus.oli.car@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.12.0"
+  }
+}

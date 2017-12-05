@@ -1,0 +1,8 @@
+# Build Artifacts
+dist
+
+# External Libraries
+node_modules
+
+# Log Files
+**/*.log

@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "HookyQR.beautify",
+        "dbaeumer.vscode-eslint",
+        "EditorConfig.editorconfig",
+        "christian-kohler.npm-intellisense",
+        "codezombiech.gitignore",
+        "christian-kohler.path-intellisense",
+        "silverbulleters.sonarqube-inject"
+    ]
+}
