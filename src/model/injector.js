@@ -1,19 +1,9 @@
+import { injectSymbol } from '../';
 import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
-import { factorySymbol, implementsSymbol } from '../providers/symbols';
+import { implementsSymbol } from '../providers/symbols';
 import { findSet } from '../utils/findSet';
-
-const implementsValidation = (inter, impl, base) => {
-  let validator;
-  if (validator = (inter || {})[implementsSymbol]) {
-    return validator(impl);
-  }
-  if (validator = (impl || {})[implementsSymbol]) {
-    return validator(inter);
-  }
-  return base(inter, impl);
-};
 
 const baseInjector = {
   emitter: new InjectorEmitter,
@@ -23,27 +13,31 @@ const baseInjector = {
 
 function createBaseInjector(base = baseInjector) {
   const injector = {};
+
   for (const prop in baseInjector) {
     injector[prop] = new baseInjector[prop].constructor(base[prop]);
   }
+  injector.implements = base.implements;
+  injector.baseFactory = base.baseFactory;
+
   return injector;
 }
 
 export class Injector {
 
-  static set implements(_implements) { this._implements = _implements; }
-  static get implements() { return (inter, impl) => implementsValidation(inter, impl, this._implements); }
-
-  static set baseFactory(_baseFactory) { this._baseFactory = _baseFactory; }
-  static get baseFactory() { return impl => ((impl || {})[factorySymbol] || this._baseFactory)(impl); }
-
   constructor(injector) { Object.assign(this, createBaseInjector(injector)); }
 
-  set implements(_implements) { this._implements = _implements; }
-  get implements() { return this._implements || this.constructor.implements; }
+  canImplement(inter, impl) {
+    let validator;
 
-  set baseFactory(_baseFactory) { this._baseFactory = _baseFactory; }
-  get baseFactory() { return this._baseFactory || this.constructor.baseFactory; }
+    if (inter && (validator = inter[implementsSymbol])) {
+      return validator(impl);
+    }
+    if (impl && (validator = impl[implementsSymbol])) {
+      return validator(inter);
+    }
+    return (this.implements || this.constructor.implements)(inter, impl);
+  }
 
   setImplementation(impl) {
     this.container.setImplementation(impl);
@@ -71,37 +65,45 @@ export class Injector {
     return this;
   }
 
-  findImplementation(inter) {
-    let impl = this.container.getImplementation(inter);
-    if (!inter || impl) {
-      return impl;
-    }
-    impl = findSet(this.container.implementations, impl => this.implements(inter, impl));
-    this.container.link(inter, impl);
-
-    return impl;
-  }
   findInterface(impl) {
     let inter;
     if (!impl || (inter = this.container.getInterface(impl))) {
       return inter;
     }
-    inter = findSet(this.container.interfaces, inter => this.implements(inter, impl));
+    inter = findSet(this.container.interfaces, inter => this.canImplement(inter, impl));
     this.container.link(inter, impl);
 
     return inter;
+  }
+  findImplementation(inter) {
+    let impl = this.container.getImplementation(inter);
+    if (!inter || impl) {
+      return impl;
+    }
+    impl = findSet(this.container.implementations, impl => this.canImplement(inter, impl));
+    this.container.link(inter, impl);
+
+    return impl;
   }
   findInstance(impl) {
     return this.container.getInstance(impl);
   }
 
+  inject(inst) {
+    if (inst && inst[injectSymbol]) {
+      inst[injectSymbol](this);
+    }
+    return inst;
+  }
+
+  instantiate(impl) {
+    impl = this.findImplementation(impl);
+    return impl && this.emitter.emitInstantiate(impl, (this.factories.get(impl) || this.baseFactory || this.constructor.baseFactory)(impl));
+  }
+
   generate(impl) {
     impl = this.findImplementation(impl);
-    const inst = (this.factories.get(impl) || this.baseFactory)(impl);
-
-    this.set(impl, inst);
-
-    return inst;
+    return this.inject(this.set(impl, this.instantiate(impl)));
   }
 
   get(inter) {
@@ -113,9 +115,9 @@ export class Injector {
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
-    this.container.setInstance(this.emitter.emitSet(impl, inst), impl);
+    this.container.setInstance(inst = this.emitter.emitSet(impl, inst), impl);
 
-    return this;
+    return inst;
   }
   delete(impl) {
     impl = this.findImplementation(impl);
@@ -124,11 +126,6 @@ export class Injector {
     this.container.deleteInstance(impl);
     this.emitter.emitDelete(impl, inst);
 
-    return this;
-  }
-
-  clear() {
-    this.container.clearInstances();
     return this;
   }
 
@@ -142,6 +139,15 @@ export class Injector {
   }
   onDelete(impl, listener) {
     this.emitter.onDelete(impl, listener);
+    return this;
+  }
+  onInstantiate(impl, listener) {
+    this.emitter.onInstantiate(impl, listener);
+    return this;
+  }
+
+  clear() {
+    this.container.clearInstances();
     return this;
   }
 }

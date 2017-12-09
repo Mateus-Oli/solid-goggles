@@ -9,7 +9,7 @@
     "start": "node ./dist"
   },
   "keywords": [
-    "Injector"
+    "injector"
   ],
   "author": "Mateus Oliveira Carvalho <mateus.oli.car@gmail.com>",
   "license": "ISC",

@@ -17,9 +17,7 @@ function createBaseContainer(base = baseContainer) {
 
 export class Container {
 
-  constructor(container) {
-    Object.assign(this, createBaseContainer(container));
-  }
+  constructor(container) { Object.assign(this, createBaseContainer(container)); }
 
   setInterface(inter) {
     if (inter) {
@@ -109,27 +107,27 @@ export class Container {
   }
 
   clearInterfaces() {
-    this.interfaces = new Set;
+    this.interfaces.clear();
     return this;
   }
   clearImplementations() {
-    this.implementations = new Set;
+    this.implementations.clear();
     return this;
   }
   clearInstances() {
-    this.instances = new Map;
+    this.instances.clear();
     return this;
   }
   clearLinks() {
-    this.links = new Map;
+    this.links.clear();
     return this;
   }
 
   clear() {
     return this
+      .clearLinks()
       .clearInterfaces()
       .clearImplementations()
-      .clearInstances()
-      .clearLinks();
+      .clearInstances();
   }
 }

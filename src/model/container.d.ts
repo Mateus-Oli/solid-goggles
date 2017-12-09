@@ -12,10 +12,10 @@ export interface BaseContainer {
 }
 
 export interface ContainerConstructor {
-  new(container?: Container | BaseContainer): Container;
+  new(container?: BaseContainer): Container;
 }
 
-export interface Container {
+export interface Container extends BaseContainer {
 
   setInterface<T>(interface: Interface<T>): this ;
   setImplementation<T>(implementation: Implementation<T>): this;

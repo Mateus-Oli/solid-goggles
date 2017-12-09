@@ -1,2 +1,2 @@
 export const implementsSymbol: symbol;
-export const factorySymbol: symbol;
+export const injectSymbol: symbol;
