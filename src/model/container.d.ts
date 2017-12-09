@@ -19,7 +19,7 @@ export interface Container extends BaseContainer {
 
   setInterface<T>(interface: Interface<T>): this ;
   setImplementation<T>(implementation: Implementation<T>): this;
-  setInstance<T>(instance: T, implementation?: Implementation<T>): this;
+  setInstance<T>(instance: T, implementation: Implementation<T>): this;
 
   link<T>(interface: Interface<T>, implementation: Implementation<T>): this;
 
@@ -31,6 +31,7 @@ export interface Container extends BaseContainer {
   getImplementation<T>(interface: Interface<T>): Implementation<T>;
 
   getImplementationFromInstance<T>(instance: T): Implementation<T>;
+  getInterfaceFromInstance<T>(instance: T): Interface<T>;
 
   getInstance<T>(implementation: Implementation<T>): T;
 

@@ -1,20 +1,20 @@
 import { getSettingDefault } from '../utils/getSettingDefault';
 import { next } from '../utils/next';
 
-const baseEvent = {
+const baseEmitter = {
   set: new Map,
   get: new Map,
   delete: new Map,
   instantiate: new Map
 };
 
-function createBaseEvent(base = baseEvent) {
-  const event = {};
-  for (const prop in baseEvent) {
-    const value = event[prop] = new baseEvent[prop].constructor();
-    (base[prop] || new Map).forEach((k, v) => value.set(k, [].concat(v)));
+function createBaseEvent(base = baseEmitter) {
+  const emitter = {};
+  for (const prop in baseEmitter) {
+    const value = emitter[prop] = new baseEmitter[prop].constructor();
+    (base[prop] || new Map).forEach((v, k) => value.set(k, [].concat(v)));
   }
-  return event;
+  return emitter;
 }
 
 export class InjectorEmitter {
@@ -24,7 +24,7 @@ export class InjectorEmitter {
   static get DELETE() { return 'delete'; }
   static get INSTANTIATE() { return 'instantiate'; }
 
-  constructor(event) { Object.assign(this, createBaseEvent(event)); }
+  constructor(emitter) { Object.assign(this, createBaseEvent(emitter)); }
 
   on(event, listener, impl = null) {
     getSettingDefault(this[event], impl, []).push(listener);
@@ -41,12 +41,12 @@ export class InjectorEmitter {
 
   emit(event, value, impl = null) {
 
-    value = next(value, this[event].get(null));
+    let listeners = this[event].get(null) || [];
 
     if (impl) {
-      value = next(value, this[event].get(impl));
+      listeners = listeners.concat(this[event].get(impl) || []);
     }
-    return value;
+    return next(value, listeners);
   }
 
   onSet(impl, listener) { return this.on(this.constructor.GET, listener, impl); }

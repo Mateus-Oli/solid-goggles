@@ -39,4 +39,4 @@ export interface InjectorEmitter extends BaseInjectorEmitter {
   emitInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): this;
 }
 
-export const InjectorEvent: InjectorEmitterConstructor;
+export const InjectorEmitter: InjectorEmitterConstructor;

@@ -3,7 +3,7 @@ import { InjectorEmitter, Listener, BaseInjectorEmitter } from './injectorEmitte
 
 export interface BaseInjector {
 
-  implements: <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
+  baseImplements: <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
   baseFactory: <T>(implementation: Implementation<T>) => T;
 
   container: BaseContainer;
@@ -13,7 +13,7 @@ export interface BaseInjector {
 
 export interface InjectorConstructor {
 
-  implements: <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
+  baseImplements: <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
   baseFactory: <T>(implementation: Implementation<T>) => T;
 
   new(injector?: BaseInjector): Injector;

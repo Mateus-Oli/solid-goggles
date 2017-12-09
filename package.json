@@ -4,6 +4,7 @@
   "description": "Dependency Injector",
   "main": "src/index.js",
   "scripts": {
+    "test": "jest --watch",
     "babel": "babel src --out-dir dist --watch",
     "watch": "npm run babel",
     "start": "node ./dist"
@@ -14,8 +15,10 @@
   "author": "Mateus Oliveira Carvalho <mateus.oli.car@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^21.1.8",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "eslint": "^4.12.0"
+    "eslint": "^4.12.0",
+    "jest": "^21.2.1"
   }
 }

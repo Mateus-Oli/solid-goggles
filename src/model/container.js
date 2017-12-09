@@ -31,7 +31,7 @@ export class Container {
     }
     return this;
   }
-  setInstance(inst, impl = inst) {
+  setInstance(inst, impl) {
     if (impl) {
       this.setImplementation(impl);
       this.instances.set(impl, inst);
@@ -79,6 +79,12 @@ export class Container {
       return inst;
     }
     return keyFromValue(this.instances, inst);
+  }
+  getInterfaceFromInstance(inst) {
+    if (!inst || this.isInterface(inst)) {
+      return inst;
+    }
+    return this.getInterface(this.getImplementationFromInstance(inst));
   }
 
   getInstance(impl) {

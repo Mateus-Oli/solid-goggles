@@ -17,7 +17,7 @@ function createBaseInjector(base = baseInjector) {
   for (const prop in baseInjector) {
     injector[prop] = new baseInjector[prop].constructor(base[prop]);
   }
-  injector.implements = base.implements;
+  injector.baseImplements = base.baseImplements;
   injector.baseFactory = base.baseFactory;
 
   return injector;
@@ -36,7 +36,7 @@ export class Injector {
     if (impl && (validator = impl[implementsSymbol])) {
       return validator(inter);
     }
-    return (this.implements || this.constructor.implements)(inter, impl);
+    return (this.baseImplements || this.constructor.baseImplements)(inter, impl);
   }
 
   setImplementation(impl) {
@@ -53,7 +53,7 @@ export class Injector {
   }
 
   link(inter, impl) {
-    if (!this.implements(inter, impl)) {
+    if (!this.canImplement(inter, impl)) {
       throw new InjectorError(inter, impl, InjectorError.LINK_ERROR);
     }
     this.container.link(inter, impl);
