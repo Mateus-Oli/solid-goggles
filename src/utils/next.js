@@ -4,7 +4,7 @@ function nextHelper(baseArg, fns) {
   }
   return fns[0](baseArg, arg => {
     fns.shift();
-    return nextHelper(fns, arg);
+    return nextHelper(arg, fns);
   });
 }
 
