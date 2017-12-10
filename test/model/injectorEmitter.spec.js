@@ -51,11 +51,24 @@ describe('InjectorEmitter', () => {
 
   it('does not execute events from other implementations', () => expect(value.other).toBe(undefined));
 
-  it('executes events from base emitter', () => {
+  it('clones base emitter', () => {
 
     const newEmitter = new InjectorEmitter(emitter);
     const newEmitterValue = newEmitter.emitGet(ImplementationMock, {});
 
     expect(newEmitterValue.specific).toBe(true);
+  });
+
+  it('removes listeners', () => {
+    const otherEmitter = new InjectorEmitter;
+    const listener = data => {
+      data.notRemoved = true;
+      return data;
+    };
+
+    otherEmitter.onSet(ImplementationMock, listener);
+    otherEmitter.removeSet(ImplementationMock, listener);
+
+    expect(otherEmitter.emitSet(ImplementationMock, {}).notRemoved).toBe(undefined);
   });
 });
