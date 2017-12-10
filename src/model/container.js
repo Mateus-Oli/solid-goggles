@@ -17,6 +17,8 @@ function createBaseContainer(base = baseContainer) {
 
 export class Container {
 
+  get size() { return this.instances.size; }
+
   constructor(container) { Object.assign(this, createBaseContainer(container)); }
 
   link(inter, impl) {
@@ -133,5 +135,18 @@ export class Container {
   clearInstances() {
     this.instances.clear();
     return this;
+  }
+
+  forEach(fn) {
+    for (const values of this) {
+      fn(...values);
+    }
+    return this;
+  }
+
+  *[Symbol.iterator]() {
+    for (const [impl, inst] of this.instances) {
+      yield [inst, impl, this.getInterface(impl)];
+    }
   }
 }

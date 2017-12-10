@@ -109,13 +109,13 @@ export class Injector {
   }
 
   clear() {
-    this.container.instances.forEach(instance => this.delete(instance));
+    this.container.forEach(inst => this.delete(inst));
     return this;
   }
 
   findInterface(impl) {
-    let inter;
-    if (!impl || (inter = this.container.getInterface(impl))) {
+    let inter = this.container.getInterface(impl);
+    if (!impl || inter) {
       return inter;
     }
     inter = findSet(this.container.interfaces, inter => this.canImplement(inter, impl));

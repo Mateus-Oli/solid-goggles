@@ -17,6 +17,8 @@ export interface ContainerConstructor {
 
 export interface Container extends BaseContainer {
 
+  readonly size: number;
+
   link<T>(interface: Interface<T>, implementation: Implementation<T>): this;
   unlink<T>(interface: Interface<T>, implementation: Implementation<T>): this;
 
@@ -45,6 +47,9 @@ export interface Container extends BaseContainer {
   clearInterfaces(): this;
   clearImplementations(): this;
   clearInstances(): this;
+
+  forEach(func: <T>(instance: T, implementation: Implementation<T>, interface: Interface<T>) => any): this;
+  [Symbol.iterator](): Iterable<[any, Implementation, Interface]>;
 }
 
 export const Container: ContainerConstructor;

@@ -63,6 +63,9 @@ describe('Container', () => {
     expect(newContainer.getInstance(InterfaceMock)).toBe(instanceMock);
   });
 
+  it('shows size as number of instances', () => expect(container.size).toBe(container.instances.size));
+  it('iterates over all instances', () => expect([...container].length).toBe(container.instances.size));
+
   it('clear values', () => {
 
     container.clear();
