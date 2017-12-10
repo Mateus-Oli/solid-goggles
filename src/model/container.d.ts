@@ -49,7 +49,6 @@ export interface Container extends BaseContainer {
   clearInstances(): this;
 
   forEach(func: <T>(instance: T, implementation: Implementation<T>, interface: Interface<T>) => any): this;
-  [Symbol.iterator](): Iterable<[any, Implementation, Interface]>;
 }
 
 export const Container: ContainerConstructor;

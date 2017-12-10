@@ -138,15 +138,7 @@ export class Container {
   }
 
   forEach(fn) {
-    for (const values of this) {
-      fn(...values);
-    }
+    this.instances.forEach((inst, impl) => fn(inst, impl, this.getInterface(impl)));
     return this;
-  }
-
-  *[Symbol.iterator]() {
-    for (const [impl, inst] of this.instances) {
-      yield [inst, impl, this.getInterface(impl)];
-    }
   }
 }
