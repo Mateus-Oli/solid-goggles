@@ -77,9 +77,17 @@ describe('Injector', () => {
   });
 
   it('clears old instances', () => {
+
+    let emitedDelete = false;
+    injector.onDelete(Human, (value, next) => {
+      emitedDelete = true;
+      return next(value);
+    });
+
     const oldInstance = injector.get(ConscientBeing);
     injector.clear();
 
     expect(injector.get(ConscientBeing)).not.toBe(oldInstance);
+    expect(emitedDelete).toBe(true);
   });
 });

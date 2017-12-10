@@ -41,8 +41,8 @@ export class Injector {
     return inst;
   }
   delete(impl) {
-    impl = this.findImplementation(impl);
     const inst = this.findInstance(impl);
+    impl = this.container.getImplementationFromInstance(impl);
 
     this.container.deleteInstance(impl);
     this.emitter.emitDelete(impl, inst);
@@ -109,7 +109,7 @@ export class Injector {
   }
 
   clear() {
-    this.container.clearInstances();
+    this.container.instances.forEach(instance => this.delete(instance));
     return this;
   }
 
