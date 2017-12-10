@@ -22,12 +22,9 @@ export interface InjectorConstructor {
 export interface Injector extends BaseInjector {
 
   get<T>(interface: Interface<T>): T;
-  get<T>(interface: any): T;
-
   set<T>(implementation: Implementation<T>, instance: T): T;
   delete<T>(implementation: Implementation<T>): this;
 
-  setImplementation(implementation: any): this;
   setImplementation<T>(implementation: Implementation<T>): this;
 
   link<T, K extends T>(interface: Interface<T>, implementation: Implementation<K>): this;
