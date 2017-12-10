@@ -6,6 +6,7 @@
         "christian-kohler.npm-intellisense",
         "codezombiech.gitignore",
         "christian-kohler.path-intellisense",
-        "silverbulleters.sonarqube-inject"
+        "silverbulleters.sonarqube-inject",
+        "Orta.vscode-jest"
     ]
 }

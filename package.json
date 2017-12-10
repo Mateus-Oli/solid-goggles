@@ -2,10 +2,10 @@
   "name": "injector",
   "version": "1.0.0",
   "description": "Dependency Injector",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "jest --watch",
-    "babel": "babel src --out-dir dist --watch",
+    "babel": "babel src --out-dir ./dist --watch",
     "watch": "npm run babel",
     "start": "node ./dist"
   },
