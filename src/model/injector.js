@@ -17,10 +17,7 @@ function createBaseInjector(base = baseInjector) {
   for (const prop in baseInjector) {
     injector[prop] = new baseInjector[prop].constructor(base[prop]);
   }
-  injector.baseImplements = base.baseImplements;
-  injector.baseFactory = base.baseFactory;
-
-  return injector;
+  return Object.assign({}, base, injector);
 }
 
 export class Injector {
@@ -32,7 +29,7 @@ export class Injector {
     if (!impl) {
       throw new InjectorError(inter, impl, InjectorError.GENERATE_ERROR);
     }
-    return this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
+    return this.getInstance(impl);
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
@@ -42,14 +39,17 @@ export class Injector {
   }
   delete(impl) {
     const inst = this.findInstance(impl);
-    impl = this.container.getImplementationFromInstance(impl);
+    impl = this.container.getImplementationFromInstance(inst);
 
     this.container.deleteInstance(impl);
-    this.emitter.emitDelete(impl, inst);
 
-    return this;
+    return this.emitter.emitDelete(impl, inst);
   }
 
+  getInstance(impl) {
+    impl = this.findImplementation(impl);
+    return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
+  }
   setImplementation(impl) {
     this.container.setImplementation(impl);
     return this;
@@ -69,7 +69,6 @@ export class Injector {
   }
 
   factory(impl, fn) {
-    impl = this.findImplementation(impl);
     if (impl) {
       this.factories.set(impl, fn);
     }
@@ -99,7 +98,7 @@ export class Injector {
   }
   instantiate(impl) {
     impl = this.findImplementation(impl);
-    return impl && this.emitter.emitInstantiate(impl, (this.factories.get(impl) || this.baseFactory || this.constructor.baseFactory)(impl));
+    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this));
   }
   inject(inst) {
     if (inst && inst[injectSymbol]) {
@@ -138,14 +137,13 @@ export class Injector {
   }
 
   canImplement(inter, impl) {
-    let validator;
+    return this.getImplements(inter, impl)(inter, impl, this);
+  }
 
-    if (inter && (validator = inter[implementsSymbol])) {
-      return validator(impl);
-    }
-    if (impl && (validator = impl[implementsSymbol])) {
-      return validator(inter);
-    }
-    return (this.baseImplements || this.constructor.baseImplements)(inter, impl);
+  getFactory(impl) {
+    return this.factories.get(impl) || this.baseFactory ||  this.constructor.baseFactory;
+  }
+  getImplements(inter = {}, impl = {}) {
+    return inter[implementsSymbol] || impl[implementsSymbol] || this.baseImplements || this.constructor.baseImplements;
   }
 }

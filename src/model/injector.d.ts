@@ -1,9 +1,11 @@
 import { Container, Implementation, Interface, BaseContainer, MapEquivalent } from './container';
 import { InjectorEmitter, Listener, BaseInjectorEmitter } from './injectorEmitter';
 
+type implementsValidator = <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
+
 export interface BaseInjector {
 
-  baseImplements: <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
+  baseImplements: implementsValidator;
   baseFactory: <T>(implementation: Implementation<T>) => T;
 
   container: BaseContainer;
@@ -13,7 +15,7 @@ export interface BaseInjector {
 
 export interface InjectorConstructor {
 
-  baseImplements: <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
+  baseImplements: implementsValidator;
   baseFactory: <T>(implementation: Implementation<T>) => T;
 
   new(injector?: BaseInjector): Injector;
@@ -23,8 +25,9 @@ export interface Injector extends BaseInjector {
 
   get<T>(interface: Interface<T>): T;
   set<T>(implementation: Implementation<T>, instance: T): T;
-  delete<T>(implementation: Implementation<T>): this;
+  delete<T>(implementation: Implementation<T>): T;
 
+  getInstance<T>(interface: Interface<T>): T;
   setImplementation<T>(implementation: Implementation<T>): this;
 
   link<T, K extends T>(interface: Interface<T>, implementation: Implementation<K>): this;
@@ -48,6 +51,9 @@ export interface Injector extends BaseInjector {
   findInstance<T>(interface: Interface<T>): T;
 
   canImplement<T>(interface: Interface<T>, implementation: Implementation<T>): boolean;
+
+  getFactory<T>(implementation?: Implementation<T>): (implentation: Implementation<T>) => T;
+  getImplements<T>(interface?: Interface<T>, implementation?: Implementation<T>): implementsValidator;
 }
 
 export const Injector: InjectorConstructor;

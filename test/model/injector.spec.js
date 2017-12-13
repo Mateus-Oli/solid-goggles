@@ -66,13 +66,12 @@ describe('Injector', () => {
   it('throws without implementation', () => expect(() => injector.get({ jump() {} })).toThrow());
   it('throws on unmatching link', () => expect(() => injector.link(Pet, Human)).toThrow());
 
-  it('checks implements symbol', () => expect(injector.get({ [implementsSymbol]: (impl) => impl === Human })).toBeInstanceOf(Human));
+  it('checks implements symbol', () => expect(injector.get({ [implementsSymbol]: (_, impl) => impl === Human })).toBeInstanceOf(Human));
 
   it('uses same instance', () => expect(injector.get(ConscientBeing)).toBe(injector.get(Human)));
 
   it('clones base injector', () => {
     const newInjector = new Injector(injector);
-
     expect(newInjector.get(ConscientBeing)).toBe(injector.get(ConscientBeing));
   });
 
