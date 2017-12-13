@@ -4,21 +4,13 @@ import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
 import { implementsSymbol } from '../providers/symbols';
 import { findSet } from '../utils/findSet';
+import { baseCreator } from '../providers/baseCreator';
 
-const baseInjector = {
+const createBaseInjector = baseCreator({
   emitter: new InjectorEmitter,
   container: new Container,
   factories: new Map
-};
-
-function createBaseInjector(base = baseInjector) {
-  const injector = {};
-
-  for (const prop in baseInjector) {
-    injector[prop] = new baseInjector[prop].constructor(base[prop]);
-  }
-  return Object.assign({}, base, injector);
-}
+});
 
 export class Injector {
 
@@ -27,7 +19,7 @@ export class Injector {
   get(inter) {
     const impl = this.findImplementation(inter);
     if (!impl) {
-      throw new InjectorError(inter, impl, InjectorError.GENERATE_ERROR);
+      throw new InjectorError(inter);
     }
     return this.getInstance(impl);
   }

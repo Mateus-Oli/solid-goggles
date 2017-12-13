@@ -1,19 +1,12 @@
 import { keyFromValue } from '../utils/keyFromValue';
+import { baseCreator } from '../providers/baseCreator';
 
-const baseContainer = {
+const createBaseContainer = baseCreator({
   interfaces: new Set,
   implementations: new Set,
   links: new Map,
   instances: new Map
-};
-
-function createBaseContainer(base = baseContainer) {
-  const container = {};
-  for (const prop in baseContainer) {
-    container[prop] = new baseContainer[prop].constructor(base[prop]);
-  }
-  return container;
-}
+});
 
 export class Container {
 

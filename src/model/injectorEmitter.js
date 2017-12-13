@@ -10,11 +10,11 @@ const baseEmitter = {
 
 function createBaseEvent(base = baseEmitter) {
   const emitter = {};
-  for (const prop in baseEmitter) {
-    const value = emitter[prop] = new baseEmitter[prop].constructor();
-    (base[prop] || new Map).forEach((v, k) => value.set(k, [].concat(v)));
+  for (const key in baseEmitter) {
+    const value = emitter[key] = new baseEmitter[key].constructor();
+    (base[key] || new Map).forEach((v, k) => value.set(k, [].concat(v)));
   }
-  return emitter;
+  return Object.assign({}, base, emitter);
 }
 
 export class InjectorEmitter {
