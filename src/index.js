@@ -5,5 +5,6 @@ import { defaultImplements } from './providers/defaultImplements';
 Injector.baseImplements = defaultImplements;
 Injector.baseFactory = defaultFactory;
 
-export { Injector };
+export * from './model/injector';
 export * from './providers/symbols';
+export * from './model/injectorGroup';

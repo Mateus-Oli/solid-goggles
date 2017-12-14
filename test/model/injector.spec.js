@@ -2,13 +2,9 @@ import { injectSymbol, implementsSymbol } from '../../src';
 import { defaultFactory } from '../../src/providers/defaultFactory';
 import { defaultImplements } from '../../src/providers/defaultImplements';
 
-import { Injector } from '../../src/model/injector';
-
-Injector.baseFactory = defaultFactory;
-Injector.baseImplements = defaultImplements;
+import { Injector } from '../../src';
 
 const injector = new Injector;
-
 class Pet {
   makeSound() { return ''; }
 }

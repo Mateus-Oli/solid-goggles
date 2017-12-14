@@ -1,6 +1,5 @@
 import { baseCreator } from '../providers/baseCreator';
 import { InjectorError } from '../error/injectorError';
-import { findSet } from '../utils/findSet';
 
 const createBaseInjectorGroup = baseCreator({
   injectors: new Set
