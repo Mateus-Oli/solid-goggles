@@ -26,22 +26,25 @@ export class InjectorEmitter {
 
   constructor(emitter) { Object.assign(this, createBaseEvent(emitter)); }
 
-  onSet(impl, listener) { return this.on(this.constructor.GET, listener, impl); }
-  onGet(impl, listener) { return this.on(this.constructor.SET, listener, impl); }
-  onDelete(impl, listener) { return this.on(this.constructor.DELETE, listener, impl); }
-  onInstantiate(impl, listener) { return this.on(this.constructor.INSTANTIATE, listener, impl); }
+  onSet(impl, listener) { return this.on(this.constructor.GET, impl, listener); }
+  onGet(impl, listener) { return this.on(this.constructor.SET, impl, listener); }
+  onDelete(impl, listener) { return this.on(this.constructor.DELETE, impl, listener); }
+  onInstantiate(impl, listener) { return this.on(this.constructor.INSTANTIATE, impl, listener); }
 
-  on(event, listener, impl = null) {
+  on(event, impl = null, listener = null) {
+    [impl, listener] = [listener && impl, listener || impl];
     getSettingDefault(this[event], impl, []).push(listener);
+
     return this;
   }
 
-  emitSet(impl, value) { return this.emit(this.constructor.GET, value, impl); }
-  emitGet(impl, value) { return this.emit(this.constructor.SET, value, impl); }
-  emitDelete(impl, value) { return this.emit(this.constructor.DELETE, value, impl); }
-  emitInstantiate(impl, value) { return this.emit(this.constructor.INSTANTIATE, value, impl); }
+  emitSet(impl, value) { return this.emit(this.constructor.GET, impl, value); }
+  emitGet(impl, value) { return this.emit(this.constructor.SET, impl, value); }
+  emitDelete(impl, value) { return this.emit(this.constructor.DELETE,impl, value); }
+  emitInstantiate(impl, value) { return this.emit(this.constructor.INSTANTIATE, impl, value); }
 
-  emit(event, value, impl = null) {
+  emit(event, impl = null, value = null) {
+    [impl, value] = [value && impl, value || impl];
 
     let listeners = this[event].get(null) || [];
 
@@ -51,12 +54,14 @@ export class InjectorEmitter {
     return next(value, listeners);
   }
 
-  removeSet(impl, listener) { return this.remove(this.constructor.GET, listener, impl); }
-  removeGet(impl, listener) { return this.remove(this.constructor.SET, listener, impl); }
-  removeDelete(impl, listener) { return this.remove(this.constructor.DELETE, listener, impl); }
-  removeInstantiate(impl, listener) { return this.remove(this.constructor.INSTANTIATE, listener, impl); }
+  removeSet(impl, listener) { return this.remove(this.constructor.GET, impl, listener); }
+  removeGet(impl, listener) { return this.remove(this.constructor.SET, impl, listener); }
+  removeDelete(impl, listener) { return this.remove(this.constructor.DELETE, impl, listener); }
+  removeInstantiate(impl, listener) { return this.remove(this.constructor.INSTANTIATE, impl, listener); }
 
-  remove(event, listener, impl = null) {
+  remove(event, impl = null, listener = null) {
+    [impl, listener] = [listener && impl, listener || impl];
+
 
     const listeners = getSettingDefault(this[event], impl, []);
     listeners.splice(listeners.indexOf(listener), 1);

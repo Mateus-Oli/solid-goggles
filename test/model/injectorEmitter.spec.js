@@ -10,7 +10,7 @@ class OtherImplementation {
 
 }
 
-emitter.onGet(null, (value, next) => {
+emitter.onGet((value, next) => {
   value.generic = true;
   return next(value);
 });

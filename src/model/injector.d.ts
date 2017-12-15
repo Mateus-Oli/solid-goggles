@@ -35,6 +35,11 @@ export interface Injector extends BaseInjector {
 
   factory<T>(implementation: Implementation<T>, fn: (implementation: Implementation<T>) => T): this;
 
+  onGet<T>(listener: Listener<T>): this;
+  onSet<T>(listener: Listener<T>): this;
+  onDelete<T>(listener: Listener<T>): this;
+  onInstantiate<T>(listener: Listener<T>): this;
+
   onGet<T>(implementation: Implementation<T>, listener: Listener<T>): this;
   onSet<T>(implementation: Implementation<T>, listener: Listener<T>): this;
   onDelete<T>(implementation: Implementation<T>, listener: Listener<T>): this;
