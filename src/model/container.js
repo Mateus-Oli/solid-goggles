@@ -1,137 +1,116 @@
-import { keyFromValue } from '../utils/keyFromValue';
-import { baseCreator } from '../providers/baseCreator';
-
-const createBaseContainer = baseCreator({
-  interfaces: new Set,
-  implementations: new Set,
-  links: new Map,
-  instances: new Map
-});
-
 export class Container {
 
-  get size() { return this.instances.size; }
+    static get INTERFACE() { return 0; }
+    static get IMPLEMENTATION() { return 1; }
+    static get INSTANCE() { return 2; }
 
-  constructor(container) { Object.assign(this, createBaseContainer(container)); }
+    get size() { return this.entries.length; }
 
-  link(inter, impl) {
-    if (!inter || !impl) {
+    constructor(container = []) {
+      this.entries = [];
+      container.forEach(entry => this.setEntryBy(1, entry));
+    }
+
+    link(inter, impl) {
+      return this.setEntryBy(Container.IMPLEMENTATION, [inter, impl, undefined]);
+    }
+    addImplementation(impl) {
+      return this.setEntryBy(Container.IMPLEMENTATION, [undefined, impl, undefined]);
+    }
+    setInstance(impl, inst) {
+      return this.setEntryBy(Container.IMPLEMENTATION, [undefined, impl, inst]);
+    }
+
+    getInterface(inter) {
+      return this.findAndGetEntryIndexBy(inter, Container.INTERFACE);
+    }
+    getImplementation(impl) {
+      return this.findAndGetEntryIndexBy(impl, Container.IMPLEMENTATION);
+    }
+    getInstance(inst) {
+      return this.findAndGetEntryIndexBy(inst, Container.INSTANCE);
+    }
+
+    deleteInterface(inter) {
+      return this.findAndSetEntryIndexBy(inter, Container.INTERFACE);
+    }
+    deleteImplementation(impl) {
+      return this.findAndSetEntryIndexBy(impl, Container.IMPLEMENTATION);
+    }
+    deleteInstance(inst) {
+      return this.findAndSetEntryIndexBy(inst, Container.INSTANCE);
+    }
+
+    clearInterface() {
+      return this.clearByIndex(Container.INTERFACE);
+    }
+    clearImplementation() {
+      return this.clearByIndex(Container.IMPLEMENTATION);
+    }
+    clearInstance() {
+      return this.clearByIndex(Container.INSTANCE);
+    }
+
+    clear() {
+      this.entries = [];
       return this;
     }
-    this.setInterface(inter);
-    this.setImplementation(impl);
 
-    this.links.set(inter, impl);
-
-    return this;
-  }
-  unlink(inter) {
-    this.links.delete(this.getInterface(inter));
-    return this;
-  }
-
-  getInterface(impl) {
-    if (!impl || this.isInterface(impl)) {
-      return impl;
+    clearByIndex(...index) {
+      return this.forEach(entry => index.forEach(i => entry[i] = undefined));
     }
-    return keyFromValue(this.links, impl);
-  }
-  getImplementation(inter) {
-    if (!inter || this.isImplementation(inter)) {
-      return inter;
-    }
-    return this.links.get(inter);
-  }
-  getInstance(impl) {
-    if (!impl || this.isInstance(impl)) {
-      return impl;
-    }
-    return this.instances.get(this.getImplementation(impl));
-  }
 
-  getImplementationFromInstance(inst) {
-    if (!inst || this.isImplementation(inst)) {
-      return inst;
+    findAndGetEntryIndexBy(search, index) {
+      return this.findReturn(entry => entry.includes(search) && entry[index]);
     }
-    return keyFromValue(this.instances, inst);
-  }
-  getInterfaceFromInstance(inst) {
-    if (!inst || this.isInterface(inst)) {
-      return inst;
+    findAndSetEntryIndexBy(search, index, value) {
+      let entry = this.getEntry(search);
+      if (!entry) {
+        this.entries.push(entry = []);
+      }
+      entry[index] = value;
+
+      return this;
     }
-    return this.getInterface(this.getImplementationFromInstance(inst));
-  }
 
-  setInterface(inter) {
-    if (inter) {
-      this.interfaces.add(inter);
+    getEntryBy(index, value) {
+      return this.find(entry => entry[index] === value);
     }
-    return this;
-  }
-  setImplementation(impl) {
-    if (impl) {
-      this.implementations.add(impl);
+    setEntryBy(index, values) {
+      let entry = this.getEntryBy(index, values[index]);
+      if (!entry) {
+        this.entries.push(entry = []);
+      }
+      this.overwrite(entry, values);
+      return this;
     }
-    return this;
-  }
-  setInstance(inst, impl) {
-    if (impl) {
-      this.setImplementation(impl);
-      this.instances.set(impl, inst);
+
+    getEntry(value) {
+      return this.find(entry => entry.includes(value));
     }
-    return this;
-  }
 
-  deleteInterface(inter) {
-    this.interfaces.delete(this.getInterface(inter));
-    return this;
-  }
-  deleteImplementation(impl) {
-    this.implementations.delete(this.getImplementation(impl));
-    return this;
-  }
-  deleteInstance(inst) {
-    this.instances.delete(this.getImplementationFromInstance(inst));
-    return this;
-  }
+    find(func) {
+      return this.findReturn(entry => func(entry, this) && entry);
+    }
+    findReturn(func) {
+      for (const entry of this.entries) {
+        const value = func(entry, this);
+        if (value) {
+          return value;
+        }
+      }
+    }
 
-  isInterface(inter) {
-    return this.interfaces.has(inter);
-  }
-  isImplementation(impl) {
-    return this.implementations.has(impl);
-  }
-  isInstance(inst) {
-    return !!keyFromValue(this.instances, inst);
-  }
+    forEach(func) {
+      this.entries.forEach(func);
+      return this;
+    }
 
-  clear() {
-    return this
-      .clearLinks()
-      .clearInterfaces()
-      .clearImplementations()
-      .clearInstances();
-  }
+    overwrite(entry, ...values) {
+      values.reverse()
+        .forEach(value => value
+          .forEach((v, k) => entry[k] = v === undefined ? entry[k] : v));
 
-  clearLinks() {
-    this.links.clear();
-    return this;
+      return entry;
+    }
   }
-  clearInterfaces() {
-    this.interfaces.clear();
-    return this;
-  }
-  clearImplementations() {
-    this.implementations.clear();
-    return this;
-  }
-  clearInstances() {
-    this.instances.clear();
-    return this;
-  }
-
-  forEach(fn) {
-    this.instances.forEach((inst, impl) => fn(inst, impl, this.getInterface(impl)));
-    return this;
-  }
-}

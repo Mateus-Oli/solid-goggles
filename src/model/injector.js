@@ -25,13 +25,13 @@ export class Injector {
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
-    this.container.setInstance(inst = this.emitter.emitSet(impl, inst), impl);
+    this.container.setInstance(impl, inst = this.emitter.emitSet(impl, inst));
 
     return inst;
   }
   delete(impl) {
     const inst = this.findInstance(impl);
-    impl = this.container.getImplementationFromInstance(inst);
+    impl = this.container.getImplementation(inst);
 
     this.container.deleteInstance(impl);
 
@@ -43,7 +43,7 @@ export class Injector {
     return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
   }
   setImplementation(impl) {
-    this.container.setImplementation(impl);
+    this.container.addImplementation(impl);
     return this;
   }
 
@@ -100,7 +100,7 @@ export class Injector {
   }
 
   clear() {
-    this.container.forEach(inst => this.delete(inst));
+    this.container.forEach(([ inst ]) => this.delete(inst));
     return this;
   }
 
@@ -109,7 +109,7 @@ export class Injector {
     if (!impl || inter) {
       return inter;
     }
-    inter = findSet(this.container.interfaces, inter => this.canImplement(inter, impl));
+    inter = this.container.findReturn(([ inter ]) => this.canImplement(inter, impl) && inter);
     this.container.link(inter, impl);
 
     return inter;
@@ -119,7 +119,7 @@ export class Injector {
     if (!inter || impl) {
       return impl;
     }
-    impl = findSet(this.container.implementations, impl => this.canImplement(inter, impl));
+    impl = this.container.findReturn(([, impl ]) => this.canImplement(inter, impl) && impl);
     this.container.link(inter, impl);
 
     return impl;

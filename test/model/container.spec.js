@@ -23,9 +23,9 @@ class OtherInterface {
 const otherInstance = {};
 
 container.link(InterfaceMock, ImplementationMock);
-container.setInstance(instanceMock, ImplementationMock);
+container.setInstance(ImplementationMock, instanceMock);
 
-container.setInstance(otherInstance, OtherImplementation);
+container.setInstance(OtherImplementation, otherInstance);
 
 describe('Container', () => {
 
@@ -35,11 +35,11 @@ describe('Container', () => {
 
   it('gets implementation from interface', () => expect(container.getImplementation(InterfaceMock)).toBe(ImplementationMock));
   it('gets implementation from implementation', () => expect(container.getImplementation(ImplementationMock)).toBe(ImplementationMock));
-  it('gets implementation from instance', () => expect(container.getImplementationFromInstance(instanceMock)).toBe(ImplementationMock));
+  it('gets implementation from instance', () => expect(container.getImplementation(instanceMock)).toBe(ImplementationMock));
 
   it('gets interface from interface', () => expect(container.getInterface(InterfaceMock)).toBe(InterfaceMock));
   it('gets interface from implementation', () => expect(container.getInterface(ImplementationMock)).toBe(InterfaceMock));
-  it('gets interface from instance', () => expect(container.getInterfaceFromInstance(instanceMock)).toBe(InterfaceMock));
+  it('gets interface from instance', () => expect(container.getInterface(instanceMock)).toBe(InterfaceMock));
 
   it('is empty when not contained', () => {
 
@@ -57,23 +57,19 @@ describe('Container', () => {
     expect(newContainer.getInstance(InterfaceMock)).toBe(instanceMock);
   });
 
-  it('shows size as number of instances', () => expect(container.size).toBe(container.instances.size));
+  it('shows size as number of instances', () => expect(container.size).toBe(container.entries.length));
 
   it('iterates over all instances', () => {
 
     let called = 0;
     container.forEach(() => called++);
 
-    expect(called).toBe(container.instances.size);
+    expect(called).toBe(container.size);
   });
 
   it('clear values', () => {
 
     container.clear();
-
-    expect(container.links.size).toBe(0);
-    expect(container.interfaces.size).toBe(0);
-    expect(container.implementations.size).toBe(0);
-    expect(container.instances.size).toBe(0);
+    expect(container.size).toBe(0);
   });
 });

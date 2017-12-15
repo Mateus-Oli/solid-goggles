@@ -9,7 +9,12 @@ export class InjectorGroup {
 
   get size() { return this.injectors.size; }
 
-  constructor(injectorGroup) { Object.assign(this, createBaseInjectorGroup(injectorGroup)); }
+  constructor(injectorGroup) {
+    if (injectorGroup && injectorGroup[Symbol.iterator]) {
+      injectorGroup = { injectors: injectorGroup };
+    }
+    Object.assign(this, createBaseInjectorGroup(injectorGroup));
+  }
 
   get(inter) {
     const inst = this.getInstance(inter);
@@ -56,6 +61,10 @@ export class InjectorGroup {
         return value;
       }
     }
+  }
+
+  filter(fn) {
+
   }
 
   forEach(fn) {
