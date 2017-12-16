@@ -8,37 +8,37 @@ export class Container {
 
     constructor(container = []) {
       this.entries = [];
-      container.forEach(entry => this.setEntryBy(1, entry));
+      container.forEach(entry => this.setEntryLike(entry));
     }
 
     link(inter, impl) {
-      return this.setEntryBy(Container.IMPLEMENTATION, [inter, impl, undefined]);
+      return this.setEntryBy(Container.IMPLEMENTATION, [inter, impl]);
     }
     addImplementation(impl) {
-      return this.setEntryBy(Container.IMPLEMENTATION, [undefined, impl, undefined]);
+      return this.setEntryBy(Container.IMPLEMENTATION, [, impl]);
     }
     setInstance(impl, inst) {
-      return this.setEntryBy(Container.IMPLEMENTATION, [undefined, impl, inst]);
+      return this.setEntryBy(Container.IMPLEMENTATION, [, impl, inst]);
     }
 
     getInterface(inter) {
-      return this.findAndGetEntryIndexBy(inter, Container.INTERFACE);
+      return this.findAndGetEntryValueBy(inter, Container.INTERFACE);
     }
     getImplementation(impl) {
-      return this.findAndGetEntryIndexBy(impl, Container.IMPLEMENTATION);
+      return this.findAndGetEntryValueBy(impl, Container.IMPLEMENTATION);
     }
     getInstance(inst) {
-      return this.findAndGetEntryIndexBy(inst, Container.INSTANCE);
+      return this.findAndGetEntryValueBy(inst, Container.INSTANCE);
     }
 
     deleteInterface(inter) {
-      return this.findAndSetEntryIndexBy(inter, Container.INTERFACE);
+      return this.findAndDeleteEntryValueBy(inter, Container.INTERFACE);
     }
     deleteImplementation(impl) {
-      return this.findAndSetEntryIndexBy(impl, Container.IMPLEMENTATION);
+      return this.findAndDeleteEntryValueBy(impl, Container.IMPLEMENTATION);
     }
     deleteInstance(inst) {
-      return this.findAndSetEntryIndexBy(inst, Container.INSTANCE);
+      return this.findAndDeleteEntryValueBy(inst, Container.INSTANCE);
     }
 
     clearInterface() {
@@ -60,17 +60,43 @@ export class Container {
       return this.forEach(entry => index.forEach(i => entry[i] = undefined));
     }
 
-    findAndGetEntryIndexBy(search, index) {
+    findAndGetEntryValueBy(search, index) {
       return this.findReturn(entry => entry.includes(search) && entry[index]);
     }
-    findAndSetEntryIndexBy(search, index, value) {
-      let entry = this.getEntry(search);
+    findAndSetEntryValueBy(search, index, value) {
+      let entry = this.findEntry(search);
       if (!entry) {
         this.entries.push(entry = []);
       }
-      entry[index] = value;
-
+      return entry[index] = value;
+    }
+    findAndDeleteEntryValueBy(search, index) {
+      let entry = this.findEntry(search);
+      if (entry) {
+        entry[index] = undefined;
+      }
       return this;
+    }
+
+    findEntry(search) {
+      return this.find(entry => entry.includes(search));
+    }
+
+    getEntryLike(entry) {
+      return this.find(e => entry.every((v, i) => v === undefined || v === e[i]));
+    }
+    setEntryLike(entry, value = entry) {
+      entry = this.getEntryLike(entry);
+      if (!entry) {
+        this.entries.push(entry = []);
+      }
+      return Object.assign(entry, value);
+    }
+    deleteEntryLike(entry) {
+      const indexOf = this.entries.indexOf(this.getEntryLike(entry));
+      this.entries.splice(indexOf, 1);
+
+      return indexOf !== -1;
     }
 
     getEntryBy(index, value) {
@@ -81,20 +107,21 @@ export class Container {
       if (!entry) {
         this.entries.push(entry = []);
       }
-      this.overwrite(entry, values);
-      return this;
+      return Object.assign(entry, values);
     }
+    deleteEntryBy(index, value) {
+      const indexOf = this.entries.indexOf(this.getEntryBy(index, value));
+      this.entries.splice(indexOf, 1);
 
-    getEntry(value) {
-      return this.find(entry => entry.includes(value));
+      return indexOf !== -1;
     }
 
     find(func) {
-      return this.findReturn(entry => func(entry, this) && entry);
+      return this.findReturn(entry => func(entry) && entry);
     }
     findReturn(func) {
       for (const entry of this.entries) {
-        const value = func(entry, this);
+        const value = func(entry);
         if (value) {
           return value;
         }
@@ -104,13 +131,5 @@ export class Container {
     forEach(func) {
       this.entries.forEach(func);
       return this;
-    }
-
-    overwrite(entry, ...values) {
-      values.reverse()
-        .forEach(value => value
-          .forEach((v, k) => entry[k] = v === undefined ? entry[k] : v));
-
-      return entry;
     }
   }

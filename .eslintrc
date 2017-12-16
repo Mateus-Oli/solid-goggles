@@ -17,7 +17,8 @@
     "max-depth": ["error", { "max": 3 }],
     "semi": "error",
     "no-var": "error",
-    "no-cond-assign": "off"
+    "no-cond-assign": "off",
+    "no-sparse-arrays": "off"
   },
   "globals": {
     "console": true

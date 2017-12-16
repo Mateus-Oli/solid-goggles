@@ -4,21 +4,22 @@ export type Interface<T = any, V = any> = new(...args: V[]) => {[K in keyof T]: 
 export type MapEquivalent<K, V> = Map<K, V> | [K, V][];
 export type SetEquivalent<V> = Set<V> | V[];
 
-type Entry<T> = [Interface<T>, Implementation<T>, T];
+type Entry<T = any> = [Interface<T>, Implementation<T>, T];
 
 export interface BaseContainer {
   entries: Entry[];
 }
 
 export interface ContainerConstructor {
+
+  readonly INTERFACE: 0;
+  readonly IMPLEMENTATION: 1;
+  readonly INSTANCE: 2;
+
   new(container?: BaseContainer | Set<Entry> | Entry[]): Container;
 }
 
 export interface Container extends BaseContainer {
-
-  static readonly INTERFACE: 0;
-  static readonly IMPLEMENTATION: 1;
-  static readonly INSTANCE: 2;
 
   readonly size: number;
 
