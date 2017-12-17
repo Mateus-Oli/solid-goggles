@@ -1,5 +1,19 @@
 # Injector
 
+1. [Basic Usage](#basic-usage)
+1. [Methods](#methods)
+1. [Properites](#properties)
+1. [Clone Injector](#clone-injector)
+1. [Factory](#factory)
+1. [Events](#events)
+1. [Symbols](#symbols)
+1. [Inject](#inject)
+1. [Overwrite](#overwrite)
+1. [Other Models](#other-models)
+    * [Injector Group](#injector-group)
+    * [Container](#container)
+    * [Injector Emitter](#injector-emitter)
+
 ## Basic Usage
 ```javascript
 import { Injector } from 'injector';
@@ -40,7 +54,7 @@ injector.link(Interface, Implementation);
 
 injector.unlink(Interface);
 
-injector.factory(Implementation, () => new Implementation);
+injector.factory(Implementation, implementation => new implementation);
 
 injector.onGet(Implementation, (instance, next) => next(instance));
 injector.onSet(Implementation, (instance, next) => next(instance));
@@ -118,6 +132,11 @@ injector.onGet(Implementation, (instance, next) => {
   /** implementation */
   return next(instance);
 });
+```
+
+### Symbols
+```javascript
+import { implementsSymbol, injectSymbol } from 'injector';
 ```
 
 ## Inject
