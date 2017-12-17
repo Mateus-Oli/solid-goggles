@@ -141,7 +141,7 @@ import { implementsSymbol, injectSymbol } from 'injector';
 
 ## Inject
 ```javascript
-import { Injector, injectSymbol } from 'injector';
+import { injectSymbol } from 'injector';
 
 class Implementation {
 

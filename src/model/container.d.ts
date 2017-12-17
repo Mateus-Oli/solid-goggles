@@ -3,16 +3,10 @@ export type Interface<T = any, V = any> = new(...args: V[]) => {[K in keyof T]: 
 
 export type MapEquivalent<K, V> = Map<K, V> | [K, V][];
 export type SetEquivalent<V> = Set<V> | V[];
+export type ContainerEquivalent = Container | BaseContainer | Set<Entry> | Entry[];
 
 export interface ContainerConstructor {
-
-  readonly ENTRY: {[k: string]: any};
-
-  readonly INTERFACE: 'interface';
-  readonly IMPLEMENTATION: 'implementation';
-  readonly INSTANCE: 'instance';
-
-  new(container?: BaseContainer | Set<Entry> | Entry[]): Container;
+  new(container?: ContainerEquivalent): Container;
 }
 
 type Entry<T = any> = {
@@ -21,17 +15,15 @@ type Entry<T = any> = {
   instance: T,
 }
 
-export interface BaseContainer {
+interface BaseContainer {
   interface: MapEquivalent<Interface, Implementation>;
   implementation: MapEquivalent<Implementation, Entry>;
   instance: MapEquivalent<any, Implementation>;
 }
 
-export interface Container extends BaseContainer {
+export interface Container {
 
-  interface: Map<Interface, Implementation>;
-  implementation: Map<Implementation, Entry>;
-  instance: Map<any, Implementation>;
+  parent: Container;
 
   readonly size: number;
 

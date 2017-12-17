@@ -1,17 +1,19 @@
-import { Container, Implementation, Interface, BaseContainer, MapEquivalent } from './container';
-import { InjectorEmitter, Listener, BaseInjectorEmitter } from './injectorEmitter';
+import { Container, Implementation, Interface, MapEquivalent, ContainerEquivalent } from './container';
+import { InjectorEmitter, Listener, InjectorEmitterEquivalent } from './injectorEmitter';
 
 type Factory<T = any> = (implementation: Implementation<T>) => T;
 type implementsValidator = <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
 
-export interface BaseInjector {
+export type InjectorEquivalent = Injector | BaseInjector;
+
+interface BaseInjector {
 
   baseImplements: implementsValidator;
   baseFactory: Factory;
 
-  container: BaseContainer;
+  container: ContainerEquivalent;
   factories: MapEquivalent<Implementation, Factory>;
-  emitter: BaseInjectorEmitter;
+  emitter: InjectorEmitterEquivalent;
 }
 
 export interface InjectorConstructor {
@@ -19,10 +21,13 @@ export interface InjectorConstructor {
   baseImplements: implementsValidator;
   baseFactory: Factory;
 
-  new(injector?: BaseInjector): Injector;
+  new(injector?: InjectorEquivalent): Injector;
 }
 
-export interface Injector extends BaseInjector {
+export interface Injector {
+
+  baseImplements: implementsValidator;
+  baseFactory: Factory;
 
   container: Container;
   factories: Map<Implementation, Factory>;
@@ -36,7 +41,6 @@ export interface Injector extends BaseInjector {
   setImplementation<T>(implementation: Implementation<T>): Implementation<T>;
 
   link<T>(interface: Interface<T>, implementation: Implementation<T>): Interface<T>;
-  unlink<T>(interface: Interface<T>): boolean;
 
   factory<T>(implementation: Implementation<T>, factory: Factory<T>): Factory<T>;
 

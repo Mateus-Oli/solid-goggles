@@ -1,9 +1,10 @@
 import { Implementation, MapEquivalent } from './container';
 
 export type Listener<T = any> = (instance: T, next: (instance: T) => T) => T;
+export type InjectorEmitterEquivalent = InjectorEmitter | BaseInjectorEmitter;
 
 export interface InjectorEmitterConstructor {
-  new(injectorEmitter?: BaseInjectorEmitter): InjectorEmitter;
+  new(injectorEmitter?: InjectorEmitterEquivalent): InjectorEmitter;
 }
 
 export interface BaseInjectorEmitter {
@@ -15,12 +16,7 @@ export interface BaseInjectorEmitter {
 
 type ManagedEvents = keyof BaseInjectorEmitter;
 
-export interface InjectorEmitter extends BaseInjectorEmitter {
-
-  get: Map<Implementation, Listener>;
-  set: Map<Implementation, Listener>;
-  delete: Map<Implementation, Listener>;
-  instantiate: Map<Implementation, Listener>;
+export interface InjectorEmitter {
 
   onGet<T>(listener: Listener<T>): Listener<T>;
   onSet<T>(listener: Listener<T>): Listener<T>;

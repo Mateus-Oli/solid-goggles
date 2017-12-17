@@ -14,6 +14,8 @@ export class Container {
     this[Container.IMPLEMENTATION] = new Map;
     this[Container.INSTANCE] = new Map;
 
+    this.parent = container.parent;
+
     container.forEach(([ inter, impl, inst ]) => this.set({
       [Container.INTERFACE]: inter,
       [Container.IMPLEMENTATION]: impl,
@@ -63,7 +65,7 @@ export class Container {
 
   get(index, value) {
     value = this[Container.INTERFACE].get(value) || this[Container.INSTANCE].get(value) || value;
-    return (this[Container.IMPLEMENTATION].get(value) || Container.ENTRY)[index];
+    return (this[Container.IMPLEMENTATION].get(value) || Container.ENTRY)[index] || this.getFromParent(index, value);
   }
   set(value) {
     const {
@@ -86,6 +88,12 @@ export class Container {
 
     delete entry[index];
     return this[index].delete(deleted);
+  }
+
+  getFromParent(index, value) {
+    if (this.parent) {
+      return this.parent.get(index, value);
+    }
   }
 
   clear(...index) {

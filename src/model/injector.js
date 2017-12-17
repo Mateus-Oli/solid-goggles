@@ -50,9 +50,6 @@ export class Injector {
     this.container.setInterface(inter, impl);
     return impl;
   }
-  unlink(inter) {
-    return this.container.deleteInterface(inter);
-  }
 
   factory(impl, factory) {
     if (impl) {

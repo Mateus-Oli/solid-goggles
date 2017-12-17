@@ -1,16 +1,17 @@
 import { Injector } from "./injector";
 import { Interface } from "./container";
 
+export type InjectorGroupEquivalent = InjectorGroup | BaseInjectorGroup | Set<Injector> | Injector[];
 
-export interface BaseInjectorGroup {
+interface BaseInjectorGroup {
   injectors: Set<Injector>;
 }
 
 export interface InjectorGroupConstructor {
-  new(injectorGroup?: BaseInjectorGroup): InjectorGroup;
+  new(injectorGroup?: InjectorGroupEquivalent): InjectorGroup;
 }
 
-export interface InjectorGroup extends BaseInjectorGroup {
+export interface InjectorGroup {
 
   readonly size: number;
 
