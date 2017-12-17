@@ -3,7 +3,6 @@ import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
 import { implementsSymbol } from '../providers/symbols';
-import { findSet } from '../utils/findSet';
 import { baseCreator } from '../providers/baseCreator';
 
 const createBaseInjector = baseCreator({
@@ -25,17 +24,15 @@ export class Injector {
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
-    this.container.setInstance(impl, inst = this.emitter.emitSet(impl, inst));
-
-    return inst;
+    return this.container.setInstance(impl, inst = this.emitter.emitSet(impl, inst));
   }
   delete(impl) {
     const inst = this.findInstance(impl);
     impl = this.container.getImplementation(inst);
 
-    this.container.deleteInstance(impl);
-
-    return this.emitter.emitDelete(impl, inst);
+    if (this.container.deleteInstance(impl)) {
+      return this.emitter.emitDelete(impl, inst);
+    }
   }
 
   getInstance(impl) {
@@ -43,45 +40,38 @@ export class Injector {
     return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
   }
   setImplementation(impl) {
-    this.container.addImplementation(impl);
-    return this;
+    return this.container.setImplementation(impl);
   }
 
   link(inter, impl) {
     if (!this.canImplement(inter, impl)) {
       throw new InjectorError(inter, impl, InjectorError.LINK_ERROR);
     }
-    this.container.link(inter, impl);
-
-    return this;
+    this.container.setInterface(inter, impl);
+    return impl;
   }
   unlink(impl) {
-    this.container.unlink(impl);
-    return this;
+    return this.container.deleteInterface(impl);
   }
 
-  factory(impl, fn) {
+  factory(impl, factory) {
     if (impl) {
-      this.factories.set(impl, fn);
+      this.factories.set(impl, factory);
     }
-    return this;
+    return factory;
   }
 
   onGet(impl, listener) {
-    this.emitter.onGet(impl, listener);
-    return this;
+    return this.emitter.onGet(impl, listener);
   }
   onSet(impl, listener) {
-    this.emitter.onSet(impl, listener);
-    return this;
+    return this.emitter.onSet(impl, listener);
   }
   onDelete(impl, listener) {
-    this.emitter.onDelete(impl, listener);
-    return this;
+    return this.emitter.onDelete(impl, listener);
   }
   onInstantiate(impl, listener) {
-    this.emitter.onInstantiate(impl, listener);
-    return this;
+    return this.emitter.onInstantiate(impl, listener);
   }
 
   generate(impl) {
@@ -100,29 +90,22 @@ export class Injector {
   }
 
   clear() {
-    this.container.forEach(([ inst ]) => this.delete(inst));
+    this.container.forEach(inst => inst && this.delete(inst));
     return this;
   }
 
-  findInterface(impl) {
-    let inter = this.container.getInterface(impl);
-    if (!impl || inter) {
-      return inter;
-    }
-    inter = this.container.findReturn(([ inter ]) => this.canImplement(inter, impl) && inter);
-    this.container.link(inter, impl);
-
-    return inter;
-  }
   findImplementation(inter) {
     let impl = this.container.getImplementation(inter);
     if (!inter || impl) {
       return impl;
     }
-    impl = this.container.findReturn(([, impl ]) => this.canImplement(inter, impl) && impl);
-    this.container.link(inter, impl);
+    impl = this.container.findReturn((_, impl) => this.canImplement(inter, impl) && impl);
+    this.container.setInterface(inter, impl);
 
     return impl;
+  }
+  findInterface(impl) {
+    return this.container.getInterface(impl);
   }
   findInstance(impl) {
     return this.container.getInstance(impl);

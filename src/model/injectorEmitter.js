@@ -35,7 +35,7 @@ export class InjectorEmitter {
     [impl, listener] = [listener && impl, listener || impl];
     getSettingDefault(this[event], impl, []).push(listener);
 
-    return this;
+    return listener;
   }
 
   emitSet(impl, value) { return this.emit(this.constructor.GET, impl, value); }
@@ -64,8 +64,6 @@ export class InjectorEmitter {
 
 
     const listeners = getSettingDefault(this[event], impl, []);
-    listeners.splice(listeners.indexOf(listener), 1);
-
-    return this;
+    return !!listeners.splice(listeners.indexOf(listener), 1)[0];
   }
 }

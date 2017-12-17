@@ -31,13 +31,10 @@ class Human {
   }
 }
 
-injector
-  .setImplementation(Dog)
-  .setImplementation(Human);
+injector.setImplementation(Dog);
+injector.setImplementation(Human);
 
-injector.factory(Human, constructor => {
-  return new constructor('Mark');
-});
+injector.factory(Human, constructor => new constructor('Mark'));
 
 injector.onInstantiate(Dog, (dog, next) => {
 

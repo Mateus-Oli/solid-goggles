@@ -4,28 +4,36 @@ export type Interface<T = any, V = any> = new(...args: V[]) => {[K in keyof T]: 
 export type MapEquivalent<K, V> = Map<K, V> | [K, V][];
 export type SetEquivalent<V> = Set<V> | V[];
 
-type Entry<T = any> = [Interface<T>, Implementation<T>, T];
-
-export interface BaseContainer {
-  entries: Entry[];
-}
-
 export interface ContainerConstructor {
 
-  readonly INTERFACE: 0;
-  readonly IMPLEMENTATION: 1;
-  readonly INSTANCE: 2;
+  readonly ENTRY: {[k: string]: any};
+
+  readonly INTERFACE: 'interface';
+  readonly IMPLEMENTATION: 'implementation';
+  readonly INSTANCE: 'instance';
 
   new(container?: BaseContainer | Set<Entry> | Entry[]): Container;
 }
 
+type Entry<T = any> = {
+  interface: Interface<T>,
+  implementation: Implementation<T>,
+  instance: T,
+}
+
+export interface BaseContainer {
+  interface: MapEquivalent<Interface, Implementation>;
+  implementation: MapEquivalent<Implementation, Entry>;
+  instance: MapEquivalent<any, Implementation>;
+}
+
 export interface Container extends BaseContainer {
 
-  readonly size: number;
+  interface: Map<Interface, Implementation>;
+  implementation: Map<Implementation, Entry>;
+  instance: Map<any, Implementation>;
 
-  link<T>(interface: Interface<T>, implementation: Implementation<T>): this;
-  addImplementation<T>(implementation: Implementation<T>): this;
-  setInstance<T>(implementation: Implementation<T>, instance: T): this;
+  readonly size: number;
 
   getInteface<T>(interface: Interface<T>): Interface<T>;
   getInteface<T>(instance: T): Interface<T>;
@@ -36,25 +44,25 @@ export interface Container extends BaseContainer {
   getInstance<T>(interface: Interface<T>): T;
   getInstance<T>(instance: T): T;
 
-  deleteInteface<T>(interface: Interface<T>): this;
-  deleteInteface<T>(instance: T): Interface<T>;
+  setInterface<T>(interface: Interface<T>, implementation: Implementation<T>): Interface<T>;
+  setImplementation<T>(implementation: Implementation<T>): Implementation<T>;
+  setInstance<T>(implementation: Implementation<T>, instance: T): T;
 
-  deleteImplementation<T>(interface: Interface<T>): this;
-  deleteImplementation<T>(instance: T): this;
+  deleteInteface<T>(interface: Interface<T>): boolean;
+  deleteInteface<T>(instance: T): boolean;
 
-  deleteInstance<T>(interface: Interface<T>): this;
-  deleteInstance<T>(instance: T): this;
+  deleteImplementation<T>(interface: Interface<T>): boolean;
+  deleteImplementation<T>(instance: T): boolean;
 
-  clearInterface(): this;
-  clearIImplementation(): this;
-  clearInstance(): this;
+  deleteInstance<T>(interface: Interface<T>): boolean;
+  deleteInstance<T>(instance: T): boolean;
 
-  clear(): this;
+  clearInterfaces(): void;
+  clearImplementations(): void;
+  clearInstances(): void;
 
-  find<T>(func: (entry: Entry<T>) => any): Entry<T>;
-  findReturn<T, V>(func: (entry: Entry<T>) => V): V;
-
-  forEach<T>(func: (entry: Entry<T>) => any): this;
+  findReturn<T, R>(func: (instance: T, implementation: Implementation<T>, interface: Interface<T>) => R): R;
+  forEach<T>(func: (instance: T, implementation: Implementation<T>, interface: Interface<T>) => any): void;
 }
 
 export const Container: ContainerConstructor;

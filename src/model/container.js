@@ -1,135 +1,121 @@
+
 export class Container {
 
-    static get INTERFACE() { return 0; }
-    static get IMPLEMENTATION() { return 1; }
-    static get INSTANCE() { return 2; }
+  static get ENTRY() { return {}; }
 
-    get size() { return this.entries.length; }
+  static get INTERFACE() { return 'interface'; }
+  static get IMPLEMENTATION() { return 'implementation'; }
+  static get INSTANCE() { return 'instance'; }
 
-    constructor(container = []) {
-      this.entries = [];
-      container.forEach(entry => this.setEntryLike(entry));
-    }
+  get size() { return this[Container.IMPLEMENTATION].size; }
 
-    link(inter, impl) {
-      return this.setEntryBy(Container.IMPLEMENTATION, [inter, impl]);
-    }
-    addImplementation(impl) {
-      return this.setEntryBy(Container.IMPLEMENTATION, [, impl]);
-    }
-    setInstance(impl, inst) {
-      return this.setEntryBy(Container.IMPLEMENTATION, [, impl, inst]);
-    }
+  constructor(container = []) {
+    this[Container.INTERFACE] = new Map;
+    this[Container.IMPLEMENTATION] = new Map;
+    this[Container.INSTANCE] = new Map;
 
-    getInterface(inter) {
-      return this.findAndGetEntryValueBy(inter, Container.INTERFACE);
-    }
-    getImplementation(impl) {
-      return this.findAndGetEntryValueBy(impl, Container.IMPLEMENTATION);
-    }
-    getInstance(inst) {
-      return this.findAndGetEntryValueBy(inst, Container.INSTANCE);
-    }
+    container.forEach((inst, impl, inter) => this.set({
+      [Container.INTERFACE]: inter,
+      [Container.IMPLEMENTATION]: impl,
+      [Container.INSTANCE]: inst
+    }));
+  }
 
-    deleteInterface(inter) {
-      return this.findAndDeleteEntryValueBy(inter, Container.INTERFACE);
-    }
-    deleteImplementation(impl) {
-      return this.findAndDeleteEntryValueBy(impl, Container.IMPLEMENTATION);
-    }
-    deleteInstance(inst) {
-      return this.findAndDeleteEntryValueBy(inst, Container.INSTANCE);
-    }
+  getInterface(value) {
+    return this.get(Container.INTERFACE, value);
+  }
+  getImplementation(value) {
+    return this.get(Container.IMPLEMENTATION, value);
+  }
+  getInstance(value) {
+    return this.get(Container.INSTANCE, value);
+  }
 
-    clearInterface() {
-      return this.clearByIndex(Container.INTERFACE);
-    }
-    clearImplementation() {
-      return this.clearByIndex(Container.IMPLEMENTATION);
-    }
-    clearInstance() {
-      return this.clearByIndex(Container.INSTANCE);
-    }
+  setInterface(inter, impl) {
+    return this.set({ [Container.INTERFACE]: inter, [Container.IMPLEMENTATION]: impl })[Container.INTERFACE];
+  }
+  setImplementation(impl) {
+    return this.set({[ Container.IMPLEMENTATION]: impl })[Container.IMPLEMENTATION];
+  }
+  setInstance(impl, inst) {
+    return this.set({ [Container.IMPLEMENTATION]: impl, [Container.INSTANCE]: inst })[Container.INSTANCE];
+  }
 
-    clear() {
-      this.entries = [];
-      return this;
-    }
+  deleteInterface(value) {
+    return this.delete(Container.INTERFACE, value);
+  }
+  deleteImplementation(value) {
+    return this.delete(Container.IMPLEMENTATION, value);
+  }
+  deleteInstance(value) {
+    return this.delete(Container.INSTANCE, value);
+  }
 
-    clearByIndex(...index) {
-      return this.forEach(entry => index.forEach(i => entry[i] = undefined));
-    }
+  clearInterfaces() {
+    return this.clear(Container.INTERFACE);
+  }
+  clearImplementations() {
+    return this.clear(Container.IMPLEMENTATION);
+  }
+  clearInstances() {
+    return this.clear(Container.INSTANCE);
+  }
 
-    findAndGetEntryValueBy(search, index) {
-      return this.findReturn(entry => entry.includes(search) && entry[index]);
+  get(index, value) {
+    value = this[Container.INTERFACE].get(value) || this[Container.INSTANCE].get(value) || value;
+    return (this[Container.IMPLEMENTATION].get(value) || Container.ENTRY)[index];
+  }
+  set(value) {
+    const {
+      [Container.INTERFACE]: inter,
+      [Container.IMPLEMENTATION]: impl,
+      [Container.INSTANCE]: inst
+    } = value;
+
+    const entry = this[Container.IMPLEMENTATION].get(impl) || Container.ENTRY;
+
+    this[Container.IMPLEMENTATION].set(impl, entry);
+    this[Container.INTERFACE].set(inter, impl);
+    this[Container.INSTANCE].set(inst, impl);
+
+    return Object.assign(entry, value);
+  }
+  delete(index, value) {
+    const entry = this[Container.IMPLEMENTATION].get(this.getImplementation(value)) || Container.ENTRY;
+    const deleted = entry[index];
+
+    delete entry[index];
+    return this[index].delete(deleted);
+  }
+
+  clear(...index) {
+    if (index.indexOf(Container.IMPLEMENTATION) !== -1) {
+      this[Container.INTERFACE].clear();
+      this[Container.IMPLEMENTATION].clear();
+      this[Container.INSTANCE].clear();
+
+      return;
     }
-    findAndSetEntryValueBy(search, index, value) {
-      let entry = this.findEntry(search);
-      if (!entry) {
-        this.entries.push(entry = []);
+    index.forEach(i => {
+      this[Container.IMPLEMENTATION].forEach(entry => delete entry[i]);
+      this[i].clear();
+    });
+  }
+
+  findReturn(func) {
+    for (const [, entry] of this[Container.IMPLEMENTATION]) {
+      const value = func(entry[Container.INSTANCE], entry[Container.IMPLEMENTATION], entry[Container.INTERFACE]);
+      if (value) {
+        return value;
       }
-      return entry[index] = value;
-    }
-    findAndDeleteEntryValueBy(search, index) {
-      let entry = this.findEntry(search);
-      if (entry) {
-        entry[index] = undefined;
-      }
-      return this;
-    }
-
-    findEntry(search) {
-      return this.find(entry => entry.includes(search));
-    }
-
-    getEntryLike(entry) {
-      return this.find(e => entry.every((v, i) => v === undefined || v === e[i]));
-    }
-    setEntryLike(entry, value = entry) {
-      entry = this.getEntryLike(entry);
-      if (!entry) {
-        this.entries.push(entry = []);
-      }
-      return Object.assign(entry, value);
-    }
-    deleteEntryLike(entry) {
-      const indexOf = this.entries.indexOf(this.getEntryLike(entry));
-      this.entries.splice(indexOf, 1);
-
-      return indexOf !== -1;
-    }
-
-    getEntryBy(index, value) {
-      return this.find(entry => entry[index] === value);
-    }
-    setEntryBy(index, values) {
-      let entry = this.getEntryBy(index, values[index]);
-      if (!entry) {
-        this.entries.push(entry = []);
-      }
-      return Object.assign(entry, values);
-    }
-    deleteEntryBy(index, value) {
-      const indexOf = this.entries.indexOf(this.getEntryBy(index, value));
-      this.entries.splice(indexOf, 1);
-
-      return indexOf !== -1;
-    }
-
-    find(func) {
-      return this.findReturn(entry => func(entry) && entry);
-    }
-    findReturn(func) {
-      for (const entry of this.entries) {
-        const value = func(entry);
-        if (value) {
-          return value;
-        }
-      }
-    }
-
-    forEach(func) {
-      this.entries.forEach(func);
-      return this;
     }
   }
+
+  forEach(func) {
+    this[Container.IMPLEMENTATION].forEach(entry => func(
+      entry[Container.INSTANCE],
+      entry[Container.IMPLEMENTATION],
+      entry[Container.INTERFACE]
+    ));
+  }
+}
