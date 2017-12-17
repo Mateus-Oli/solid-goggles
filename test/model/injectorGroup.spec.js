@@ -15,9 +15,8 @@ class SecondImplementation {
 }
 secondInjector.setImplementation(SecondImplementation);
 
-injectorGroup
-  .setInjector(firstInjector)
-  .setInjector(secondInjector);
+injectorGroup.setInjector(firstInjector);
+injectorGroup.setInjector(secondInjector);
 
 describe('InjectorGroup', () => {
 
@@ -25,7 +24,8 @@ describe('InjectorGroup', () => {
     const group = new InjectorGroup;
 
     expect(group.size).toBe(0);
-    expect(group.setInjector(new Injector).size).toBe(1);
+    group.setInjector(new Injector);
+    expect(group.size).toBe(1);
   });
 
   it('shows number of contained injectors', () => {

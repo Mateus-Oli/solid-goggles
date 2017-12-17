@@ -34,11 +34,10 @@ export class InjectorGroup {
   }
   setInjector(injector) {
     this.injectors.add(injector);
-    return this;
+    return injector;
   }
   deleteInjector(injector) {
-    this.injectors.delete(injector);
-    return this;
+    return this.injectors.delete(injector);
   }
 
   hasInjector(injector) {
