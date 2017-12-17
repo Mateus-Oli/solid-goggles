@@ -14,7 +14,7 @@ export class Container {
     this[Container.IMPLEMENTATION] = new Map;
     this[Container.INSTANCE] = new Map;
 
-    container.forEach((inst, impl, inter) => this.set({
+    container.forEach(([ inter, impl, inst ]) => this.set({
       [Container.INTERFACE]: inter,
       [Container.IMPLEMENTATION]: impl,
       [Container.INSTANCE]: inst
@@ -81,7 +81,7 @@ export class Container {
     return Object.assign(entry, value);
   }
   delete(index, value) {
-    const entry = this[Container.IMPLEMENTATION].get(this.getImplementation(value)) || Container.ENTRY;
+    const entry = this[Container.IMPLEMENTATION].get(this.get(Container.IMPLEMENTATION, value)) || Container.ENTRY;
     const deleted = entry[index];
 
     delete entry[index];
@@ -104,7 +104,11 @@ export class Container {
 
   findReturn(func) {
     for (const [, entry] of this[Container.IMPLEMENTATION]) {
-      const value = func(entry[Container.INSTANCE], entry[Container.IMPLEMENTATION], entry[Container.INTERFACE]);
+      const value = func([
+        entry[Container.INTERFACE],
+        entry[Container.IMPLEMENTATION],
+        entry[Container.INSTANCE]
+      ]);
       if (value) {
         return value;
       }
@@ -112,10 +116,10 @@ export class Container {
   }
 
   forEach(func) {
-    this[Container.IMPLEMENTATION].forEach(entry => func(
-      entry[Container.INSTANCE],
+    this[Container.IMPLEMENTATION].forEach(entry => func([
+      entry[Container.INTERFACE],
       entry[Container.IMPLEMENTATION],
-      entry[Container.INTERFACE]
-    ));
+      entry[Container.INSTANCE]
+    ]));
   }
 }

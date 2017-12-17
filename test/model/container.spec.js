@@ -57,6 +57,17 @@ describe('Container', () => {
     expect(newContainer.getInstance(InterfaceMock)).toBe(instanceMock);
   });
 
+  it('creates from entries',() => {
+    const newContainer = new Container([
+     [InterfaceMock, ImplementationMock, instanceMock],
+      [OtherInterface, OtherImplementation, otherInstance]
+    ]);
+
+    expect(newContainer.getInterface(InterfaceMock)).toBe(InterfaceMock);
+    expect(newContainer.getImplementation(InterfaceMock)).toBe(ImplementationMock);
+    expect(newContainer.getInstance(InterfaceMock)).toBe(instanceMock);
+  });
+
   it('shows size as number of implementations', () => expect(container.size).toBe(container.implementation.size));
 
   it('iterates over all instances', () => {

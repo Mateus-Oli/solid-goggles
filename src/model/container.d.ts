@@ -61,8 +61,8 @@ export interface Container extends BaseContainer {
   clearImplementations(): void;
   clearInstances(): void;
 
-  findReturn<T, R>(func: (instance: T, implementation: Implementation<T>, interface: Interface<T>) => R): R;
-  forEach<T>(func: (instance: T, implementation: Implementation<T>, interface: Interface<T>) => any): void;
+  findReturn<T, R>(func: (entry: [Interface<T>, Implementation<T>, T]) => R): R;
+  forEach<T>(func: (entry: [Interface<T>, Implementation<T>, T]) => any): void;
 }
 
 export const Container: ContainerConstructor;

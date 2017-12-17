@@ -24,7 +24,7 @@ export class Injector {
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
-    return this.container.setInstance(impl, inst = this.emitter.emitSet(impl, inst));
+    return this.container.setInstance(impl, this.emitter.emitSet(impl, inst));
   }
   delete(impl) {
     const inst = this.findInstance(impl);
@@ -90,7 +90,7 @@ export class Injector {
   }
 
   clear() {
-    this.container.forEach(inst => inst && this.delete(inst));
+    this.container.forEach(([,, inst ]) => inst && this.delete(inst));
     return this;
   }
 
@@ -99,7 +99,7 @@ export class Injector {
     if (!inter || impl) {
       return impl;
     }
-    impl = this.container.findReturn((_, impl) => this.canImplement(inter, impl) && impl);
+    impl = this.container.findReturn(([, impl]) => this.canImplement(inter, impl) && impl);
     this.container.setInterface(inter, impl);
 
     return impl;

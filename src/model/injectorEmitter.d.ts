@@ -17,13 +17,18 @@ type ManagedEvents = keyof BaseInjectorEmitter;
 
 export interface InjectorEmitter extends BaseInjectorEmitter {
 
-  onSet<T>(listener: Listener<T>): Listener<T>;
+  get: Map<Implementation, Listener>;
+  set: Map<Implementation, Listener>;
+  delete: Map<Implementation, Listener>;
+  instantiate: Map<Implementation, Listener>;
+
   onGet<T>(listener: Listener<T>): Listener<T>;
+  onSet<T>(listener: Listener<T>): Listener<T>;
   onDelete<T>(listener: Listener<T>): Listener<T>;
   onInstantiate<T>(listener: Listener<T>): Listener<T>;
 
-  onSet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
   onGet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  onSet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
   onDelete<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
   onInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
 
@@ -37,13 +42,13 @@ export interface InjectorEmitter extends BaseInjectorEmitter {
   emitDelete<T>(impelementation: Implementation<T>, instance: T): T;
   emitInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): T;
 
-  removeSet<T>(listener: Listener<T>): boolean;
   removeGet<T>(listener: Listener<T>): boolean;
+  removeSet<T>(listener: Listener<T>): boolean;
   removeDelete<T>(listener: Listener<T>): boolean;
   removeInstantiate<T>(listener: Listener<T>): boolean;
 
-  removeSet<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
   removeGet<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
+  removeSet<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
   removeDelete<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
   removeInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
 }

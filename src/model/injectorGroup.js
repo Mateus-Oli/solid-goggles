@@ -63,10 +63,6 @@ export class InjectorGroup {
     }
   }
 
-  filter(fn) {
-
-  }
-
   forEach(fn) {
     this.injectors.forEach(injector => fn(injector));
     return this;
