@@ -50,22 +50,32 @@ describe('Container', () => {
 
   it('clones base container', () => {
 
-    const newContainer = new Container(container);
+    const clone = new Container(container);
 
-    expect(newContainer.getInterface(InterfaceMock)).toBe(InterfaceMock);
-    expect(newContainer.getImplementation(InterfaceMock)).toBe(ImplementationMock);
-    expect(newContainer.getInstance(InterfaceMock)).toBe(instanceMock);
+    expect(clone.getInterface(InterfaceMock)).toBe(InterfaceMock);
+    expect(clone.getImplementation(InterfaceMock)).toBe(ImplementationMock);
+    expect(clone.getInstance(InterfaceMock)).toBe(instanceMock);
   });
 
   it('creates from entries',() => {
-    const newContainer = new Container([
+    const entries = new Container([
      [InterfaceMock, ImplementationMock, instanceMock],
       [OtherInterface, OtherImplementation, otherInstance]
     ]);
 
-    expect(newContainer.getInterface(InterfaceMock)).toBe(InterfaceMock);
-    expect(newContainer.getImplementation(InterfaceMock)).toBe(ImplementationMock);
-    expect(newContainer.getInstance(InterfaceMock)).toBe(instanceMock);
+    expect(entries.getInterface(InterfaceMock)).toBe(InterfaceMock);
+    expect(entries.getImplementation(InterfaceMock)).toBe(ImplementationMock);
+    expect(entries.getInstance(InterfaceMock)).toBe(instanceMock);
+  });
+
+  it('gets hierarchical', () => {
+    const child = new Container({ parent: container });
+
+    child.clearImplementations();
+
+    expect(child.getInterface(InterfaceMock)).toBe(InterfaceMock);
+    expect(child.getImplementation(InterfaceMock)).toBe(ImplementationMock);
+    expect(child.getInstance(InterfaceMock)).toBe(instanceMock);
   });
 
   it('shows size as number of implementations', () => expect(container.size).toBe(container.implementation.size));

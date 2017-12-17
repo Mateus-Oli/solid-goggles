@@ -16,7 +16,7 @@ export class Container {
 
     this.parent = container.parent;
 
-    container.forEach(([ inter, impl, inst ]) => this.set({
+    container.forEach && container.forEach(([ inter, impl, inst ]) => this.set({
       [Container.INTERFACE]: inter,
       [Container.IMPLEMENTATION]: impl,
       [Container.INSTANCE]: inst
