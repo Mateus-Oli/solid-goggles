@@ -52,8 +52,6 @@ injector.setImplementation(Implementation);
 /** breaks on wrong implementation */
 injector.link(Interface, Implementation);
 
-injector.unlink(Interface);
-
 injector.factory(Implementation, implementation => new implementation);
 
 injector.onGet(Implementation, (instance, next) => next(instance));
@@ -213,6 +211,8 @@ const instance = new Implementation;
 const container = new Container([
   [Interface, Implementation, instance]
 ]);
+
+container.parent = new Container;
 
 container.getInterface(Interface || Implementation || instance);
 container.getImplementation(Interface || Implementation || instance);
