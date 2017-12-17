@@ -8,10 +8,10 @@ export interface InjectorEmitterConstructor {
 }
 
 export interface BaseInjectorEmitter {
-  set: MapEquivalent<Implementation, Listener>;
-  get: MapEquivalent<Implementation, Listener>;
-  delete: MapEquivalent<Implementation, Listener>;
-  instantiate: MapEquivalent<Implementation, Listener>;
+  set: MapEquivalent<Implementation, Listener[]>;
+  get: MapEquivalent<Implementation, Listener[]>;
+  delete: MapEquivalent<Implementation, Listener[]>;
+  instantiate: MapEquivalent<Implementation, Listener[]>;
 }
 
 type ManagedEvents = keyof BaseInjectorEmitter;

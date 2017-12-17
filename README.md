@@ -106,8 +106,6 @@ import { Injector } from 'injector';
 const injector = new Injector;
 class Implementation {}
 
-injector.setImplementation(Implementation);
-
 injector.factory(Implementation, implementation => new implementation);
 ```
 
@@ -117,9 +115,7 @@ import { Injector } from 'injector';
 
 const injector = new Injector;
 
-class Implementation {
-
-}
+class Implementation {}
 
 injector.onGet((instance, next) => {
   /** generic */
