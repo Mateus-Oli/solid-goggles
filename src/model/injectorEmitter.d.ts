@@ -6,14 +6,14 @@ export interface InjectorEmitterConstructor {
   new(injectorEmitter?: BaseInjectorEmitter): InjectorEmitter;
 }
 
-type ManagedEvents = keyof BaseInjectorEmitter;
-
 export interface BaseInjectorEmitter {
   set: MapEquivalent<Implementation, Listener>;
   get: MapEquivalent<Implementation, Listener>;
   delete: MapEquivalent<Implementation, Listener>;
   instantiate: MapEquivalent<Implementation, Listener>;
 }
+
+type ManagedEvents = keyof BaseInjectorEmitter;
 
 export interface InjectorEmitter extends BaseInjectorEmitter {
 

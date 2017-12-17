@@ -1,7 +1,7 @@
 import { Container, Implementation, Interface, BaseContainer, MapEquivalent } from './container';
 import { InjectorEmitter, Listener, BaseInjectorEmitter } from './injectorEmitter';
 
-type Factory = <T = any>(implementation: Implementation<T>) => T;
+type Factory<T = any> = (implementation: Implementation<T>) => T;
 type implementsValidator = <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
 
 export interface BaseInjector {
@@ -25,7 +25,7 @@ export interface InjectorConstructor {
 export interface Injector extends BaseInjector {
 
   container: Container;
-  factory: Map<Implementation, Factory>;
+  factories: Map<Implementation, Factory>;
   emitter: InjectorEmitter;
 
   get<T>(interface: Interface<T>): T;
