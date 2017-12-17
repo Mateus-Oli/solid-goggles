@@ -212,15 +212,15 @@ const instance = new Implementation;
 const getListener = emitter.onGet(Implementation, (instance, next) => next(instance));
 const setListener = emitter.onSet(Implementation, (instance, next) => next(instance));
 const deleteListener = emitter.onDelete(Implementation, (instance, next) => next(instance));
-const instantiateListener = emitter.onInject(Implementation, (instance, next) => next(instance));
+const instantiateListener = emitter.onInstantiate(Implementation, (instance, next) => next(instance));
 
 emitter.emtiGet(Implementation, instance);
 emitter.emitSet(Implementation, instance);
 emitter.emitDelete(Implementation, instance);
-emitter.emitInject(Implementation, instance);
+emitter.emitInstantiate(Implementation, instance);
 
 emitter.removeGet(Implementation, getListener);
 emitter.removeSet(Implementation, setListener);
 emitter.removeDelete(Implementation, deleteListener);
-emitter.remoceInject(Implementation, instantiateListener);
+emitter.removeInstantiate(Implementation, instantiateListener);
 ```
