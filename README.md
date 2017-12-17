@@ -7,15 +7,15 @@ import { Injector } from 'injector';
 const injector = new Injector;
 
 class Implementation {
-  method() { /** implementation */}
+  method() {}
 }
 injector.setImplementation(Implementation);
 
 class Interface {
-  method() { /** empty? */ }
+  method() {}
 }
 
-const instance = injector.get(Interface)
+const instance = injector.get(Interface);
 ```
 
 ## Methods
@@ -55,7 +55,7 @@ injector.instantiate(Implementation);
 
 injector.inject(instance);
 
-/** remove all instances */
+/** delete instances */
 injector.clear();
 
 injector.findInterface(Interface || Implementation || instance);
@@ -66,6 +66,19 @@ injector.canImplement(Interface, Implementation);
 
 injector.getFactory(Implementation);
 injector.getImplements(Interface, Implementation);
+```
+
+## Properties
+```javascript
+import { Injector } from 'injector';
+import { Container } from 'injector/model/container';
+import { InjectorEmitter } from 'injector/model/injectorEmitter';
+
+const injector = new Injector({
+  container: new Container,
+  emitter: new InjectorEmitter,
+  factories: new Map
+});
 ```
 
 ## Clone Injector
@@ -80,11 +93,10 @@ import { Injector } from 'injector';
 
 const injector = new Injector;
 class Implementation {}
+
 injector.setImplementation(Implementation);
 
-injector.factory(Implementation, implementation => {
-  /** overwrites injector.baseFactory for Implementation */
-});
+injector.factory(Implementation, implementation => new implementation);
 ```
 
 ## Events
@@ -115,7 +127,7 @@ import { Injector, injectSymbol } from 'injector';
 class Implementation {
 
   [injectSymbol](injector) {
-    /** injector.inject(instance) */
+    /** executes on `injector.inject(instance);` */
   }
 }
 ```
@@ -200,7 +212,7 @@ container.clearImplementations();
 container.clearInstances();
 ```
 
-### InjectorEmitter
+### Injector Emitter
 ```javascript
 import { InjectorEmitter } from 'injector/model/injectorEmitter';
 
