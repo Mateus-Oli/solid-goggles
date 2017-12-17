@@ -114,7 +114,7 @@ import { Injector, injectSymbol } from 'injector';
 
 class Implementation {
 
-  [injectorSymbol](injector) {
+  [injectSymbol](injector) {
     /** injector.inject(instance) */
   }
 }
