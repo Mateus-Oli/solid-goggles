@@ -1,19 +1,12 @@
-import { baseCreator } from '../providers/baseCreator';
 import { InjectorError } from '../error/injectorError';
-
-const createBaseInjectorGroup = baseCreator({
-  injectors: new Set
-});
 
 export class InjectorGroup {
 
   get size() { return this.injectors.size; }
 
-  constructor(injectorGroup) {
-    if (injectorGroup && injectorGroup[Symbol.iterator]) {
-      injectorGroup = { injectors: injectorGroup };
-    }
-    Object.assign(this, createBaseInjectorGroup(injectorGroup));
+  constructor(injectorGroup = []) {
+    this.injectors = new Set;
+    injectorGroup.forEach(injector => this.injectors.add(injector));
   }
 
   get(inter) {

@@ -13,8 +13,8 @@
     "injector"
   ],
   "repository": {
-      "type": "git",
-      "url": "https://github.com/Mateus-Oli/solid-goggles"
+    "type": "git",
+    "url": "https://github.com/Mateus-Oli/solid-goggles"
   },
   "author": "Mateus Oliveira Carvalho <mateus.oli.car@gmail.com>",
   "license": "ISC",

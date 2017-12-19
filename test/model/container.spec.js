@@ -2,23 +2,15 @@ import { Container } from '../../src/model/container';
 
 const container = new Container;
 
-class InterfaceMock {
+class InterfaceMock {}
 
-}
-
-class ImplementationMock {
-
-}
+class ImplementationMock {}
 
 const instanceMock = {};
 
-class OtherImplementation {
+class OtherImplementation {}
 
-}
-
-class OtherInterface {
-
-}
+class OtherInterface {}
 
 const otherInstance = {};
 

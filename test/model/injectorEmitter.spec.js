@@ -2,13 +2,9 @@ import { InjectorEmitter } from '../../src/model/injectorEmitter';
 
 const emitter = new InjectorEmitter;
 
-class ImplementationMock {
+class ImplementationMock {}
 
-}
-
-class OtherImplementation {
-
-}
+class OtherImplementation {}
 
 emitter.onGet((value, next) => {
   value.generic = true;

@@ -1,8 +1,6 @@
 
 export class Container {
 
-  static get ENTRY() { return {}; }
-
   static get INTERFACE() { return 'interface'; }
   static get IMPLEMENTATION() { return 'implementation'; }
   static get INSTANCE() { return 'instance'; }
@@ -16,11 +14,7 @@ export class Container {
 
     this.parent = container.parent;
 
-    container.forEach && container.forEach(([ inter, impl, inst ]) => this.set({
-      [Container.INTERFACE]: inter,
-      [Container.IMPLEMENTATION]: impl,
-      [Container.INSTANCE]: inst
-    }));
+    container.forEach && container.forEach(entry => this.set(this.toEntry(entry)));
   }
 
   getInterface(value) {
@@ -65,16 +59,11 @@ export class Container {
 
   get(index, value) {
     value = this[Container.INTERFACE].get(value) || this[Container.INSTANCE].get(value) || value;
-    return (this[Container.IMPLEMENTATION].get(value) || Container.ENTRY)[index] || this.getFromParent(index, value);
+    return (this[Container.IMPLEMENTATION].get(value) || {})[index] || this.getFromParent(index, value);
   }
   set(value) {
-    const {
-      [Container.INTERFACE]: inter,
-      [Container.IMPLEMENTATION]: impl,
-      [Container.INSTANCE]: inst
-    } = value;
-
-    const entry = this[Container.IMPLEMENTATION].get(impl) || Container.ENTRY;
+    const [ inter, impl,  inst ] = this.toArray(value);
+    const entry = this[Container.IMPLEMENTATION].get(impl) || {};
 
     this[Container.IMPLEMENTATION].set(impl, entry);
     this[Container.INTERFACE].set(inter, impl);
@@ -83,26 +72,16 @@ export class Container {
     return Object.assign(entry, value);
   }
   delete(index, value) {
-    const entry = this[Container.IMPLEMENTATION].get(this.get(Container.IMPLEMENTATION, value)) || Container.ENTRY;
+    const entry = this[Container.IMPLEMENTATION].get(this.get(Container.IMPLEMENTATION, value)) || {};
     const deleted = entry[index];
 
     delete entry[index];
     return this[index].delete(deleted);
   }
 
-  getFromParent(index, value) {
-    if (this.parent) {
-      return this.parent.get(index, value);
-    }
-  }
-
   clear(...index) {
-    if (index.indexOf(Container.IMPLEMENTATION) !== -1) {
-      this[Container.INTERFACE].clear();
-      this[Container.IMPLEMENTATION].clear();
-      this[Container.INSTANCE].clear();
-
-      return;
+    if (index.includes(Container.IMPLEMENTATION)) {
+      return this.toArray(this).forEach(entry => entry.clear());
     }
     index.forEach(i => {
       this[Container.IMPLEMENTATION].forEach(entry => delete entry[i]);
@@ -110,13 +89,13 @@ export class Container {
     });
   }
 
+  getFromParent(index, value) {
+    return this.parent && this.parent.get(index, value);
+  }
+
   findReturn(func) {
     for (const [, entry] of this[Container.IMPLEMENTATION]) {
-      const value = func([
-        entry[Container.INTERFACE],
-        entry[Container.IMPLEMENTATION],
-        entry[Container.INSTANCE]
-      ]);
+      const value = func(this.toArray(entry));
       if (value) {
         return value;
       }
@@ -124,10 +103,13 @@ export class Container {
   }
 
   forEach(func) {
-    this[Container.IMPLEMENTATION].forEach(entry => func([
-      entry[Container.INTERFACE],
-      entry[Container.IMPLEMENTATION],
-      entry[Container.INSTANCE]
-    ]));
+    return this[Container.IMPLEMENTATION].forEach(entry => func(this.toArray(entry)));
+  }
+
+  toArray(entry) {
+    return [ entry[Container.INTERFACE], entry[Container.IMPLEMENTATION], entry[Container.INSTANCE] ];
+  }
+  toEntry([inter, impl, inst] = []) {
+    return { [Container.INTERFACE]: inter, [Container.IMPLEMENTATION]: impl, [Container.INSTANCE]: inst };
   }
 }
