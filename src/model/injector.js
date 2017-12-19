@@ -3,17 +3,14 @@ import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
 import { implementsSymbol } from '../providers/symbols';
-import { baseCreator } from '../providers/baseCreator';
-
-const createBaseInjector = baseCreator({
-  emitter: new InjectorEmitter,
-  container: new Container,
-  factories: new Map
-});
 
 export class Injector {
 
-  constructor(injector) { Object.assign(this, createBaseInjector(injector)); }
+  constructor({ container, emitter, factories } = {}) {
+    this.emitter = new InjectorEmitter(emitter);
+    this.container = new Container(container);
+    this.factories = new Map(factories);
+  }
 
   get(inter) {
     const impl = this.findImplementation(inter);
