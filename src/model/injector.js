@@ -1,8 +1,7 @@
-import { injectSymbol } from '../';
 import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
-import { implementsSymbol } from '../providers/symbols';
+import { inject, canImplement } from '../providers/symbols';
 
 export class Injector {
 
@@ -70,17 +69,14 @@ export class Injector {
 
   generate(impl) {
     impl = this.findImplementation(impl);
-    return this.inject(this.set(impl, this.instantiate(impl)));
+    return this.set(impl, this.instantiate(impl));
   }
   instantiate(impl) {
     impl = this.findImplementation(impl);
-    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this));
+    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
   }
-  inject(inst) {
-    if (inst && inst[injectSymbol]) {
-      inst[injectSymbol](this);
-    }
-    return inst;
+  inject(impl) {
+    return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
   }
 
   clear() {
@@ -113,6 +109,6 @@ export class Injector {
     return this.factories.get(impl) || this.baseFactory ||  this.constructor.baseFactory;
   }
   getImplements(inter = {}, impl = {}) {
-    return inter[implementsSymbol] || impl[implementsSymbol] || this.baseImplements || this.constructor.baseImplements;
+    return inter[canImplement] || impl[canImplement] || this.baseImplements || this.constructor.baseImplements;
   }
 }

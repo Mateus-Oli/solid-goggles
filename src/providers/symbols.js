@@ -1,2 +1,2 @@
-export const implementsSymbol = Symbol('implements');
-export const injectSymbol = Symbol('inject');
+export const canImplement = Symbol('canImplement');
+export const inject = Symbol('inject');

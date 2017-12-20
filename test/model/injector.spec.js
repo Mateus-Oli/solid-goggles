@@ -1,6 +1,5 @@
-import { injectSymbol, implementsSymbol } from '../../src';
-
 import { Injector } from '../../src';
+import { inject, canImplement } from '../../src/providers/symbols';
 
 const injector = new Injector;
 class Pet {
@@ -13,32 +12,32 @@ class ConscientBeing {
 }
 
 class Dog {
+  constructor(name) {
+    this.name = name;
+  }
   makeSound() { return 'bark'; }
 }
 
 class Human {
 
-  [injectSymbol](injector) {
-    this.pet = injector.get(Pet);
-  }
-
-  constructor(name) {
-    this.name = name;
+  static [inject]() { return [ Pet ]; }
+  constructor(pet) {
+    this.pet = pet;
   }
 
   think() {
-    return `my name is ${this.name}`;
+    return `I hava a pet named ${this.dog.name}`;
   }
 }
 
 injector.setImplementation(Dog);
 injector.setImplementation(Human);
 
-injector.factory(Human, constructor => new constructor('Mark'));
+injector.factory(Dog, constructor => new constructor('Spark'));
 
 injector.onInstantiate(Dog, (dog, next) => {
 
-  dog.name = 'Spark';
+  dog.race = 'Doberman';
 
   return next(dog);
 });
@@ -49,15 +48,15 @@ describe('Injector', () => {
   it('instanciates from interface', () => expect(injector.get(ConscientBeing)).toBeInstanceOf(Human));
   it('instanciates from object', () => expect(injector.get({ think() {}})).toBeInstanceOf(Human));
 
-  it('executes factory', () => expect(injector.get(ConscientBeing).name).toBe('Mark'));
-  it('executes inject symbol', () => expect(injector.get(ConscientBeing).pet).toBeInstanceOf(Dog));
+  it('executes factory', () => expect(injector.get(Pet).race).toBe('Doberman'));
+  it('injects arguments', () => expect(injector.get(ConscientBeing).pet).toBeInstanceOf(Dog));
 
   it('executes events', () => expect(injector.get(ConscientBeing).pet.name).toBe('Spark'));
 
   it('throws without implementation', () => expect(() => injector.get({ jump() {} })).toThrow());
   it('throws on unmatching link', () => expect(() => injector.link(Pet, Human)).toThrow());
 
-  it('checks implements symbol', () => expect(injector.get({ [implementsSymbol]: (_, impl) => impl === Human })).toBeInstanceOf(Human));
+  it('checks canImplement symbol', () => expect(injector.get({ [canImplement]: (_, impl) => impl === Human })).toBeInstanceOf(Human));
 
   it('uses same instance', () => expect(injector.get(ConscientBeing)).toBe(injector.get(Human)));
 

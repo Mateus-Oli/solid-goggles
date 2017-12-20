@@ -130,24 +130,29 @@ injector.onGet(Implementation, (instance, next) => {
 
 ### Symbols
 ```javascript
-import { implementsSymbol, injectSymbol } from 'injector';
+import { canImplement, inject } from 'injector';
 ```
 
 ## Inject
 ```javascript
-import { injectSymbol } from 'injector';
+import { inject } from 'injector';
+
+class OtherImplementation {}
 
 class Implementation {
 
-  [injectSymbol](injector) {
-    /** executes on `injector.inject(instance);` */
+  // Possible Circular dependency
+  [inject](injector) { return [ OtherImplementation ]; }
+
+  constructor(otherImplementation) {
+    this.otherImplementation = otherImplementation;
   }
 }
 ```
 
 ## Overwrite
 ```javascript
-import { Injector, implementsSymbol } from 'injector';
+import { Injector, canImplement } from 'injector';
 
 Injector.baseImplements = (interface, implementation) => true;
 Injector.baseFactory = (implementation) => new implementation;
@@ -155,15 +160,15 @@ Injector.baseFactory = (implementation) => new implementation;
 const injector = new Injector;
 
 injector.baseImplements = (interface, implementation) => true;
-injector.baseFactory = (implementation) => new implementation;
+injector.baseFactory = (implementation, arguments = [], injector = injector) => new implementation;
 
 class Interface {
-  static [implementsSymbol](interface, implementation) {
+  static [canImplement](interface, implementation) {
     return true;
   }
 }
 class Implementation {
-  static [implementsSymbol](interface, implementation) {
+  static [canImplement](interface, implementation) {
     return true;
   }
 }

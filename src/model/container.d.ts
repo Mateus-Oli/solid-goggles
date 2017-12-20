@@ -1,5 +1,5 @@
-export type Implementation<T = any, V extends [] = any> = new(...args: V) => T;
-export type Interface<T = any, V extends [] = any> = new(...args: V) => {[K in keyof T]: T[K]};
+export type Implementation<T = any, V extends any[] = any[]> = new(...args: V) => T;
+export type Interface<T = any, V extends any[] = any[]> = new(...args: V) => {[K in keyof T]: T[K]};
 
 export type MapEquivalent<K, V> = Map<K, V> | [K, V][];
 export type SetEquivalent<V> = Set<V> | V[];

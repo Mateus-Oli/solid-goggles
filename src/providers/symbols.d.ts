@@ -1,2 +1,2 @@
-export const implementsSymbol: symbol;
-export const injectSymbol: symbol;
+export const canImplement: symbol;
+export const inject: symbol;
