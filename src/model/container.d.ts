@@ -40,8 +40,8 @@ export interface Container {
   setImplementation<T>(implementation: Implementation<T>): Implementation<T>;
   setInstance<T>(implementation: Implementation<T>, instance: T): T;
 
-  deleteInteface<T>(interface: Interface<T>): boolean;
-  deleteInteface<T>(instance: T): boolean;
+  deleteInteface<T>(interface: Interface<T>): Interface<T>;
+  deleteInteface<T>(instance: T): Interface<T>;
 
   deleteImplementation<T>(interface: Interface<T>): boolean;
   deleteImplementation<T>(instance: T): boolean;

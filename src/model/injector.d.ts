@@ -35,7 +35,7 @@ export interface Injector {
 
   get<T>(interface: Interface<T>): T;
   set<T>(implementation: Implementation<T>, instance: T): T;
-  delete<T>(implementation: Implementation<T>): boolean;
+  delete<T>(implementation: Implementation<T>): Implementation<T>;
 
   getInstance<T>(interface: Interface<T>): T;
   setImplementation<T>(implementation: Implementation<T>): Implementation<T>;

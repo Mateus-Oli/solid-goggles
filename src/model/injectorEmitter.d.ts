@@ -38,15 +38,15 @@ export interface InjectorEmitter {
   emitDelete<T>(impelementation: Implementation<T>, instance: T): T;
   emitInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): T;
 
-  removeGet<T>(listener: Listener<T>): boolean;
-  removeSet<T>(listener: Listener<T>): boolean;
-  removeDelete<T>(listener: Listener<T>): boolean;
-  removeInstantiate<T>(listener: Listener<T>): boolean;
+  removeGet<T>(listener: Listener<T>): Listener<T>;
+  removeSet<T>(listener: Listener<T>): Listener<T>;
+  removeDelete<T>(listener: Listener<T>): Listener<T>;
+  removeInstantiate<T>(listener: Listener<T>): Listener<T>;
 
-  removeGet<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
-  removeSet<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
-  removeDelete<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
-  removeInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): boolean;
+  removeGet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  removeSet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  removeDelete<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  removeInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
 }
 
 export const InjectorEmitter: InjectorEmitterConstructor;

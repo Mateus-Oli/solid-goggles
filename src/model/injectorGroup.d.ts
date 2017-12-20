@@ -22,7 +22,7 @@ export interface InjectorGroup {
   setInjector(injector: Injector): this;
   deleteInjector(injector: Injector): this;
 
-  hasInjector(injector: Injector): boolean;
+  hasInjector(injector: Injector): Injector;
 
   clear(): this;
 

@@ -62,6 +62,6 @@ export class InjectorEmitter {
     [impl, listener] = [listener && impl, listener || impl];
 
     const listeners = getSettingDefault(this[event], impl, []);
-    return !!listeners.splice(listeners.indexOf(listener), 1)[0];
+    return listeners.splice(listeners.indexOf(listener), 1)[0];
   }
 }

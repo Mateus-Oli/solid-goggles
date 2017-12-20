@@ -30,7 +30,7 @@ export class InjectorGroup {
     return injector;
   }
   deleteInjector(injector) {
-    return this.injectors.delete(injector);
+    return this.injectors.delete(injector) && injector;
   }
 
   hasInjector(injector) {

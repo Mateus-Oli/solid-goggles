@@ -76,7 +76,7 @@ export class Container {
     const deleted = entry[index];
 
     delete entry[index];
-    return this[index].delete(deleted);
+    return this[index].delete(deleted) && deleted;
   }
 
   clear(...index) {
