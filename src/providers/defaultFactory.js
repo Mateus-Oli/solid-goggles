@@ -1,6 +1,9 @@
-export function defaultFactory(impl) {
-  if (typeof impl !== 'function') {
-    return impl;
+export function defaultFactory(implementation, args = []) {
+  if (typeof implementation !== 'function') {
+    return implementation;
   }
-  return new impl;
+  if (!implementation.prototype) {
+    return implementation(...args);
+  }
+  return new implementation(...args);
 }
