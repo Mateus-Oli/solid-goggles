@@ -57,6 +57,7 @@ export interface Injector {
   generate<T>(implementation: Implementation<T>): T;
   instantiate<T>(implementation: Implementation<T>): T;
   inject<T, V extends any[]>(implementation: Implementation<T, V>): V;
+  generated<T>(instance: T): T;
 
   clear(): this;
 

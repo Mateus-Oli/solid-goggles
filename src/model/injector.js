@@ -67,12 +67,7 @@ export class Injector {
 
   generate(inter) {
     const impl = this.findImplementation(inter);
-    const inst = this.set(impl, this.instantiate(impl));
-
-    if (inst && inst[generated]) {
-      inst[generated](this);
-    }
-    return inst;
+    return this.generated(this.set(impl, this.instantiate(impl)));
   }
   instantiate(inter) {
     const impl = this.findImplementation(inter);
@@ -81,7 +76,12 @@ export class Injector {
   inject(impl) {
     return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
   }
-
+  generated(inst) {
+    if (inst && inst[generated]) {
+      inst[generated](this);
+    }
+    return inst;
+  }
 
   clear() {
     this.container.forEach(([,, inst ]) => inst && this.delete(inst));
