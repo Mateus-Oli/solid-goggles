@@ -1,5 +1,6 @@
 import { Injector } from '../../src';
 import { inject, canImplement } from '../../src/providers/symbols';
+import { generated } from '../../src/providers/symbols';
 
 const injector = new Injector;
 class Pet {
@@ -23,6 +24,10 @@ class Human {
   static [inject]() { return [ Pet ]; }
   constructor(pet) {
     this.pet = pet;
+  }
+
+  [generated](injector) {
+    this.injector = injector;
   }
 
   think() {
@@ -50,6 +55,8 @@ describe('Injector', () => {
 
   it('executes factory', () => expect(injector.get(Pet).race).toBe('Doberman'));
   it('injects arguments', () => expect(injector.get(ConscientBeing).pet).toBeInstanceOf(Dog));
+
+  it('executes generated method', () => expect(injector.get(ConscientBeing).injector).toBe(injector));
 
   it('executes events', () => expect(injector.get(ConscientBeing).pet.name).toBe('Spark'));
 

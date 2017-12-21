@@ -1,7 +1,7 @@
 import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
-import { inject, canImplement } from '../providers/symbols';
+import { inject, canImplement, generated } from '../providers/symbols';
 
 export class Injector {
 
@@ -26,9 +26,7 @@ export class Injector {
     const inst = this.findInstance(impl);
     impl = this.container.getImplementation(inst);
 
-    if (this.container.deleteInstance(impl)) {
-      return this.emitter.emitDelete(impl, inst);
-    }
+    return this.container.deleteInstance(impl) && this.emitter.emitDelete(impl, inst);
   }
 
   getInstance(impl) {
@@ -67,17 +65,23 @@ export class Injector {
     return this.emitter.onInstantiate(impl, listener);
   }
 
-  generate(impl) {
-    impl = this.findImplementation(impl);
-    return this.set(impl, this.instantiate(impl));
+  generate(inter) {
+    const impl = this.findImplementation(inter);
+    const inst = this.set(impl, this.instantiate(impl));
+
+    if (inst && inst[generated]) {
+      inst[generated](this);
+    }
+    return inst;
   }
-  instantiate(impl) {
-    impl = this.findImplementation(impl);
+  instantiate(inter) {
+    const impl = this.findImplementation(inter);
     return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
   }
   inject(impl) {
     return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
   }
+
 
   clear() {
     this.container.forEach(([,, inst ]) => inst && this.delete(inst));

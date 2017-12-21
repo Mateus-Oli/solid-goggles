@@ -133,7 +133,9 @@ injector.onGet(Implementation, (instance, next) => {
 import { canImplement, inject } from 'injector';
 ```
 
-## Inject
+## Manage
+
+### Inject
 ```javascript
 import { inject } from 'injector';
 
@@ -141,11 +143,23 @@ class OtherImplementation {}
 
 class Implementation {
 
-  // Possible Circular dependency
-  [inject](injector) { return [ OtherImplementation ]; }
+  /** Warn: Unhandled Circular Dependency */
+  static [inject]() { return [ OtherImplementation ]; }
 
   constructor(otherImplementation) {
     this.otherImplementation = otherImplementation;
+  }
+}
+```
+
+### Generated
+```javascript
+import { generated } from 'injector';
+
+class Implementation {
+
+  [generated](injector) {
+    /** executes after `injector.generete(Implementation);` */
   }
 }
 ```
