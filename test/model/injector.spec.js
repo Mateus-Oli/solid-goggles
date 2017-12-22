@@ -27,7 +27,12 @@ class Human {
   }
 
   [generated](injector) {
+
     this.injector = injector;
+
+    return {
+      conscientBeing: ConscientBeing
+    };
   }
 
   think() {
@@ -57,6 +62,7 @@ describe('Injector', () => {
   it('injects arguments', () => expect(injector.get(ConscientBeing).pet).toBeInstanceOf(Dog));
 
   it('executes generated method', () => expect(injector.get(ConscientBeing).injector).toBe(injector));
+  it('injects genereted method return', () => expect(injector.get(ConscientBeing).conscientBeing).toBe(injector.get(ConscientBeing)));
 
   it('executes events', () => expect(injector.get(ConscientBeing).pet.name).toBe('Spark'));
 

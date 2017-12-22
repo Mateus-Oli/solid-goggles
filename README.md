@@ -59,13 +59,15 @@ injector.onSet(Implementation, (instance, next) => next(instance));
 injector.onDelete(Implementation, (instance, next) => next(instance));
 injector.onInstantiate(Implementation, (instance, next) => next(instance));
 
-/** instantiate + set */
+/** instantiate + set + generated */
 injector.generate(Implementation);
 
 /** factory + inject */
 injector.instantiate(Implementation);
 
-injector.inject(instance);
+injector.inject(Implementation);
+
+injector.genereted(instance);
 
 /** delete instances */
 injector.clear();
@@ -130,7 +132,7 @@ injector.onGet(Implementation, (instance, next) => {
 
 ### Symbols
 ```javascript
-import { canImplement, inject } from 'injector';
+import { canImplement, inject, generated } from 'injector';
 ```
 
 ## Manage
@@ -159,7 +161,12 @@ import { generated } from 'injector';
 class Implementation {
 
   [generated](injector) {
-    /** executes after `injector.generete(Implementation);` */
+
+    /** Allow circular dependencies */
+
+    return {
+      implementation: Implementation
+    };
   }
 }
 ```
@@ -168,21 +175,21 @@ class Implementation {
 ```javascript
 import { Injector, canImplement } from 'injector';
 
-Injector.baseImplements = (interface, implementation) => true;
-Injector.baseFactory = (implementation) => new implementation;
+Injector.baseImplements = (interface, implementation, injector) => true;
+Injector.baseFactory = (implementation, args, injector) => new implementation(...args);
 
 const injector = new Injector;
 
-injector.baseImplements = (interface, implementation) => true;
-injector.baseFactory = (implementation, arguments = [], injector = injector) => new implementation;
+injector.baseImplements = (interface, implementation, injector) => true;
+injector.baseFactory = (implementation, args, injector) => new implementation(...args);
 
 class Interface {
-  static [canImplement](interface, implementation) {
+  static [canImplement](interface, implementation, injector) {
     return true;
   }
 }
 class Implementation {
-  static [canImplement](interface, implementation) {
+  static [canImplement](interface, implementation, injector) {
     return true;
   }
 }

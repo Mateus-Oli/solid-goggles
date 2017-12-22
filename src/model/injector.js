@@ -77,9 +77,9 @@ export class Injector {
     return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
   }
   generated(inst) {
-    if (inst && inst[generated]) {
-      inst[generated](this);
-    }
+    const data = inst && inst[generated] && inst[generated](this) || {};
+    Object.keys(data).forEach(key => inst[key] = this.get(data[key]));
+
     return inst;
   }
 
