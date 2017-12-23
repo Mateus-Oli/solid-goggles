@@ -10,11 +10,11 @@ export class InjectorGroup {
   }
 
   get(inter) {
-    return this.getInstance(inter) || this.error(inter);
+    return this.tryGet(inter) || this.error(inter);
   }
 
-  getInstance(inter) {
-    return this.findReturn(injector => injector.getInstance(inter));
+  tryGet(inter) {
+    return this.findReturn(injector => injector.tryGet(inter));
   }
 
   getInjector(inst) {

@@ -12,7 +12,7 @@ export class Injector {
   }
 
   get(inter) {
-    return this.getInstance(inter) || this.error(inter);
+    return this.tryGet(inter) || this.error(inter);
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
@@ -25,7 +25,7 @@ export class Injector {
     return this.container.deleteInstance(impl) && this.emitter.emitDelete(impl, inst);
   }
 
-  getInstance(inter) {
+  tryGet(inter) {
     const impl = this.findImplementation(inter);
     return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
   }

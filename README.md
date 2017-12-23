@@ -37,18 +37,19 @@ const instance = injector.get(Interface);
 ```javascript
 import { Injector } from 'injector';
 
-const injector = new Injector;
 class Interface {}
 class Implementation {}
+
+const injector = new Injector;
+
+injector.setImplementation(Implementation);
+injector.tryGet(Implementation);
 
 /** breaks without implementation */
 const instance = injector.get(Interface);
 
 injector.set(Interface, instance);
 injector.delete(Interface);
-
-injector.getInstance(Implementation);
-injector.setImplementation(Implementation);
 
 /** breaks on wrong implementation */
 injector.link(Interface, Implementation);
@@ -64,13 +65,12 @@ injector.onInstantiate(Implementation, (instance, next) => next(instance));
 
 /** instantiate + set + generated */
 injector.generate(Implementation);
+injector.genereted(instance);
 
 /** factory + inject */
 injector.instantiate(Implementation);
-
 injector.inject(Implementation);
 
-injector.genereted(instance);
 
 /** delete all instances */
 injector.clear();
@@ -110,8 +110,9 @@ const clone = new Injector(injector);
 ```javascript
 import { Injector } from 'injector';
 
-const injector = new Injector;
 class Implementation {}
+
+const injector = new Injector;
 
 injector.factory(Implementation, (implementation, args, injector) => new implementation(...args));
 ```
@@ -120,9 +121,9 @@ injector.factory(Implementation, (implementation, args, injector) => new impleme
 ```javascript
 import { Injector } from 'injector';
 
-const injector = new Injector;
-
 class Implementation {}
+
+const injector = new Injector;
 
 injector.onGet((instance, next) => {
   /** generic */
@@ -135,7 +136,7 @@ injector.onGet(Implementation, (instance, next) => {
 });
 ```
 
-### Symbols
+## Symbols
 ```javascript
 import { canImplement, inject, generated } from 'injector';
 ```
@@ -216,7 +217,8 @@ injector.setImplementation(Implementation);
 
 /** breaks without implementation */
 const instance = group.get(Interface);
-group.getInstance(Interface);
+
+group.tryGet(Interface);
 
 group.getInjector(instance);
 group.setInjector(injector);
