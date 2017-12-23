@@ -12,25 +12,21 @@ export class Injector {
   }
 
   get(inter) {
-    const impl = this.findImplementation(inter);
-    if (!impl) {
-      throw new InjectorError(inter);
-    }
-    return this.getInstance(impl);
+    return this.getInstance(inter) || this.error(inter);
   }
   set(impl, inst) {
     impl = this.findImplementation(impl);
     return this.container.setInstance(impl, this.emitter.emitSet(impl, inst));
   }
-  delete(impl) {
-    const inst = this.findInstance(impl);
-    impl = this.container.getImplementation(inst);
+  delete(inter) {
+    const inst = this.findInstance(inter);
+    const impl = this.container.getImplementation(inst);
 
     return this.container.deleteInstance(impl) && this.emitter.emitDelete(impl, inst);
   }
 
-  getInstance(impl) {
-    impl = this.findImplementation(impl);
+  getInstance(inter) {
+    const impl = this.findImplementation(inter);
     return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
   }
   setImplementation(impl) {
@@ -38,11 +34,9 @@ export class Injector {
   }
 
   link(inter, impl) {
-    if (!this.canImplement(inter, impl)) {
-      throw new InjectorError(inter, impl, InjectorError.LINK_ERROR);
-    }
-    this.container.setInterface(inter, impl);
-    return impl;
+    return this.canImplement(inter, impl) ?
+      this.container.setInterface(inter, impl) :
+      this.error(inter, impl, InjectorError.LINK_ERROR);
   }
 
   factory(impl, factory) {
@@ -89,7 +83,7 @@ export class Injector {
   }
 
   findImplementation(inter) {
-    let impl = this.container.getImplementation(inter);
+    let impl = inter && this.container.getImplementation(inter);
     if (!inter || impl) {
       return impl;
     }
@@ -99,10 +93,10 @@ export class Injector {
     return impl;
   }
   findInterface(impl) {
-    return this.container.getInterface(impl);
+    return impl && this.container.getInterface(impl);
   }
   findInstance(impl) {
-    return this.container.getInstance(impl);
+    return impl && this.container.getInstance(impl);
   }
 
   canImplement(inter, impl) {
@@ -114,5 +108,9 @@ export class Injector {
   }
   getImplements(inter = {}, impl = {}) {
     return inter[canImplement] || impl[canImplement] || this.baseImplements || this.constructor.baseImplements;
+  }
+
+  error(inter, impl, error) {
+    throw new InjectorError(inter, impl, error);
   }
 }

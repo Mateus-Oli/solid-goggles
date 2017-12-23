@@ -46,13 +46,13 @@ const instance = injector.get(Interface);
 injector.set(Interface, instance);
 injector.delete(Interface);
 
-injector.getInstance();
+injector.getInstance(Implementation);
 injector.setImplementation(Implementation);
 
 /** breaks on wrong implementation */
 injector.link(Interface, Implementation);
 
-injector.factory(Implementation, implementation => new implementation);
+injector.factory(Implementation, (implementation, args, injector) => new implementation(...args));
 
 injector.onGet(Implementation, (instance, next) => next(instance));
 injector.onSet(Implementation, (instance, next) => next(instance));
@@ -80,6 +80,8 @@ injector.canImplement(Interface, Implementation);
 
 injector.getFactory(Implementation);
 injector.getImplements(Interface, Implementation);
+
+injector.error(Interface, Implementation, 'error');
 ```
 
 ## Properties
@@ -108,7 +110,7 @@ import { Injector } from 'injector';
 const injector = new Injector;
 class Implementation {}
 
-injector.factory(Implementation, implementation => new implementation);
+injector.factory(Implementation, (implementation, args, injector) => new implementation(...args));
 ```
 
 ## Events
@@ -148,8 +150,8 @@ class Implementation {
   /** Warn: Unhandled Circular Dependency */
   static [inject]() { return [ OtherImplementation ]; }
 
-  constructor(otherImplementation) {
-    this.otherImplementation = otherImplementation;
+  constructor(otherInstance) {
+    this.otherInstance = otherInstance;
   }
 }
 ```
@@ -165,7 +167,7 @@ class Implementation {
     /** Allow circular dependencies */
 
     return {
-      implementation: Implementation
+      instance: Implementation
     };
   }
 }
