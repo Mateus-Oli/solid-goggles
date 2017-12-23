@@ -52,6 +52,8 @@ injector.setImplementation(Implementation);
 /** breaks on wrong implementation */
 injector.link(Interface, Implementation);
 
+injector.tryLink(Interface, Implementation);
+
 injector.factory(Implementation, (implementation, args, injector) => new implementation(...args));
 
 injector.onGet(Implementation, (instance, next) => next(instance));
@@ -69,7 +71,7 @@ injector.inject(Implementation);
 
 injector.genereted(instance);
 
-/** delete instances */
+/** delete all instances */
 injector.clear();
 
 injector.findInterface(Interface || Implementation || instance);

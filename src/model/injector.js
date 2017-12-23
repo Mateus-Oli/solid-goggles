@@ -34,9 +34,10 @@ export class Injector {
   }
 
   link(inter, impl) {
-    return this.canImplement(inter, impl) ?
-      this.container.setInterface(inter, impl) :
-      this.error(inter, impl, InjectorError.LINK_ERROR);
+    return this.tryLink(inter, impl) || this.error(inter, impl, InjectorError.LINK_ERROR);
+  }
+  tryLink(inter, impl) {
+    return this.canImplement(inter, impl) && this.container.setInterface(inter, impl);
   }
 
   factory(impl, factory) {
@@ -83,14 +84,11 @@ export class Injector {
   }
 
   findImplementation(inter) {
-    let impl = inter && this.container.getImplementation(inter);
-    if (!inter || impl) {
-      return impl;
+    if (!inter) {
+      return;
     }
-    impl = this.container.findReturn(([, impl]) => this.canImplement(inter, impl) && impl);
-    this.container.setInterface(inter, impl);
-
-    return impl;
+    const impl = this.container.getImplementation(inter);
+    return impl || this.container.findReturn(([, impl]) => this.tryLink(inter, impl) && impl);
   }
   findInterface(impl) {
     return impl && this.container.getInterface(impl);
