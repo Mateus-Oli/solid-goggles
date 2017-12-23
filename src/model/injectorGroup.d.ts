@@ -1,5 +1,5 @@
 import { Injector } from "./injector";
-import { Interface } from "./container";
+import { Interface, Implementation } from "./container";
 
 export type InjectorGroupEquivalent = InjectorGroup | BaseInjectorGroup | Set<Injector> | Injector[];
 
@@ -30,6 +30,8 @@ export interface InjectorGroup {
   findReturn<T>(func: (injector: Injector) => T): T;
 
   forEach(func: (injector: Injector) => any): this;
+
+  error(interface: Interface, implementation?: Implementation, message?: string): never;
 }
 
 export const InjectorGroup: InjectorGroupConstructor;

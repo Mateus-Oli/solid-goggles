@@ -4,13 +4,13 @@ export interface InjectorErrorConstructor {
   readonly GENERETA_ERROR: string;
   readonly LINK_ERROR: string;
 
-  new<T>(interface: Interface<T>, implementation: Implementation<T>): InjectorError<T>;
+  new(interface: Interface, implementation: Implementation): InjectorError;
 }
 
-export interface InjectorError<T> extends Error {
+export interface InjectorError extends Error {
 
-  interface: Interface<T>;
-  implementation: Implementation<T>;
+  interface: Interface;
+  implementation: Implementation;
 }
 
 export const InjectorError: InjectorErrorConstructor;

@@ -70,7 +70,7 @@ export interface Injector {
   getFactory<T, V extends any[]>(implementation?: Implementation<T, V>): Factory<T, V>;
   getImplements<T>(interface?: Interface<T>, implementation?: Implementation<T>): implementsValidator;
 
-  error<T>(inter: Interface<T>, impl: Implementation<T>, error: string): never;
+  error(interface: Interface, implementation?: Implementation, message?: string): never;
 }
 
 export const Injector: InjectorConstructor;

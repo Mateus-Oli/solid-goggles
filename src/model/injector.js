@@ -64,18 +64,19 @@ export class Injector {
     const impl = this.findImplementation(inter);
     return this.generated(this.set(impl, this.instantiate(impl)));
   }
+  generated(inst) {
+    const data = inst && inst[generated] && inst[generated](this) || {};
+    Object.keys(data).forEach(key => inst[key] = this.get(data[key]));
+
+    return inst;
+  }
+
   instantiate(inter) {
     const impl = this.findImplementation(inter);
     return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
   }
   inject(impl) {
     return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
-  }
-  generated(inst) {
-    const data = inst && inst[generated] && inst[generated](this) || {};
-    Object.keys(data).forEach(key => inst[key] = this.get(data[key]));
-
-    return inst;
   }
 
   clear() {
@@ -108,7 +109,7 @@ export class Injector {
     return inter[canImplement] || impl[canImplement] || this.baseImplements || this.constructor.baseImplements;
   }
 
-  error(inter, impl, error) {
-    throw new InjectorError(inter, impl, error);
+  error(inter, impl, message) {
+    throw new InjectorError(inter, impl, message);
   }
 }

@@ -83,7 +83,7 @@ injector.canImplement(Interface, Implementation);
 injector.getFactory(Implementation);
 injector.getImplements(Interface, Implementation);
 
-injector.error(Interface, Implementation, 'error');
+injector.error(Interface, Implementation, 'message');
 ```
 
 ## Properties
@@ -224,6 +224,8 @@ group.deleteInjector(injector);
 group.hasInjector(injector);
 
 group.clear();
+
+group.error(Interface, Implementation, 'message');
 ```
 
 ### Container
@@ -280,4 +282,14 @@ emitter.removeGet(Implementation, getListener);
 emitter.removeSet(Implementation, setListener);
 emitter.removeDelete(Implementation, deleteListener);
 emitter.removeInstantiate(Implementation, instantiateListener);
+```
+
+### Injector Error
+```javascript
+import { InjectorError } from 'injector';
+
+class Interface {}
+class Implementation {}
+
+const injectorError = new InjectorError(Interface, Implementation, 'message');
 ```

@@ -10,11 +10,7 @@ export class InjectorGroup {
   }
 
   get(inter) {
-    const inst = this.getInstance(inter);
-    if (inst) {
-      return inst;
-    }
-    throw new InjectorError(inter);
+    return this.getInstance(inter) || this.error(inter);
   }
 
   getInstance(inter) {
@@ -22,8 +18,7 @@ export class InjectorGroup {
   }
 
   getInjector(inst) {
-    return this
-      .find(({ container }) => container.getInstance(inst) || container.getImplementation(inst) || container.getInterface(inst));
+    return this.find(({ container }) => container.getInstance(inst) || container.getImplementation(inst) || container.getInterface(inst));
   }
   setInjector(injector) {
     this.injectors.add(injector);
@@ -58,5 +53,9 @@ export class InjectorGroup {
   forEach(fn) {
     this.injectors.forEach(injector => fn(injector));
     return this;
+  }
+
+  error(inter, impl, message) {
+    throw new InjectorError(inter, impl, message);
   }
 }
