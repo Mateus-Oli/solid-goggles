@@ -13,6 +13,7 @@
     * [Injector Group](#injector-group)
     * [Container](#container)
     * [Injector Emitter](#injector-emitter)
+    * [Injector Error](#injector-error)
 
 ## Basic Usage
 ```javascript

@@ -1,12 +1,8 @@
 import { InjectorError } from '../../src/error/injectorError';
 
-class InterfaceMock {
+class InterfaceMock {}
 
-}
-
-class ImplementationMock {
-
-}
+class ImplementationMock {}
 
 const error = new InjectorError(
   InterfaceMock,
@@ -16,9 +12,11 @@ const error = new InjectorError(
 
 describe('InjectorError', () => {
 
-  it('posses interface property', () => expect(error.interface).toBe(InterfaceMock));
+  it('extends Error', () => expect(error).toBeInstanceOf(Error));
 
-  it('posses implementation property', () => expect(error.implementation).toBe(ImplementationMock));
+  it('contains interface property', () => expect(error.interface).toBe(InterfaceMock));
+
+  it('contains implementation property', () => expect(error.implementation).toBe(ImplementationMock));
 
   it('displays correct message', () => expect(error.message).toBe(`Implementation '${ImplementationMock.name}' is not compatible with '${InterfaceMock.name}'`));
 });
