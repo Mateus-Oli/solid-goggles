@@ -8,13 +8,12 @@ export class Container {
   get size() { return this[Container.IMPLEMENTATION].size; }
 
   constructor(container = []) {
-    this[Container.INTERFACE] = new Map;
-    this[Container.IMPLEMENTATION] = new Map;
-    this[Container.INSTANCE] = new Map;
-
     this.parent = container.parent;
+    [Container.INTERFACE, Container.IMPLEMENTATION, Container.INSTANCE].forEach(index => this[index] = new Map);
 
-    container.forEach && container.forEach(entry => this.set(this.toEntry(entry)));
+    if (container.forEach) {
+      container.forEach(entry => this.set(this.toEntry(entry)));
+    }
   }
 
   getInterface(value) {
@@ -80,12 +79,9 @@ export class Container {
   }
 
   clear(...index) {
-    if (index.includes(Container.IMPLEMENTATION)) {
-      return this.toArray(this).forEach(entry => entry.clear());
-    }
     index.forEach(i => {
-      this[Container.IMPLEMENTATION].forEach(entry => delete entry[i]);
       this[i].clear();
+      this[Container.IMPLEMENTATION].forEach(entry => delete entry[i]);
     });
   }
 

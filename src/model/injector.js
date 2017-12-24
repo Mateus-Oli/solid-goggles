@@ -30,7 +30,7 @@ export class Injector {
     return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
   }
   setImplementation(impl) {
-    return this.container.setImplementation(impl);
+    return impl && this.container.setImplementation(impl);
   }
 
   link(inter, impl) {
@@ -41,9 +41,7 @@ export class Injector {
   }
 
   factory(impl, factory) {
-    if (impl) {
-      this.factories.set(impl, factory);
-    }
+    this.factories.set(impl, factory);
     return factory;
   }
 
