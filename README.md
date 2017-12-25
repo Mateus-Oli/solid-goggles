@@ -181,12 +181,12 @@ class Implementation {
 ```javascript
 import { Injector, canImplement } from 'injector';
 
-Injector.baseImplements = (interface, implementation, injector) => true;
+Injector.baseCanImplement = (interface, implementation, injector) => true;
 Injector.baseFactory = (implementation, args, injector) => new implementation(...args);
 
 const injector = new Injector;
 
-injector.baseImplements = (interface, implementation, injector) => true;
+injector.baseCanImplement = (interface, implementation, injector) => true;
 injector.baseFactory = (implementation, args, injector) => new implementation(...args);
 
 class Interface {

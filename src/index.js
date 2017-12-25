@@ -1,8 +1,8 @@
 import { defaultFactory } from './providers/defaultFactory';
 import { Injector } from './model/injector';
-import { defaultImplements } from './providers/defaultImplements';
+import { defaultCanImplement } from './providers/defaultCanImplement';
 
-Injector.baseImplements = defaultImplements;
+Injector.baseCanImplement = defaultCanImplement;
 Injector.baseFactory = defaultFactory;
 
 export * from './model/injector';

@@ -104,7 +104,7 @@ export class Injector {
     return this.factories.get(impl) || this.baseFactory ||  this.constructor.baseFactory;
   }
   getCanImplement(inter = {}, impl = {}) {
-    return inter[canImplement] || impl[canImplement] || this.baseImplements || this.constructor.baseImplements;
+    return inter[canImplement] || impl[canImplement] || this.baseCanImplement || this.constructor.baseCanImplement;
   }
 
   error(inter, impl, message) {

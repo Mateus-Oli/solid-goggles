@@ -1,5 +1,5 @@
 import { isClassEquivalent } from '../utils/info';
 
-export function defaultImplements(inter, impl) {
+export function defaultCanImplement(inter, impl) {
   return isClassEquivalent(inter, impl);
 }
