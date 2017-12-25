@@ -94,7 +94,7 @@ export class Container {
 
   findReturn(func) {
     for (const [, entry] of this[Container.IMPLEMENTATION]) {
-      const value = func(this.toArray(entry));
+      const value = func(this.toArray(entry, this));
       if (value) {
         return value;
       }
@@ -102,13 +102,13 @@ export class Container {
   }
 
   forEach(func) {
-    return this[Container.IMPLEMENTATION].forEach(entry => func(this.toArray(entry)));
+    return this[Container.IMPLEMENTATION].forEach(entry => func(this.toArray(entry), this));
   }
 
-  toArray(entry) {
-    return [ entry[Container.INTERFACE], entry[Container.IMPLEMENTATION], entry[Container.INSTANCE] ];
+  toArray(entry = {}) {
+    return Array.isArray(entry) ? entry : [ entry[Container.INTERFACE], entry[Container.IMPLEMENTATION], entry[Container.INSTANCE] ];
   }
-  toEntry([inter, impl, inst] = []) {
-    return { [Container.INTERFACE]: inter, [Container.IMPLEMENTATION]: impl, [Container.INSTANCE]: inst };
+  toEntry(entry = []) {
+    return !Array.isArray(entry) ? entry : { [Container.INTERFACE]: entry[0], [Container.IMPLEMENTATION]: entry[1], [Container.INSTANCE]: entry[2] };
   }
 }
