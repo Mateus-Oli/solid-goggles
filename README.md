@@ -82,7 +82,7 @@ injector.findInstance(Interface || Implementation || instance);
 injector.canImplement(Interface, Implementation);
 
 injector.getFactory(Implementation);
-injector.getImplements(Interface, Implementation);
+injector.getCanImplement(Interface, Implementation);
 
 injector.error(Interface, Implementation, 'message');
 ```
