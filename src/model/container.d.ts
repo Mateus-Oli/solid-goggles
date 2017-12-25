@@ -53,8 +53,8 @@ export interface Container {
   clearImplementations(): void;
   clearInstances(): void;
 
-  findReturn<T, R>(func: (entry: [Interface<T>, Implementation<T>, T]) => R): R;
-  forEach<T>(func: (entry: [Interface<T>, Implementation<T>, T]) => any): void;
+  findReturn<T, R>(func: (entry: [Interface<T>, Implementation<T>, T], container: Container) => R): R;
+  forEach<T>(func: (entry: [Interface<T>, Implementation<T>, T], container: Container) => any): void;
 }
 
 export const Container: ContainerConstructor;
