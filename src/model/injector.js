@@ -14,8 +14,8 @@ export class Injector {
   get(inter) {
     return this.tryGet(inter) || this.error(inter);
   }
-  set(impl, inst) {
-    impl = this.findImplementation(impl);
+  set(inter, inst) {
+    const impl = this.findImplementation(inter);
     return this.container.setInstance(impl, this.emitter.emitSet(impl, inst));
   }
   delete(inter) {
@@ -97,13 +97,13 @@ export class Injector {
   }
 
   canImplement(inter, impl) {
-    return this.getImplements(inter, impl)(inter, impl, this);
+    return this.getCanImplement(inter, impl)(inter, impl, this);
   }
 
   getFactory(impl) {
     return this.factories.get(impl) || this.baseFactory ||  this.constructor.baseFactory;
   }
-  getImplements(inter = {}, impl = {}) {
+  getCanImplement(inter = {}, impl = {}) {
     return inter[canImplement] || impl[canImplement] || this.baseImplements || this.constructor.baseImplements;
   }
 

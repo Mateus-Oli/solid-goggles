@@ -55,9 +55,10 @@ export interface Injector {
   onInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): this;
 
   generate<T>(implementation: Implementation<T>): T;
+  generated<T>(instance: T): T;
+
   instantiate<T>(implementation: Implementation<T>): T;
   inject<T, V extends any[]>(implementation: Implementation<T, V>): V;
-  generated<T>(instance: T): T;
 
   clear(): this;
 

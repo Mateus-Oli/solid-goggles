@@ -57,6 +57,9 @@ export class Container {
   }
 
   get(index, value) {
+    if (this[index].has(value)) {
+      return value;
+    }
     value = this[Container.INTERFACE].get(value) || this[Container.INSTANCE].get(value) || value;
     return (this[Container.IMPLEMENTATION].get(value) || {})[index] || this.getFromParent(index, value);
   }
