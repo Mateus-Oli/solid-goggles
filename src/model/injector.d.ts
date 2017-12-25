@@ -1,33 +1,28 @@
-import { Container, Implementation, Interface, MapEquivalent, ContainerEquivalent } from './container';
+import { Container, Implementation, Interface, ContainerEquivalent } from './container';
 import { InjectorEmitter, Listener, InjectorEmitterEquivalent } from './injectorEmitter';
 
 type Factory<T = any, V extends any[] = any> = (implementation: Implementation<T>, args: V, injector: Injector) => T;
-type implementsValidator = <T>(interface: Interface<T>, implementation: Implementation<T>) => boolean;
+type canImplementValidator = <T>(interface: Interface<T>, implementation: Implementation<T>, injector: Injector) => boolean;
 
 export type InjectorEquivalent = Injector | BaseInjector;
 
-interface BaseInjector {
-
-  baseImplements: implementsValidator;
+interface BaseDependencies {
+  baseCanImplement: canImplementValidator;
   baseFactory: Factory;
+}
 
+interface BaseInjector extends BaseDependencies {
   container: ContainerEquivalent;
-  factories: MapEquivalent<Implementation, Factory>;
+  factories: Map<Implementation, Factory> | [Implementation, Factory][];
   emitter: InjectorEmitterEquivalent;
 }
 
-export interface InjectorConstructor {
-
-  baseImplements: implementsValidator;
-  baseFactory: Factory;
+export interface InjectorConstructor extends BaseDependencies {
 
   new(injector?: InjectorEquivalent): Injector;
 }
 
-export interface Injector {
-
-  baseImplements: implementsValidator;
-  baseFactory: Factory;
+export interface Injector extends BaseDependencies {
 
   container: Container;
   factories: Map<Implementation, Factory>;

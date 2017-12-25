@@ -1,14 +1,12 @@
 import { Injector } from "./injector";
 import { Interface, Implementation } from "./container";
 
-export type InjectorGroupEquivalent = InjectorGroup | BaseInjectorGroup | Set<Injector> | Injector[];
-
-interface BaseInjectorGroup {
-  injectors: Set<Injector>;
-}
-
 export interface InjectorGroupConstructor {
   new(injectorGroup?: InjectorGroupEquivalent): InjectorGroup;
+}
+
+export interface InjectorGroupEquivalent {
+  forEach(func: (injector: Injector) => any): any;
 }
 
 export interface InjectorGroup {

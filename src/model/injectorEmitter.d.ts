@@ -1,7 +1,11 @@
-import { Implementation, MapEquivalent } from './container';
+import { Implementation } from './container';
 
 export type Listener<T = any> = (instance: T, next: (instance: T) => T) => T;
 export type InjectorEmitterEquivalent = InjectorEmitter | BaseInjectorEmitter;
+
+export interface MapEquivalent<K, V> {
+  forEach(func: (value: V, key: K) => any): any;
+}
 
 export interface InjectorEmitterConstructor {
   new(injectorEmitter?: InjectorEmitterEquivalent): InjectorEmitter;

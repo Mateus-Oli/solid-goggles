@@ -1,24 +1,12 @@
-export type Implementation<T = any, V extends any[] = any[]> = new(...args: V) => T;
-export type Interface<T = any, V extends any[] = any[]> = new(...args: V) => {[K in keyof T]: T[K]};
-
-export type MapEquivalent<K, V> = Map<K, V> | [K, V][];
-export type SetEquivalent<V> = Set<V> | V[];
-export type ContainerEquivalent = Container | BaseContainer | Set<Entry> | Entry[];
+export type Implementation<T = any, V = any> = new(...args: V[]) => T;
+export type Interface<T = any, V = any> = new(...args: V[]) => {[K in keyof T]: T[K]};
 
 export interface ContainerConstructor {
   new(container?: ContainerEquivalent): Container;
 }
 
-type Entry<T = any> = {
-  interface: Interface<T>,
-  implementation: Implementation<T>,
-  instance: T,
-}
-
-interface BaseContainer {
-  interface: MapEquivalent<Interface, Implementation>;
-  implementation: MapEquivalent<Implementation, Entry>;
-  instance: MapEquivalent<any, Implementation>;
+export interface ContainerEquivalent {
+  forEach(func: <T>(entry: [Interface<T>, Implementation<T>, T]) => any): any;
 }
 
 export interface Container {
@@ -53,8 +41,8 @@ export interface Container {
   clearImplementations(): void;
   clearInstances(): void;
 
-  findReturn<T, R>(func: (entry: [Interface<T>, Implementation<T>, T], container: Container) => R): R;
-  forEach<T>(func: (entry: [Interface<T>, Implementation<T>, T], container: Container) => any): void;
+  findReturn<R>(func: <T>(entry: [Interface<T>, Implementation<T>, T], container: Container) => R): R;
+  forEach(func: <T>(entry: [Interface<T>, Implementation<T>, T], container: Container) => any): void;
 }
 
 export const Container: ContainerConstructor;
