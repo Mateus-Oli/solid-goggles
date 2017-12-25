@@ -56,12 +56,12 @@ export class Container {
     return this.clear(Container.INSTANCE);
   }
 
-  get(index, value) {
-    if (this[index].has(value)) {
-      return value;
+  get(index, search) {
+    if (this[index].has(search)) {
+      return search;
     }
-    value = this[Container.INTERFACE].get(value) || this[Container.INSTANCE].get(value) || value;
-    return (this[Container.IMPLEMENTATION].get(value) || {})[index] || this.getFromParent(index, value);
+    const impl = this[Container.INTERFACE].get(search) || this[Container.INSTANCE].get(search) || search;
+    return (this[Container.IMPLEMENTATION].get(impl) || {})[index] || this.getFromParent(index, search);
   }
   set(value) {
     const [ inter, impl,  inst ] = this.toArray(value);
