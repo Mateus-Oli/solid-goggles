@@ -1,5 +1,5 @@
 export function getKeys(obj) {
-  if (!obj) {
+  if (typeof obj !== 'object') {
     return [];
   }
   return typeof Reflect !== 'undefined' && Reflect.ownKeys
@@ -38,4 +38,13 @@ export function isClassEquivalent(first, second) {
   second = typeof second === 'function' ? second.prototype : second;
 
   return isObjectMethodEquivalent(first, second);
+}
+
+export function isPrimitive(value) {
+  const type = typeof value;
+  return type !== 'object' && type !== 'function';
+}
+
+export function isEquivalent(first, second) {
+  return isPrimitive(first) ? first === second : isClassEquivalent(first, second);
 }

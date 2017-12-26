@@ -34,6 +34,10 @@ class IncorrectMethodArgs {
 
 describe('defaultCanImplement', () => {
 
+  it('is true when primitives are equal', () => expect(defaultCanImplement(3, 3)).toBe(true));
+
+  it('is false when primitives are not equal', () => expect(defaultCanImplement(3, 2)).toBe(false));
+
   it('is true when class correctly implements', () => expect(defaultCanImplement(InterfaceMock, CorrectImplementation)).toBe(true));
 
   it('is true when instance correctly implements', () => expect(defaultCanImplement(InterfaceMock, correctInstance)).toBe(true));
