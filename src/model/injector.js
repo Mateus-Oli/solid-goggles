@@ -45,6 +45,9 @@ export class Injector {
     return factory;
   }
 
+  onEvery(impl, listener) {
+    return this.emitter.onEvery(impl, listener);
+  }
   onGet(impl, listener) {
     return this.emitter.onGet(impl, listener);
   }

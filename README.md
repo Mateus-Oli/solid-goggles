@@ -58,6 +58,7 @@ injector.tryLink(Interface, Implementation);
 
 injector.factory(Implementation, (implementation, args, injector) => new implementation(...args));
 
+injector.onEvery(Implementation, (instance, next) => next(instance));
 injector.onGet(Implementation, (instance, next) => next(instance));
 injector.onSet(Implementation, (instance, next) => next(instance));
 injector.onDelete(Implementation, (instance, next) => next(instance));
@@ -124,6 +125,11 @@ import { Injector } from 'injector';
 class Implementation {}
 
 const injector = new Injector;
+
+injector.onEvery((instance, next) => {
+  /* all events */
+  return next(instance);
+});
 
 injector.onGet((instance, next) => {
   /** generic */
@@ -271,16 +277,19 @@ const emitter = new InjectorEmitter;
 class Implementation {}
 const instance = new Implementation;
 
+const everyListener = emitter.onEvery(Implementation, (instance, next) => next(instance));
 const getListener = emitter.onGet(Implementation, (instance, next) => next(instance));
 const setListener = emitter.onSet(Implementation, (instance, next) => next(instance));
 const deleteListener = emitter.onDelete(Implementation, (instance, next) => next(instance));
 const instantiateListener = emitter.onInstantiate(Implementation, (instance, next) => next(instance));
 
+emitter.emitEvery(Implementation, instance);
 emitter.emtiGet(Implementation, instance);
 emitter.emitSet(Implementation, instance);
 emitter.emitDelete(Implementation, instance);
 emitter.emitInstantiate(Implementation, instance);
 
+emitter.removeEvery(Implementation, everyListener);
 emitter.removeGet(Implementation, getListener);
 emitter.removeSet(Implementation, setListener);
 emitter.removeDelete(Implementation, deleteListener);
@@ -295,4 +304,16 @@ class Interface {}
 class Implementation {}
 
 const injectorError = new InjectorError(Interface, Implementation, 'message');
+```
+
+## Change Dependencies
+```javascript
+import { InjectorGroup, Injector, Container, InjectorEmitter } from 'injector';
+
+class OtherContainer implements Container {}
+class OtherInjectorEmitter implements InjectorEmitter {}
+class OtherInjector implements Injector {}
+
+const injector = new Injector(undefined, OtherContainer, OtherInjectorEmitter);
+const injectorGroup = new InjectorGroup(undefined, OtherInjector);
 ```

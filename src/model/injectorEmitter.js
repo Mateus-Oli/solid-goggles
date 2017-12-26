@@ -2,62 +2,63 @@ import { next } from '../utils/next';
 
 export class InjectorEmitter {
 
+  static get EVERY() { return undefined; }
   static get GET() { return 'get'; }
   static get SET() { return 'set'; }
   static get DELETE() { return 'delete'; }
   static get INSTANTIATE() { return 'instantiate'; }
 
-  constructor(emitter = {}, MapConstructor = Map) {
-    [InjectorEmitter.GET, InjectorEmitter.SET, InjectorEmitter.DELETE, InjectorEmitter.INSTANTIATE].forEach(index => {
-      this[index] = new MapConstructor;
-      (emitter[index] || new MapConstructor).forEach((v, k) => this[index].set(k, [].concat(v)));
-    });
+  constructor(emitter = {}) {
+    const listeners = Array.isArray(emitter) ? emitter : emitter.listeners;
+    this.listeners = [].concat(listeners || []).map(listener => Object.assign({}, listener));
   }
 
-  onGet(impl, listener) { return this.on(InjectorEmitter.SET, impl, listener); }
-  onSet(impl, listener) { return this.on(InjectorEmitter.GET, impl, listener); }
-  onDelete(impl, listener) { return this.on(InjectorEmitter.DELETE, impl, listener); }
-  onInstantiate(impl, listener) { return this.on(InjectorEmitter.INSTANTIATE, impl, listener); }
+  onEvery(implementation, listener) { return this.on(InjectorEmitter.EVERY, implementation, listener); }
+  onGet(implementation, listener) { return this.on(InjectorEmitter.SET, implementation, listener); }
+  onSet(implementation, listener) { return this.on(InjectorEmitter.GET, implementation, listener); }
+  onDelete(implementation, listener) { return this.on(InjectorEmitter.DELETE, implementation, listener); }
+  onInstantiate(implementation, listener) { return this.on(InjectorEmitter.INSTANTIATE, implementation, listener); }
 
-  on(event, impl = null, listener = null) {
-    [impl, listener] = [listener && impl, listener || impl];
-    this.getListeners(event, impl).push(listener);
+  on(event, implementation, listener) {
+    [implementation, listener] = this.sortImplementation(implementation, listener);
+    this.listeners.push({ event, implementation, listener });
 
     return listener;
   }
 
-  emitGet(impl, value) { return this.emit(InjectorEmitter.SET, impl, value); }
-  emitSet(impl, value) { return this.emit(InjectorEmitter.GET, impl, value); }
-  emitDelete(impl, value) { return this.emit(InjectorEmitter.DELETE,impl, value); }
-  emitInstantiate(impl, value) { return this.emit(InjectorEmitter.INSTANTIATE, impl, value); }
+  emitEvery(implementation, value) { return this.emit(InjectorEmitter.EVERY, implementation, value); }
+  emitGet(implementation, value) { return this.emit(InjectorEmitter.SET, implementation, value); }
+  emitSet(implementation, value) { return this.emit(InjectorEmitter.GET, implementation, value); }
+  emitDelete(implementation, value) { return this.emit(InjectorEmitter.DELETE,implementation, value); }
+  emitInstantiate(implementation, value) { return this.emit(InjectorEmitter.INSTANTIATE, implementation, value); }
 
-  emit(event, impl = null, value = null) {
-    [impl, value] = [value && impl, value || impl];
-    let listeners = this[event].get(null) || [];
+  emit(e, i, v) {
+    [i, v] = this.sortImplementation(i, v);
 
-    if (impl) {
-      listeners = listeners.concat(this[event].get(impl) || []);
-    }
-    return next(value, listeners);
+    const listeners = this.listeners
+      .filter(({ implementation, event }) => this.isValid(event, e) && this.isValid(implementation, i))
+      .map(({ listener }) => listener);
+
+    return next(v, listeners);
   }
 
-  removeGet(impl, listener) { return this.remove(InjectorEmitter.SET, impl, listener); }
-  removeSet(impl, listener) { return this.remove(InjectorEmitter.GET, impl, listener); }
-  removeDelete(impl, listener) { return this.remove(InjectorEmitter.DELETE, impl, listener); }
-  removeInstantiate(impl, listener) { return this.remove(InjectorEmitter.INSTANTIATE, impl, listener); }
+  removeEvery(implementation, value) { return this.remove(InjectorEmitter.EVERY, implementation, value); }
+  removeGet(implementation, listener) { return this.remove(InjectorEmitter.SET, implementation, listener); }
+  removeSet(implementation, listener) { return this.remove(InjectorEmitter.GET, implementation, listener); }
+  removeDelete(implementation, listener) { return this.remove(InjectorEmitter.DELETE, implementation, listener); }
+  removeInstantiate(implementation, listener) { return this.remove(InjectorEmitter.INSTANTIATE, implementation, listener); }
 
-  remove(event, impl = null, listener = null) {
-    [impl, listener] = [listener && impl, listener || impl];
+  remove(e, i, l) {
+    [i, l] = this.sortImplementation(i, l);
+    const index = this.listeners.findIndex(({ event, implementation, listener}) => e === event && i === implementation && l === listener);
 
-    const listeners = this.getListeners(event, impl);
-    return listeners.splice(listeners.indexOf(listener), 1)[0];
+    return (this.listeners.splice(index)[0] || {}).listener;
   }
 
-  getListeners(event, impl = null) {
-    let listeners = this[event].get(impl);
-    if (!listeners) {
-      this[event].set(impl, listeners = []);
-    }
-    return listeners;
+  sortImplementation(implementation, value) {
+    return [value && implementation, value || implementation];
+  }
+  isValid(value, compare) {
+    return value === compare || value === InjectorEmitter.EVERY;
   }
 }

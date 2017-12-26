@@ -6,6 +6,11 @@ class ImplementationMock {}
 
 class OtherImplementation {}
 
+emitter.onEvery((value, next) => {
+  value.every = true;
+  return next(value);
+});
+
 emitter.onGet((value, next) => {
   value.generic = true;
   return next(value);
@@ -43,9 +48,11 @@ describe('InjectorEmitter', () => {
 
   it('does not execute different events', () => expect(value.differentEvent).toBe(undefined));
 
-  it('does not execute events without next', () => expect(value.noNext).toBeFalsy(undefined));
+  it('does not execute events without next', () => expect(value.noNext).toBeFalsy());
 
   it('does not execute events from other implementations', () => expect(value.other).toBe(undefined));
+
+  it('executes base events', () => expect(value.every).toBe(true));
 
   it('clones base emitter', () => {
 

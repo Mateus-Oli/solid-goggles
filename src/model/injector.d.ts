@@ -45,12 +45,13 @@ export interface Injector extends BaseDependencies {
 
   factory<T>(implementation: Implementation<T>, factory: Factory<T>): Factory<T>;
 
+  onEvery<T>(listener: Listener<T>): this;
   onGet<T>(listener: Listener<T>): this;
   onSet<T>(listener: Listener<T>): this;
   onDelete<T>(listener: Listener<T>): this;
   onInstantiate<T>(listener: Listener<T>): this;
 
-  onGet<T>(implementation: Implementation<T>, listener: Listener<T>): this;
+  onEvery<T>(implementation: Implementation<T>, listener: Listener<T>): this;
   onSet<T>(implementation: Implementation<T>, listener: Listener<T>): this;
   onDelete<T>(implementation: Implementation<T>, listener: Listener<T>): this;
   onInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): this;
@@ -70,7 +71,7 @@ export interface Injector extends BaseDependencies {
   canImplement<T>(interface: Interface<T>, implementation: Implementation<T>): boolean;
 
   getFactory<T, V extends any[]>(implementation?: Implementation<T, V>): Factory<T, V>;
-  getImplements<T>(interface?: Interface<T>, implementation?: Implementation<T>): implementsValidator;
+  getCanImplement<T>(interface?: Interface<T>, implementation?: Implementation<T>): canImplementValidator;
 
   error(interface: Interface, implementation?: Implementation, message?: string): never;
 }
