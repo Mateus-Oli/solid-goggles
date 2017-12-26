@@ -14,6 +14,7 @@
     * [Container](#container)
     * [Injector Emitter](#injector-emitter)
     * [Injector Error](#injector-error)
+1. [Change Dependencies](#change-dependencies)
 
 ## Basic Usage
 ```javascript
