@@ -7,10 +7,10 @@ export class InjectorEmitter {
   static get DELETE() { return 'delete'; }
   static get INSTANTIATE() { return 'instantiate'; }
 
-  constructor(emitter = {}) {
+  constructor(emitter = {}, MapConstructor = Map) {
     [InjectorEmitter.GET, InjectorEmitter.SET, InjectorEmitter.DELETE, InjectorEmitter.INSTANTIATE].forEach(index => {
-      this[index] = new Map;
-      (emitter[index] || new Map).forEach((v, k) => this[index].set(k, [].concat(v)));
+      this[index] = new MapConstructor;
+      (emitter[index] || new MapConstructor).forEach((v, k) => this[index].set(k, [].concat(v)));
     });
   }
 

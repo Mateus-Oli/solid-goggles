@@ -9,6 +9,10 @@ export interface MapEquivalent<K, V> {
 
 export interface InjectorEmitterConstructor {
   new(injectorEmitter?: InjectorEmitterEquivalent): InjectorEmitter;
+  new(
+    injectorEmitter?: InjectorEmitterEquivalent,
+    MapConstructor?: new<K, V>(map?: Map<K, V>) => Map<K, V>
+  ): InjectorEmitter;
 }
 
 export interface BaseInjectorEmitter {

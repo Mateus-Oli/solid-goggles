@@ -7,9 +7,9 @@ export class Container {
 
   get size() { return this[Container.IMPLEMENTATION].size; }
 
-  constructor(container = []) {
+  constructor(container = [], MapConstructor = Map) {
     this.parent = container.parent;
-    [Container.INTERFACE, Container.IMPLEMENTATION, Container.INSTANCE].forEach(index => this[index] = new Map);
+    [Container.INTERFACE, Container.IMPLEMENTATION, Container.INSTANCE].forEach(index => this[index] = new MapConstructor);
 
     if (container.forEach) {
       container.forEach(entry => this.set(this.toEntry(entry)));

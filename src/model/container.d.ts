@@ -3,6 +3,10 @@ export type Interface<T = any, V = any> = new(...args: V[]) => {[K in keyof T]: 
 
 export interface ContainerConstructor {
   new(container?: ContainerEquivalent): Container;
+  new(
+    container?: ContainerEquivalent,
+    MapConstructor?: new<K, V>(map?: Map<K, V>) => Map<K, V>
+  ): Container;
 }
 
 export interface ContainerEquivalent {

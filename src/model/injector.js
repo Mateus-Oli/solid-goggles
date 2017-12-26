@@ -5,10 +5,10 @@ import { inject, canImplement, generated } from '../providers/symbols';
 
 export class Injector {
 
-  constructor({ container, emitter, factories } = {}) {
-    this.emitter = new InjectorEmitter(emitter);
-    this.container = new Container(container);
-    this.factories = new Map(factories);
+  constructor({ container, emitter, factories } = {}, ContainerConstructor = Container, EmitterConstructor = InjectorEmitter, MapConstructor = Map) {
+    this.emitter = new EmitterConstructor(emitter, MapConstructor);
+    this.container = new ContainerConstructor(container, MapConstructor);
+    this.factories = new MapConstructor(factories);
   }
 
   get(inter) {

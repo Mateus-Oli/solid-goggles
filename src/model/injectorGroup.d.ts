@@ -3,6 +3,10 @@ import { Interface, Implementation } from "./container";
 
 export interface InjectorGroupConstructor {
   new(injectorGroup?: InjectorGroupEquivalent): InjectorGroup;
+  new(
+    injectorGroup?: InjectorGroupEquivalent,
+    SetConstructor?: new<T>(set?: Set<T>) => Set<T>
+  ): InjectorGroup;
 }
 
 export interface InjectorGroupEquivalent {

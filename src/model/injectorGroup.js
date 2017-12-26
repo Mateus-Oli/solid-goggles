@@ -4,8 +4,8 @@ export class InjectorGroup {
 
   get size() { return this.injectors.size; }
 
-  constructor(injectorGroup = []) {
-    this.injectors = new Set;
+  constructor(injectorGroup = [], SetConstructor = Set) {
+    this.injectors = new SetConstructor;
     injectorGroup.forEach(injector => this.injectors.add(injector));
   }
 
