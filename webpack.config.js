@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 const path = require('path');
 
-module.exports = {
+exports = {
   entry: './src/index',
   output: {
     filename: 'index.js',
