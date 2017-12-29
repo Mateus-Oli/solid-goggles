@@ -92,8 +92,8 @@ injector.error(Interface, Implementation, 'message');
 ## Properties
 ```javascript
 import { Injector } from 'injector';
-import { Container } from 'injector/model/container';
-import { InjectorEmitter } from 'injector/model/injectorEmitter';
+import { Container } from 'injector';
+import { InjectorEmitter } from 'injector';
 
 const injector = new Injector({
   container: new Container,
@@ -240,7 +240,7 @@ group.error(Interface, Implementation, 'message');
 
 ### Container
 ```javascript
-import { Container } from 'injector/model/container';
+import { Container } from 'injector';
 
 class Interface {}
 class Implementation {}
@@ -271,7 +271,7 @@ container.clearInstances();
 
 ### Injector Emitter
 ```javascript
-import { InjectorEmitter } from 'injector/model/injectorEmitter';
+import { InjectorEmitter } from 'injector';
 
 const emitter = new InjectorEmitter;
 
