@@ -4,9 +4,9 @@ module.exports = {
   entry: './src/index',
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
-    sourceMapFilename: 'bundle.map'
+    path: path.resolve(__dirname, 'dist')
   },
+  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.ts']
   },
