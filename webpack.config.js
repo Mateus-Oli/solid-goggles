@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-exports = {
+module.exports = {
   entry: './src/index',
   output: {
     filename: 'index.js',
@@ -10,7 +10,7 @@ exports = {
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.js', '.ts']
+    extensions: ['.js']
   },
   module: {
     rules: [
