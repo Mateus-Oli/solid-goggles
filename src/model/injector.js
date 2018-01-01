@@ -87,7 +87,7 @@ export class Injector {
 
   findImplementation(inter) {
     if (!inter) {
-      return;
+      return inter;
     }
     const impl = this.container.getImplementation(inter);
     return impl || this.container.findReturn(([, impl]) => this.tryLink(inter, impl) && impl);
