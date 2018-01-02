@@ -55,7 +55,7 @@ export class InjectorGroup {
     return this;
   }
 
-  error(inter, impl, message) {
-    throw new InjectorError(inter, impl, message);
+  error(inter, impl, message, ErrorConstructor = InjectorError) {
+    throw new ErrorConstructor(inter, impl, message);
   }
 }

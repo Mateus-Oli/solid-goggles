@@ -1,5 +1,6 @@
 import { Injector } from "./injector";
 import { Interface, Implementation } from "./container";
+import { InjectorErrorConstructor } from "../error/injectorError";
 
 export interface InjectorGroupConstructor {
   new(injectorGroup?: InjectorGroupEquivalent): InjectorGroup;
@@ -33,7 +34,9 @@ export interface InjectorGroup {
 
   forEach(func: (injector: Injector) => any): this;
 
+  error(interface: Interface): never;
   error(interface: Interface, implementation?: Implementation, message?: string): never;
+  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor: InjectorErrorConstructor): never;
 }
 
 export const InjectorGroup: InjectorGroupConstructor;

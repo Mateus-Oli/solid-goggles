@@ -1,5 +1,6 @@
 import { Container, Implementation, Interface, ContainerEquivalent, ContainerConstructor } from './container';
 import { InjectorEmitter, Listener, InjectorEmitterEquivalent, InjectorEmitterConstructor } from './injectorEmitter';
+import { InjectorErrorConstructor } from '../error/injectorError';
 
 type Factory<T = any, V extends any[] = any> = (implementation: Implementation<T>, args: V, injector: Injector) => T;
 type canImplementValidator = <T>(interface: Interface<T>, implementation: Implementation<T>, injector: Injector) => boolean;
@@ -73,7 +74,9 @@ export interface Injector extends BaseDependencies {
   getFactory<T, V extends any[]>(implementation?: Implementation<T, V>): Factory<T, V>;
   getCanImplement<T>(interface?: Interface<T>, implementation?: Implementation<T>): canImplementValidator;
 
+  error(interface: Interface): never;
   error(interface: Interface, implementation?: Implementation, message?: string): never;
+  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor: InjectorErrorConstructor): never;
 }
 
 export const Injector: InjectorConstructor;

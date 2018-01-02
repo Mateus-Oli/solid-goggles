@@ -5,10 +5,13 @@ import { inject, canImplement, generated } from '../providers/symbols';
 
 export class Injector {
 
-  constructor({ container, emitter, factories } = {}, ContainerConstructor = Container, EmitterConstructor = InjectorEmitter, MapConstructor = Map) {
-    this.emitter = new EmitterConstructor(emitter, MapConstructor);
-    this.container = new ContainerConstructor(container, MapConstructor);
-    this.factories = new MapConstructor(factories);
+  constructor(injector = {}, ContainerConstructor = Container, EmitterConstructor = InjectorEmitter, MapConstructor = Map) {
+    this.baseFactory = injector.baseFactory;
+    this.baseCanImplement = injector.baseCanImplement;
+
+    this.emitter = new EmitterConstructor(injector.emitter, MapConstructor);
+    this.container = new ContainerConstructor(injector.container, MapConstructor);
+    this.factories = new MapConstructor(injector.factories);
   }
 
   get(inter) {
@@ -110,7 +113,7 @@ export class Injector {
     return inter[canImplement] || impl[canImplement] || this.baseCanImplement || this.constructor.baseCanImplement;
   }
 
-  error(inter, impl, message) {
-    throw new InjectorError(inter, impl, message);
+  error(inter, impl, message, ErrorConstructor = InjectorError) {
+    throw new ErrorConstructor(inter, impl, message);
   }
 }
