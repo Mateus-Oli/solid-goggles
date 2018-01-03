@@ -76,7 +76,7 @@ export interface Injector extends BaseDependencies {
 
   error(interface: Interface): never;
   error(interface: Interface, implementation?: Implementation, message?: string): never;
-  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor: InjectorErrorConstructor): never;
+  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor?: InjectorErrorConstructor): never;
 }
 
 export const Injector: InjectorConstructor;

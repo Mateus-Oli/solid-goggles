@@ -36,7 +36,7 @@ export interface InjectorGroup {
 
   error(interface: Interface): never;
   error(interface: Interface, implementation?: Implementation, message?: string): never;
-  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor: InjectorErrorConstructor): never;
+  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor?: InjectorErrorConstructor): never;
 }
 
 export const InjectorGroup: InjectorGroupConstructor;
