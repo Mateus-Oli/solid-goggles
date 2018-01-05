@@ -1,5 +1,5 @@
 export function getKeys(obj) {
-  if (typeof obj !== 'object') {
+  if (typeof obj !== 'object' || obj === null) {
     return [];
   }
   return typeof Reflect !== 'undefined' && Reflect.ownKeys
@@ -11,7 +11,7 @@ export function getAllKeys(obj) {
   let keys = [];
   do {
     keys = keys.concat(getKeys(obj));
-  } while(obj = Object.getPrototypeOf(obj));
+  } while(obj = obj && Object.getPrototypeOf(obj));
 
   return keys;
 }
