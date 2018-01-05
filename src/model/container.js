@@ -1,3 +1,5 @@
+import { findReturn } from "../utils/findReturn";
+
 
 export class Container {
 
@@ -93,12 +95,7 @@ export class Container {
   }
 
   findReturn(func) {
-    for (const [, entry] of this[Container.IMPLEMENTATION]) {
-      const value = func(this.toArray(entry, this));
-      if (value) {
-        return value;
-      }
-    }
+    return findReturn(this[Container.IMPLEMENTATION], ([, entry]) => func(this.toArray(entry), this));
   }
 
   forEach(func) {

@@ -1,4 +1,5 @@
 import { InjectorError } from '../error/injectorError';
+import { findReturn } from '../utils/findReturn';
 
 export class InjectorGroup {
 
@@ -42,12 +43,7 @@ export class InjectorGroup {
   }
 
   findReturn(fn) {
-    for (const injector of this.injectors) {
-      const value = fn(injector);
-      if (value) {
-        return value;
-      }
-    }
+    return findReturn(this.injectors, fn);
   }
 
   forEach(fn) {
