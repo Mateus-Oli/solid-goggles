@@ -7,7 +7,7 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
-    library: 'injector',
+    library: 'Injector',
     libraryTarget: 'commonjs2'
   },
   devtool: 'source-map',
