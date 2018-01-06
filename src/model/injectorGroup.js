@@ -1,5 +1,6 @@
 import { InjectorError } from '../error/injectorError';
 import { findReturn } from '../utils/findReturn';
+import { error } from '../utils/error';
 
 export class InjectorGroup {
 
@@ -11,7 +12,7 @@ export class InjectorGroup {
   }
 
   get(inter) {
-    return this.tryGet(inter) || this.error(inter);
+    return this.tryGet(inter) || error(new InjectorError(inter));
   }
 
   tryGet(inter) {
@@ -49,9 +50,5 @@ export class InjectorGroup {
   forEach(fn) {
     this.injectors.forEach(injector => fn(injector));
     return this;
-  }
-
-  error(inter, impl, message, ErrorConstructor = InjectorError) {
-    throw new ErrorConstructor(inter, impl, message);
   }
 }

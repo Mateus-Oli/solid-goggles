@@ -73,10 +73,6 @@ export interface Injector extends BaseDependencies {
 
   getFactory<T, V extends any[]>(implementation?: Implementation<T, V>): Factory<T, V>;
   getCanImplement<T>(interface?: Interface<T>, implementation?: Implementation<T>): canImplementValidator;
-
-  error(interface: Interface): never;
-  error(interface: Interface, implementation?: Implementation, message?: string): never;
-  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor?: InjectorErrorConstructor): never;
 }
 
 export const Injector: InjectorConstructor;

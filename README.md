@@ -85,8 +85,6 @@ injector.canImplement(Interface, Implementation);
 
 injector.getFactory(Implementation);
 injector.getCanImplement(Interface, Implementation);
-
-injector.error(Interface, Implementation, 'message');
 ```
 
 ## Properties
@@ -234,8 +232,6 @@ group.deleteInjector(injector);
 group.hasInjector(injector);
 
 group.clear();
-
-group.error(Interface, Implementation, 'message');
 ```
 
 ### Container

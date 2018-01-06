@@ -2,6 +2,7 @@ import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
 import { inject, canImplement, generated } from '../providers/symbols';
+import { error } from '../utils/error';
 
 export class Injector {
 
@@ -15,7 +16,7 @@ export class Injector {
   }
 
   get(inter) {
-    return this.tryGet(inter) || this.error(inter);
+    return this.tryGet(inter) || error(new InjectorError(inter));
   }
   set(inter, inst) {
     const impl = this.findImplementation(inter);
@@ -37,7 +38,7 @@ export class Injector {
   }
 
   link(inter, impl) {
-    return this.tryLink(inter, impl) || this.error(inter, impl, InjectorError.LINK_ERROR);
+    return this.tryLink(inter, impl) || error(new InjectorError(inter, impl, InjectorError.LINK_ERROR));
   }
   tryLink(inter, impl) {
     return this.canImplement(inter, impl) && this.container.setInterface(inter, impl);
@@ -111,9 +112,5 @@ export class Injector {
   }
   getCanImplement(inter = {}, impl = {}) {
     return inter[canImplement] || impl[canImplement] || this.baseCanImplement || this.constructor.baseCanImplement;
-  }
-
-  error(inter, impl, message, ErrorConstructor = InjectorError) {
-    throw new ErrorConstructor(inter, impl, message);
   }
 }

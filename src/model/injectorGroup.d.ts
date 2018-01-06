@@ -33,10 +33,6 @@ export interface InjectorGroup {
   findReturn<T>(func: (injector: Injector) => T): T;
 
   forEach(func: (injector: Injector) => any): this;
-
-  error(interface: Interface): never;
-  error(interface: Interface, implementation?: Implementation, message?: string): never;
-  error(interface: Interface, implementation?: Implementation, message?: string, ErrorConstructor?: InjectorErrorConstructor): never;
 }
 
 export const InjectorGroup: InjectorGroupConstructor;
