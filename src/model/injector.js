@@ -50,19 +50,19 @@ export class Injector {
   }
 
   onEvery(impl, listener) {
-    return this.emitter.onEvery(this.setImplementation(impl), listener);
+    return this.emitter.onEvery(impl, listener);
   }
   onGet(impl, listener) {
-    return this.emitter.onGet(this.setImplementation(impl), listener);
+    return this.emitter.onGet(impl, listener);
   }
   onSet(impl, listener) {
-    return this.emitter.onSet(this.setImplementation(impl), listener);
+    return this.emitter.onSet(impl, listener);
   }
   onDelete(impl, listener) {
-    return this.emitter.onDelete(this.setImplementation(impl), listener);
+    return this.emitter.onDelete(impl, listener);
   }
   onInstantiate(impl, listener) {
-    return this.emitter.onInstantiate(this.setImplementation(impl), listener);
+    return this.emitter.onInstantiate(impl, listener);
   }
 
   generate(inter) {
