@@ -5,12 +5,13 @@ export interface InjectorErrorConstructor {
   readonly LINK_ERROR: string;
 
   new(interface: Interface, implementation: Implementation): InjectorError;
+  new(interface: any, implementation: any): InjectorError;
 }
 
 export interface InjectorError extends Error {
 
-  interface: Interface;
-  implementation: Implementation;
+  interface: Interface | any;
+  implementation: Implementation | any;
 }
 
 export const InjectorError: InjectorErrorConstructor;

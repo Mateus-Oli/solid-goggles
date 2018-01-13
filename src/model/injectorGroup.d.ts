@@ -19,7 +19,10 @@ export interface InjectorGroup {
   readonly size: number;
 
   get<T>(interface: Interface<T>): T;
+  get<T>(interface: any): T;
+
   getInstance<T>(interface: Interface<T>): T;
+  getInstance<T>(interface: any): T;
 
   getInjector<T>(instance: T): Injector;
   setInjector(injector: Injector): this;
