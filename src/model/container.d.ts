@@ -1,12 +1,11 @@
-export type Implementation<T = any, V = any> = new(...args: V[]) => T;
-export type Interface<T = any, V = any> = new(...args: V[]) => {[K in keyof T]: T[K]};
+export type Implementation<T = any, V = any> = new (...args: V[]) => T;
+export type Interface<T = any, V = any> = new (...args: V[]) => {
+  [K in keyof T]: T[K]
+};
 
 export interface ContainerConstructor {
-  new(container?: ContainerEquivalent): Container;
-  new(
-    container?: ContainerEquivalent,
-    MapConstructor?: new<K, V>(map?: Map<K, V>) => Map<K, V>
-  ): Container;
+  new (container?: ContainerEquivalent): Container;
+  new (container?: ContainerEquivalent, MapConstructor?: new <K, V>(map?: Map<K, V>) => Map<K, V>): Container;
 }
 
 export interface ContainerEquivalent {
@@ -14,7 +13,6 @@ export interface ContainerEquivalent {
 }
 
 export interface Container {
-
   parent: Container;
 
   readonly size: number;
@@ -55,6 +53,9 @@ export interface Container {
   clearInterfaces(): void;
   clearImplementations(): void;
   clearInstances(): void;
+
+  findReturn<T>(func: (entry: [Interface, Implementation, any]) => T): T;
+  findReturn<T>(func: (entry: [any, any, any]) => T): T;
 }
 
 export const Container: ContainerConstructor;
