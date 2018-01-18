@@ -18,6 +18,8 @@ describe('InjectorError', () => {
 
   it('contains implementation property', () => expect(error.implementation).toBe(ImplementationMock));
 
+  it('displays [object Object] in names', () => expect((new InjectorError).message).toBe(`Could not instantiate interface '[object Object]'`));
+
   it('displays correct message', () => expect(error.message).toBe(`Implementation '${ImplementationMock.name}' is not compatible with '${InterfaceMock.name}'`));
 });
 
