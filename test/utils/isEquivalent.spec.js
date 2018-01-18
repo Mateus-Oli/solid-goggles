@@ -1,6 +1,23 @@
 import { isEquivalent } from '../../src/utils/isEquivalent';
 
 describe('is equivalent', () => {
+  it('considers null and undefined as possessing no methods', () => {
+
+    class Empty {}
+
+    class Something {
+      method() {}
+    }
+
+    expect(isEquivalent(null, undefined)).toBe(true);
+
+    expect(isEquivalent(null, Empty)).toBe(true);
+    expect(isEquivalent(undefined, Empty)).toBe(true);
+
+    expect(isEquivalent(Something, null)).toBe(false);
+    expect(isEquivalent(Something, undefined)).toBe(false);
+  });
+
   it('compare first class method names with second class', () => {
     class First {
       method1() {}

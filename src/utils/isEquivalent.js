@@ -1,10 +1,8 @@
-export function getKeys(obj) {
+export function getKeys(obj = null) {
   if (typeof obj !== 'object' || obj === null) {
     return [];
   }
-  return typeof Reflect !== 'undefined' && Reflect.ownKeys
-    ? Reflect.ownKeys(obj)
-    : Object.getOwnPropertyNames(obj);
+  return Object.getOwnPropertyNames(obj);
 }
 
 export function getAllKeys(obj) {
@@ -30,7 +28,7 @@ export function isMethodEquivalent(first, second) {
 }
 
 export function isObjectMethodEquivalent(first, second) {
-  return getMethods(first).every(method => isMethodEquivalent(first[method], second[method]));
+  return getMethods(first).every(method => isMethodEquivalent(first[method], (second || {})[method]));
 }
 
 export function isClassEquivalent(first, second) {
@@ -42,7 +40,7 @@ export function isClassEquivalent(first, second) {
 
 export function isPrimitive(value) {
   const type = typeof value;
-  return type !== 'object' && type !== 'function';
+  return type !== 'object' && type !== 'function' && type !== 'undefined';
 }
 
 export function isEquivalent(first, second) {
