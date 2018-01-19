@@ -23,5 +23,5 @@ describe('defaultFactory', () => {
   it('return non functions', () => expect(value).toBe(instanceMock));
 
   // Works only with non transpiled arrow functions
-  // it('executes non constructor functions', () => expect(defaultFactory(() => 3)).toBe(3));
+  it('executes non constructor functions', () => expect(defaultFactory(eval('() => 3'))).toBe(3));
 });

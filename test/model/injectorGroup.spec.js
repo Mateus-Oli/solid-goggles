@@ -10,6 +10,7 @@ class FirstImplementation {
   first() { return 'first'; }
 }
 firstInjector.setImplementation(FirstImplementation);
+
 class SecondImplementation {
   second() { return 'second'; }
 }

@@ -4,8 +4,7 @@
   "description": "Dependency Injector",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "jest --watch",
-    "coverage": "jest --coverage",
+    "test": "jest --watch --coverage",
     "webpack": "webpack --watch",
     "watch": "npm run webpack",
     "start": "node ./dist"

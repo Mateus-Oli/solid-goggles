@@ -20,7 +20,7 @@ export class InjectorGroup {
   }
 
   getInjector(inst) {
-    return this.find(({ container }) => container.getInstance(inst) || container.getImplementation(inst) || container.getInterface(inst));
+    return this.find(({ container }) => container.getImplementation(inst));
   }
   setInjector(injector) {
     this.injectors.add(injector);

@@ -56,6 +56,9 @@ export interface Container {
 
   findReturn<T>(func: (entry: [Interface, Implementation, any]) => T): T;
   findReturn<T>(func: (entry: [any, any, any]) => T): T;
+
+  forEach(func: (entry: [Interface, Implementation, any]) => any): void;
+  forEach(func: (entry: [any, any, any]) => any): void;
 }
 
 export const Container: ContainerConstructor;
