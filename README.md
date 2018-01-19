@@ -1,5 +1,8 @@
 # Injector
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/2c0a3415ea4c9f3ec375/maintainability)](https://codeclimate.com/github/Mateus-Oli/solid-goggles/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/2c0a3415ea4c9f3ec375/test_coverage)](https://codeclimate.com/github/Mateus-Oli/solid-goggles/test_coverage)
+
 1. [Basic Usage](#basic-usage)
 1. [Methods](#methods)
 1. [Properites](#properties)
