@@ -80,9 +80,67 @@ describe('Container', () => {
     expect(called).toBe(container.size);
   });
 
-  it('clear values', () => {
+  it('clear implementations', () => {
 
     container.clearImplementations();
     expect(container.size).toBe(0);
+  });
+
+  it('clear interfaces', () => {
+    expect(container.getInterface(InterfaceMock)).toBe(InterfaceMock);
+    container.clearInterfaces();
+    expect(container.getInterface(InterfaceMock)).toBe(undefined);
+  });
+
+  it('clear instances', () => {
+    expect(container.getInstance(instanceMock)).toBe(instanceMock);
+    container.clearInstances();
+    expect(container.getInstance(instanceMock)).toBe(undefined);
+  });
+
+  it('delete implementation', () => {
+    container.setImplementation(OtherImplementation);
+
+    expect(container.getImplementation(OtherImplementation)).toBe(OtherImplementation);
+    container.deleteImplementation(OtherImplementation);
+    expect(container.getImplementation(OtherImplementation)).toBe(undefined);
+  });
+
+  it('delete interface', () => {
+    container.setInterface(OtherInterface, OtherImplementation);
+
+    expect(container.getInterface(OtherInterface)).toBe(OtherInterface);
+    container.deleteInterface(OtherInterface);
+    expect(container.getInterface(OtherInterface)).toBe(undefined);
+  });
+
+  it('delete instance', () => {
+    container.setInstance(OtherImplementation, otherInstance);
+
+    expect(container.getInstance(otherInstance)).toBe(otherInstance);
+    container.deleteInstance(otherInstance);
+    expect(container.deleteInstance(otherInstance)).toBe(undefined);
+  });
+
+  it('converts entries', () => {
+    expect(container.toArray({
+      [Container.INTERFACE]: 'a',
+      [Container.IMPLEMENTATION]: 'b',
+      [Container.INSTANCE]: 'c'
+    })).toMatchObject(['a', 'b', 'c']);
+
+    expect(container.toArray()).toBeInstanceOf(Array);
+    expect(container.toArray([])).toBeInstanceOf(Array);
+  });
+
+  it('converts entries', () => {
+    expect(container.toEntry(['a', 'b', 'c'])).toMatchObject({
+      [Container.INTERFACE]: 'a',
+      [Container.IMPLEMENTATION]: 'b',
+      [Container.INSTANCE]: 'c'
+    });
+
+    expect(container.toEntry()).toBeInstanceOf(Object);
+    expect(container.toEntry({})).toBeInstanceOf(Object);
   });
 });

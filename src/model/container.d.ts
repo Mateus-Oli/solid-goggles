@@ -17,9 +17,9 @@ export interface Container {
 
   readonly size: number;
 
-  getInteface<T>(interface: Interface<T>): Interface<T>;
-  getInteface<T>(instance: T): Interface<T>;
-  getInteface<T>(instance: any): T;
+  getInterface<T>(interface: Interface<T>): Interface<T>;
+  getInterface<T>(instance: T): Interface<T>;
+  getInterface<T>(instance: any): T;
 
   getImplementation<T>(interface: Interface<T>): Implementation<T>;
   getImplementation<T>(instance: T): Implementation<T>;
@@ -38,9 +38,9 @@ export interface Container {
   setInstance<T>(implementation: Implementation<T>, instance: T): T;
   setInstance<T>(implementation: any, instance: T): T;
 
-  deleteInteface<T>(interface: Interface<T>): Interface<T>;
-  deleteInteface<T>(instance: T): Interface<T>;
-  deleteInteface<T>(instance: any): T;
+  deleteInterface<T>(interface: Interface<T>): Interface<T>;
+  deleteInterface<T>(instance: T): Interface<T>;
+  deleteInterface<T>(instance: any): T;
 
   deleteImplementation<T>(interface: Interface<T>): Implementation<T>;
   deleteImplementation<T>(instance: T): Implementation<T>;
