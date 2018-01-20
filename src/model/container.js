@@ -70,8 +70,8 @@ export class Container {
     const entry = this[Container.IMPLEMENTATION].get(impl) || {};
 
     this[Container.IMPLEMENTATION].set(impl, entry);
-    this[Container.INTERFACE].set(inter, impl);
-    this[Container.INSTANCE].set(inst, impl);
+    if (inter !== undefined) { this[Container.INTERFACE].set(inter, impl); }
+    if (inst !== undefined) { this[Container.INSTANCE].set(inst, impl); }
 
     return Object.assign(entry, value);
   }
@@ -80,7 +80,7 @@ export class Container {
     const deleted = entry[index];
 
     delete entry[index];
-    return this[index].delete(deleted) && deleted;
+    return this[index].delete(deleted) ? deleted : undefined;
   }
 
   clear(...index) {

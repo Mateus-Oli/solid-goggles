@@ -14,12 +14,12 @@ class OtherInterface {}
 
 const otherInstance = {};
 
-container.setInterface(InterfaceMock, ImplementationMock);
-container.setInstance(ImplementationMock, instanceMock);
-
-container.setInstance(OtherImplementation, otherInstance);
-
 describe('Container', () => {
+
+  it('returns set value', () => {
+    expect(container.setInterface(InterfaceMock, ImplementationMock)).toBe(InterfaceMock);
+    expect(container.setInstance(ImplementationMock, instanceMock)).toBe(instanceMock);
+  });
 
   it('gets instance from interface', () => expect(container.getInstance(InterfaceMock)).toBe(instanceMock));
   it('gets instance from implementation', () => expect(container.getInstance(ImplementationMock)).toBe(instanceMock));
@@ -51,7 +51,7 @@ describe('Container', () => {
 
   it('creates from entries',() => {
     const entries = new Container([
-     [InterfaceMock, ImplementationMock, instanceMock],
+      [InterfaceMock, ImplementationMock, instanceMock],
       [OtherInterface, OtherImplementation, otherInstance]
     ]);
 
@@ -72,12 +72,40 @@ describe('Container', () => {
 
   it('shows size as number of implementations', () => expect(container.size).toBe(container.implementation.size));
 
-  it('iterates over all instances', () => {
+  it('iterates over all implementations with [interface, implementation, instance]', () => {
 
-    let called = 0;
-    container.forEach(() => called++);
+    const fn = jest.fn(([inter, impl, inst]) => {
+      expect(inter).toBe(InterfaceMock);
+      expect(impl).toBe(ImplementationMock);
+      expect(inst).toBe(instanceMock);
+    });
+    container.forEach(fn);
 
-    expect(called).toBe(container.size);
+    expect(fn).toHaveBeenCalledTimes(container.size);
+  });
+
+  it('delete implementation', () => {
+    container.setImplementation(OtherImplementation);
+
+    expect(container.getImplementation(OtherImplementation)).toBe(OtherImplementation);
+    expect(container.deleteImplementation(OtherImplementation)).toBe(OtherImplementation);
+    expect(container.deleteImplementation(OtherImplementation)).toBe(undefined);
+  });
+
+  it('delete interface', () => {
+    container.setInterface(OtherInterface, OtherImplementation);
+
+    expect(container.getInterface(OtherInterface)).toBe(OtherInterface);
+    expect(container.deleteInterface(OtherInterface)).toBe(OtherInterface);
+    expect(container.deleteInterface(OtherInterface)).toBe(undefined);
+  });
+
+  it('delete instance', () => {
+    container.setInstance(OtherImplementation, otherInstance);
+
+    expect(container.getInstance(otherInstance)).toBe(otherInstance);
+    expect(container.deleteInstance(otherInstance)).toBe(otherInstance);
+    expect(container.deleteInstance(otherInstance)).toBe(undefined);
   });
 
   it('clear implementations', () => {
@@ -96,30 +124,6 @@ describe('Container', () => {
     expect(container.getInstance(instanceMock)).toBe(instanceMock);
     container.clearInstances();
     expect(container.getInstance(instanceMock)).toBe(undefined);
-  });
-
-  it('delete implementation', () => {
-    container.setImplementation(OtherImplementation);
-
-    expect(container.getImplementation(OtherImplementation)).toBe(OtherImplementation);
-    container.deleteImplementation(OtherImplementation);
-    expect(container.getImplementation(OtherImplementation)).toBe(undefined);
-  });
-
-  it('delete interface', () => {
-    container.setInterface(OtherInterface, OtherImplementation);
-
-    expect(container.getInterface(OtherInterface)).toBe(OtherInterface);
-    container.deleteInterface(OtherInterface);
-    expect(container.getInterface(OtherInterface)).toBe(undefined);
-  });
-
-  it('delete instance', () => {
-    container.setInstance(OtherImplementation, otherInstance);
-
-    expect(container.getInstance(otherInstance)).toBe(otherInstance);
-    container.deleteInstance(otherInstance);
-    expect(container.deleteInstance(otherInstance)).toBe(undefined);
   });
 
   it('converts entries', () => {
@@ -142,5 +146,24 @@ describe('Container', () => {
 
     expect(container.toEntry()).toBeInstanceOf(Object);
     expect(container.toEntry({})).toBeInstanceOf(Object);
+  });
+
+  it('calls findReturn function size times with [interface, implementation, instance]', () => {
+    container.setInterface(InterfaceMock, ImplementationMock);
+    container.setInstance(ImplementationMock, instanceMock);
+
+    const finder = jest.fn(([inter, impl, inst]) => {
+      expect(inter).toBe(InterfaceMock);
+      expect(impl).toBe(ImplementationMock);
+      expect(inst).toBe(instanceMock);
+    });
+
+    container.findReturn(finder);
+
+    expect(finder).toHaveBeenCalledTimes(container.size);
+  });
+
+  it('returns found value', () => {
+    expect(container.findReturn(([,, inst]) => inst)).toBe(instanceMock);
   });
 });
