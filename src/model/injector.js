@@ -6,6 +6,13 @@ import { error } from '../utils/error';
 
 export class Injector {
 
+  static of(...impls) {
+    const injector = new this;
+    impls.forEach(impl => injector.setImplementation(impl));
+
+    return injector;
+  }
+
   constructor(injector = {}, ContainerConstructor = Container, EmitterConstructor = InjectorEmitter, MapConstructor = Map) {
     this.baseFactory = injector.baseFactory;
     this.baseCanImplement = injector.baseCanImplement;
@@ -20,7 +27,7 @@ export class Injector {
   }
   set(inter, inst) {
     const impl = this.findImplementation(inter);
-    return this.container.setInstance(impl, this.emitter.emitSet(impl, inst));
+    return inst && this.container.setInstance(impl, this.emitter.emitSet(impl, inst));
   }
   delete(inter) {
     const inst = this.findInstance(inter);
@@ -31,7 +38,9 @@ export class Injector {
 
   tryGet(inter) {
     const impl = this.findImplementation(inter);
-    return impl && this.emitter.emitGet(impl, this.findInstance(impl) || this.generate(impl));
+    const inst = this.findInstance(impl) || this.generate(impl);
+
+    return impl && inst && this.emitter.emitGet(impl, inst);
   }
   setImplementation(impl) {
     return impl && this.container.setImplementation(impl);
@@ -78,7 +87,7 @@ export class Injector {
 
   instantiate(inter) {
     const impl = this.findImplementation(inter);
-    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
+    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl)));
   }
   inject(impl) {
     return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
