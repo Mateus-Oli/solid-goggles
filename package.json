@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Inversion of Control for Javascript",
   "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "prerelease": "webpack",
     "release": "np",
