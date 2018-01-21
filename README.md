@@ -5,6 +5,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/mateus-oli/solid-goggles/badge.svg?targetFile=package.json)](https://snyk.io/test/github/mateus-oli/solid-goggles?targetFile=package.json)
 [![dependencies](https://david-dm.org/Mateus-Oli/solid-goggles.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 [![devDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/dev-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
+[![perrDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/peer-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 
 1. [Basic Usage](#basic-usage)
 1. [Methods](#methods)
