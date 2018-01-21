@@ -226,7 +226,7 @@ container.getInterface(Interface || Implementation || instance);
 container.getImplementation(Interface || Implementation || instance);
 container.getInstance(Interface || Implementation || instance);
 
-container.setInterface(Interface, Implementation);
+container.setInterface(Implementation, Interface);
 container.setImplementation(Implementation);
 container.setInstance(Implementation, instance);
 

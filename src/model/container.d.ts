@@ -29,8 +29,8 @@ export interface Container {
   getInstance<T>(instance: T): T;
   getInstance<T>(instance: any): T;
 
-  setInterface<T>(interface: Interface<T>, implementation: Implementation<T>): Interface<T>;
-  setInterface<T>(interface: T, implementation: any): T;
+  setInterface<T>(implementation: Implementation<T>, interface: Interface<T>): Interface<T>;
+  setInterface<T>(implementation: any, interface: T): T;
 
   setImplementation<T>(implementation: Implementation<T>): Implementation<T>;
   setImplementation<T>(implementation: T): T;

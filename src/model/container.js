@@ -28,7 +28,7 @@ export class Container {
     return this.get(Container.INSTANCE, value);
   }
 
-  setInterface(inter, impl) {
+  setInterface(impl, inter) {
     return this.set({ [Container.INTERFACE]: inter, [Container.IMPLEMENTATION]: impl })[Container.INTERFACE];
   }
   setImplementation(impl) {

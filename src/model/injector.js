@@ -50,7 +50,7 @@ export class Injector {
     return this.tryLink(inter, impl) || error(new InjectorError(inter, impl, InjectorError.LINK_ERROR));
   }
   tryLink(inter, impl) {
-    return this.canImplement(inter, impl) && this.container.setInterface(inter, impl);
+    return this.canImplement(inter, impl) && this.container.setInterface(impl, inter);
   }
 
   factory(impl, factory) {

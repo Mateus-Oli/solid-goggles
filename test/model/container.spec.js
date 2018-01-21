@@ -17,7 +17,7 @@ const otherInstance = {};
 describe('Container', () => {
 
   it('returns set value', () => {
-    expect(container.setInterface(InterfaceMock, ImplementationMock)).toBe(InterfaceMock);
+    expect(container.setInterface(ImplementationMock, InterfaceMock)).toBe(InterfaceMock);
     expect(container.setInstance(ImplementationMock, instanceMock)).toBe(instanceMock);
   });
 
@@ -93,7 +93,7 @@ describe('Container', () => {
   });
 
   it('delete interface', () => {
-    container.setInterface(OtherInterface, OtherImplementation);
+    container.setInterface(OtherImplementation, OtherInterface);
 
     expect(container.getInterface(OtherInterface)).toBe(OtherInterface);
     expect(container.deleteInterface(OtherInterface)).toBe(OtherInterface);
@@ -149,7 +149,7 @@ describe('Container', () => {
   });
 
   it('calls findReturn function size times with [interface, implementation, instance]', () => {
-    container.setInterface(InterfaceMock, ImplementationMock);
+    container.setInterface(ImplementationMock, InterfaceMock);
     container.setInstance(ImplementationMock, instanceMock);
 
     const finder = jest.fn(([inter, impl, inst]) => {
