@@ -7,6 +7,7 @@
         "**/.DS_Store": true,
         "node_modules": true,
         "package-lock.json": true,
-        "dist": true
+        "dist": true,
+        "coverage": true
     }
 }
