@@ -1,8 +1,4 @@
 {
-  "presets": [
-    ["env", {
-
-    }]
-  ],
+  "presets": [ "env" ],
   "sourceMaps": "inline"
 }

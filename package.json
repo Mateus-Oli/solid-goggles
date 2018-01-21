@@ -5,8 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "jest --watch --coverage",
-    "webpack": "webpack --watch",
-    "watch": "npm run webpack",
+    "watch": "webpack --watch",
     "start": "node ./dist"
   },
   "keywords": [
@@ -21,6 +20,7 @@
   "devDependencies": {
     "@types/jest": "^22.0.1",
     "babel-cli": "^6.26.0",
+    "babel-jest": "^22.1.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.16.0",
