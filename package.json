@@ -10,9 +10,10 @@
   },
   "keywords": [
     "di",
-    "dependency injection",
     "ioc",
-    "inversion of control"
+    "dependency",
+    "injection",
+    "inversion"
   ],
   "repository": {
     "type": "git",
