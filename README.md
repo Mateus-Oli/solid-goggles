@@ -1,9 +1,11 @@
-# Injector
+# Solid Goggles
+[![NPM](https://nodei.co/npm/solid-goggles.png)](https://nodei.co/npm/solid-goggles/)
 
 [![Build Status](https://travis-ci.org/Mateus-Oli/solid-goggles.svg?branch=master)](https://travis-ci.org/Mateus-Oli/solid-goggles)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2c0a3415ea4c9f3ec375/maintainability)](https://codeclimate.com/github/Mateus-Oli/solid-goggles/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2c0a3415ea4c9f3ec375/test_coverage)](https://codeclimate.com/github/Mateus-Oli/solid-goggles/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/mateus-oli/solid-goggles/badge.svg?targetFile=package.json)](https://snyk.io/test/github/mateus-oli/solid-goggles?targetFile=package.json)
+
 [![dependencies](https://david-dm.org/Mateus-Oli/solid-goggles.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 [![devDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/dev-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 [![perrDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/peer-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
@@ -31,7 +33,7 @@ $ npm i solid-goggles
 
 ## Basic Usage
 ```javascript
-import { Injector } from 'injector';
+import { Injector } from 'solid-goggles';
 
 class Implementation {
   method() {}
@@ -47,7 +49,7 @@ const instance = injector.get(Interface);
 
 ## Methods
 ```javascript
-import { Injector } from 'injector';
+import { Injector } from 'solid-goggles';
 
 class Interface {}
 class Implementation {}
@@ -100,9 +102,9 @@ injector.getCanImplement(Interface, Implementation);
 
 ## Properties
 ```javascript
-import { Injector } from 'injector';
-import { Container } from 'injector';
-import { InjectorEmitter } from 'injector';
+import { Injector } from 'solid-goggles';
+import { Container } from 'solid-goggles';
+import { InjectorEmitter } from 'solid-goggles';
 
 const injector = new Injector({
   container: new Container,
@@ -119,7 +121,7 @@ const clone = new Injector(injector);
 
 ## Factory
 ```javascript
-import { Injector } from 'injector';
+import { Injector } from 'solid-goggles';
 
 class Implementation {}
 
@@ -130,7 +132,7 @@ injector.factory(Implementation, (implementation, args, injector) => new impleme
 
 ## Events
 ```javascript
-import { Injector } from 'injector';
+import { Injector } from 'solid-goggles';
 
 class Implementation {}
 
@@ -154,14 +156,14 @@ injector.onGet(Implementation, (instance, next) => {
 
 ## Symbols
 ```javascript
-import { canImplement, inject, generated } from 'injector';
+import { canImplement, inject, generated } from 'solid-goggles';
 ```
 
 ## Manage
 
 ### Inject
 ```javascript
-import { inject } from 'injector';
+import { inject } from 'solid-goggles';
 
 class OtherImplementation {}
 
@@ -178,7 +180,7 @@ class Implementation {
 
 ### Generated
 ```javascript
-import { generated } from 'injector';
+import { generated } from 'solid-goggles';
 
 class Implementation {
 
@@ -195,7 +197,7 @@ class Implementation {
 
 ## Overwrite
 ```javascript
-import { Injector, canImplement } from 'injector';
+import { Injector, canImplement } from 'solid-goggles';
 
 Injector.baseCanImplement = (interface, implementation, injector) => true;
 Injector.baseFactory = (implementation, args, injector) => new implementation(...args);
@@ -221,7 +223,7 @@ class Implementation {
 
 ### Container
 ```javascript
-import { Container } from 'injector';
+import { Container } from 'solid-goggles';
 
 class Interface {}
 class Implementation {}
@@ -252,7 +254,7 @@ container.clearInstances();
 
 ### Injector Emitter
 ```javascript
-import { InjectorEmitter } from 'injector';
+import { InjectorEmitter } from 'solid-goggles';
 
 const emitter = new InjectorEmitter;
 
@@ -280,7 +282,7 @@ emitter.removeInstantiate(Implementation, instantiateListener);
 
 ### Injector Error
 ```javascript
-import { InjectorError } from 'injector';
+import { InjectorError } from 'solid-goggles';
 
 class Interface {}
 class Implementation {}
@@ -290,7 +292,7 @@ const injectorError = new InjectorError(Interface, Implementation, 'message');
 
 ## Change Dependencies
 ```javascript
-import { Injector, Container, InjectorEmitter } from 'injector';
+import { Injector, Container, InjectorEmitter } from 'solid-goggles';
 
 class OtherContainer implements Container {}
 class OtherInjectorEmitter implements InjectorEmitter {}

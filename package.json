@@ -4,6 +4,8 @@
   "description": "Inversion of Control for Javascript",
   "main": "./dist/index.js",
   "scripts": {
+    "prerelease": "webpack",
+    "release": "np",
     "test": "jest --coverage",
     "watch": "webpack --watch",
     "start": "node ./dist"
@@ -29,6 +31,7 @@
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.16.0",
     "jest": "^22.1.4",
+    "np": "^2.18.3",
     "webpack": "^3.10.0"
   }
 }
