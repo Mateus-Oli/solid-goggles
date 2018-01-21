@@ -23,6 +23,9 @@ interface BaseInjector extends BaseDependencies {
 
 export interface InjectorConstructor extends BaseDependencies {
 
+  of(...implementations: Implementation[]): Injector;
+  of(...implementations: any[]): Injector;
+
   new(injector?: InjectorEquivalent): Injector;
   new(
     injector?: InjectorEquivalent,
@@ -41,20 +44,23 @@ export interface Injector extends BaseDependencies {
   get<T>(interface: Interface<T>): T;
   get<T>(interface: any): T;
 
+  tryGet<T>(interface: Interface<T>): T;
+  tryGet<T>(interface: any): T;
+
   set<T>(implementation: Implementation<T>, instance: T): T;
   set<T>(implementation: any, instance: T): T;
 
   delete<T>(implementation: Implementation<T>): Implementation<T>;
   delete<T>(implementation: T): T;
 
-  getInstance<T>(interface: Interface<T>): T;
-  getInstance<T>(interface: any): T;
-
   setImplementation<T>(implementation: Implementation<T>): Implementation<T>;
   setImplementation<T>(implementation: T): T;
 
   link<T>(interface: Interface<T>, implementation: Implementation<T>): Interface<T>;
   link<T>(interface: T, implementation: any): T;
+
+  tryLink<T>(interface: Interface<T>, implementation: Implementation<T>): Interface<T>;
+  tryLink<T>(interface: T, implementation: any): T;
 
   factory<T>(implementation: Implementation<T>, factory: Factory<T>): Factory<T>;
   factory<T>(implementation: any, factory: Factory<T>): Factory<T>;

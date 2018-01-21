@@ -23,12 +23,10 @@
 ```javascript
 import { Injector } from 'injector';
 
-const injector = new Injector;
-
 class Implementation {
   method() {}
 }
-injector.setImplementation(Implementation);
+const injector = Injector.of(Implementation);
 
 class Interface {
   method() {}
