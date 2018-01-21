@@ -2,11 +2,15 @@ import { Container, Implementation, Interface, ContainerEquivalent, ContainerCon
 import { InjectorEmitter, Listener, InjectorEmitterEquivalent, InjectorEmitterConstructor } from './injectorEmitter';
 import { InjectorErrorConstructor } from '../error/injectorError';
 
-type Factory<T = any, V extends any[] = any> = (implementation: Implementation<T>, args: V, injector: Injector) => T;
-type Factory<T = any, V extends any[] = any> = (implementation: any, args: V, injector: Injector) => T;
+interface Factory<T = any, V extends any[] = any> {
+  (implementation: Implementation<T>, args: V, injector: Injector): T;
+  (implementation: any, args: V, injector: Injector): T;
+}
 
-type canImplementValidator = <T>(interface: Interface<T>, implementation: Implementation<T>, injector: Injector) => boolean;
-type canImplementValidator = <T>(interface: any, implementation: any, injector: Injector) => boolean;
+interface canImplementValidator<T = any> {
+  (interface: Interface<T>, implementation: Implementation<T>, injector: Injector): boolean;
+  (interface: any, implementation: any, injector: Injector): boolean;
+}
 
 export type InjectorEquivalent = Injector | BaseInjector;
 
