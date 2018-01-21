@@ -17,10 +17,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Mateus-Oli/solid-goggles"
+    "url": "git+https://github.com/Mateus-Oli/solid-goggles"
   },
   "author": "Mateus Oliveira Carvalho <mateus.oli.car@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^22.0.1",
     "babel-cli": "^6.26.0",

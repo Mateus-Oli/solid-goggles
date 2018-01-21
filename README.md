@@ -8,6 +8,7 @@
 [![devDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/dev-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 [![perrDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/peer-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 
+1. [Install](#install)
 1. [Basic Usage](#basic-usage)
 1. [Methods](#methods)
 1. [Properites](#properties)
@@ -22,6 +23,11 @@
     * [Injector Emitter](#injector-emitter)
     * [Injector Error](#injector-error)
 1. [Change Dependencies](#change-dependencies)
+
+## Install
+```bash
+$ npm i solid-goggles
+```
 
 ## Basic Usage
 ```javascript

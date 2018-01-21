@@ -1,0 +1,17 @@
+# IDE
+.vscode
+
+# CONFIG
+.babelrc
+.editorconfig
+.eslintrc
+.gitignore
+.jsbeautifyrc
+.travis.yml
+webpack.config.js
+
+# CODE
+test
+src
+
+
