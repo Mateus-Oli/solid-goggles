@@ -2,6 +2,9 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/2c0a3415ea4c9f3ec375/maintainability)](https://codeclimate.com/github/Mateus-Oli/solid-goggles/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2c0a3415ea4c9f3ec375/test_coverage)](https://codeclimate.com/github/Mateus-Oli/solid-goggles/test_coverage)
+[![Known Vulnerabilities](https://snyk.io/test/github/mateus-oli/solid-goggles/badge.svg?targetFile=package.json)](https://snyk.io/test/github/mateus-oli/solid-goggles?targetFile=package.json)
+[![dependencies](https://david-dm.org/Mateus-Oli/solid-goggles.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
+[![devDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/dev-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 
 1. [Basic Usage](#basic-usage)
 1. [Methods](#methods)
