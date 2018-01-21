@@ -1,7 +1,7 @@
 {
-  "name": "injector",
+  "name": "solid-goggles",
   "version": "1.0.0",
-  "description": "Dependency Injector",
+  "description": "Inversion of Control for Javascript",
   "main": "./dist/index.js",
   "scripts": {
     "test": "jest --watch --coverage",
@@ -9,7 +9,10 @@
     "start": "node ./dist"
   },
   "keywords": [
-    "injector"
+    "di",
+    "dependency injection",
+    "ioc",
+    "inversion of control"
   ],
   "repository": {
     "type": "git",
