@@ -1,4 +1,7 @@
 {
+    "files.associations": {
+      ".npmignore": "gitignore"
+    },
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -8,6 +11,7 @@
         "node_modules": true,
         "package-lock.json": true,
         "dist": true,
-        "coverage": true
+        "coverage": true,
+        ".vscode": true
     }
 }

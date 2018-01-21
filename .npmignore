@@ -10,8 +10,10 @@
 .travis.yml
 webpack.config.js
 
+# TEST
+coverage
+
 # CODE
 test
 src
-
 
