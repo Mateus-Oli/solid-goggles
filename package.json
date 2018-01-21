@@ -4,7 +4,7 @@
   "description": "Inversion of Control for Javascript",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "jest --watch --coverage",
+    "test": "jest --coverage",
     "watch": "webpack --watch",
     "start": "node ./dist"
   },
