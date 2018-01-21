@@ -87,7 +87,7 @@ export class Injector {
 
   instantiate(inter) {
     const impl = this.findImplementation(inter);
-    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl)));
+    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
   }
   inject(impl) {
     return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));

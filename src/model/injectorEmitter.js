@@ -29,7 +29,7 @@ export class InjectorEmitter {
   emitEvery(implementation, value) { return this.emit(InjectorEmitter.EVERY, implementation, value); }
   emitGet(implementation, value) { return this.emit(InjectorEmitter.GET, implementation, value); }
   emitSet(implementation, value) { return this.emit(InjectorEmitter.SET, implementation, value); }
-  emitDelete(implementation, value) { return this.emit(InjectorEmitter.DELETE,implementation, value); }
+  emitDelete(implementation, value) { return this.emit(InjectorEmitter.DELETE, implementation, value); }
   emitInstantiate(implementation, value) { return this.emit(InjectorEmitter.INSTANTIATE, implementation, value); }
 
   emit(e, i, v) {

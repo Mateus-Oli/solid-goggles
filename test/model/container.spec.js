@@ -36,8 +36,8 @@ describe('Container', () => {
   it('is empty when not contained', () => {
 
     expect(container.getInterface(OtherInterface)).toBe(undefined);
-    expect(container.getImplementation(OtherInterface)).toBe(undefined);
-    expect(container.getInstance(OtherInterface)).toBe(undefined);
+    expect(container.getImplementation(OtherImplementation)).toBe(undefined);
+    expect(container.getInstance(otherInstance)).toBe(undefined);
   });
 
   it('clones base container', () => {
