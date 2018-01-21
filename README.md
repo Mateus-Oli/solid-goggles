@@ -13,7 +13,6 @@
 1. [Inject](#inject)
 1. [Overwrite](#overwrite)
 1. [Other Models](#other-models)
-    * [Injector Group](#injector-group)
     * [Container](#container)
     * [Injector Emitter](#injector-emitter)
     * [Injector Error](#injector-error)
@@ -209,32 +208,6 @@ class Implementation {
 
 ## Other Models
 
-### Injector Group
-```javascript
-import { InjectorGroup, Injector } from 'injector';
-
-const injector = new Injector;
-const group = new InjectorGroup([injector]);
-
-class Interface {}
-class Implementation {}
-
-injector.setImplementation(Implementation);
-
-/** breaks without implementation */
-const instance = group.get(Interface);
-
-group.tryGet(Interface);
-
-group.getInjector(instance);
-group.setInjector(injector);
-group.deleteInjector(injector);
-
-group.hasInjector(injector);
-
-group.clear();
-```
-
 ### Container
 ```javascript
 import { Container } from 'injector';
@@ -306,12 +279,10 @@ const injectorError = new InjectorError(Interface, Implementation, 'message');
 
 ## Change Dependencies
 ```javascript
-import { InjectorGroup, Injector, Container, InjectorEmitter } from 'injector';
+import { Injector, Container, InjectorEmitter } from 'injector';
 
 class OtherContainer implements Container {}
 class OtherInjectorEmitter implements InjectorEmitter {}
-class OtherInjector implements Injector {}
 
 const injector = new Injector(undefined, OtherContainer, OtherInjectorEmitter);
-const injectorGroup = new InjectorGroup(undefined, OtherInjector);
 ```
