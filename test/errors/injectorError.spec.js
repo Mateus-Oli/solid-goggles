@@ -1,4 +1,4 @@
-import { InjectorError } from '../../src/error/injectorError';
+import { InjectorError } from '../../src/errors/injectorError';
 
 class InterfaceMock {}
 

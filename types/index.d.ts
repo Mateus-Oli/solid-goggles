@@ -4,4 +4,4 @@ export * from './models/injectorEmitter';
 
 export * from './providers/symbols';
 
-export * from './error/injectorError';
+export * from './errors/injectorError';

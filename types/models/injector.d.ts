@@ -1,6 +1,6 @@
 import { Container, Implementation, Interface, ContainerEquivalent, ContainerConstructor } from './container';
 import { InjectorEmitter, Listener, InjectorEmitterEquivalent, InjectorEmitterConstructor } from './injectorEmitter';
-import { InjectorErrorConstructor } from '../error/injectorError';
+import { InjectorErrorConstructor } from '../errors/injectorError';
 
 interface Factory<T = any, V extends any[] = any> {
   (implementation: Implementation<T>, args: V, injector: Injector): T;

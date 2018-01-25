@@ -1,5 +1,5 @@
 import { InjectorEmitter } from './injectorEmitter';
-import { InjectorError } from '../error/injectorError';
+import { InjectorError } from '../errors/injectorError';
 import { Container } from './container';
 import { inject, canImplement, generated } from '../providers/symbols';
 import { error } from '../utils/error';
