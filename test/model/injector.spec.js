@@ -189,6 +189,24 @@ describe('injector', () => {
     expect(injector.get(GeneratedHook).instanceMock).toBeInstanceOf(ImplementationMock);
   });
 
+  it('allows generated and inject hooks to be values', () => {
+    const injector = Injector.of(ImplementationMock);
+
+    class Hooks {
+      static get [inject]() { return [ImplementationMock]; }
+      get [generated]() { return { generatedInstance: ImplementationMock }; }
+
+      constructor(injectedInstance) {
+        this.injectedInstance = injectedInstance;
+      }
+    }
+
+    injector.setImplementation(Hooks);
+
+    expect(injector.get(Hooks).generatedInstance).toBeInstanceOf(ImplementationMock);
+    expect(injector.get(Hooks).injectedInstance).toBeInstanceOf(ImplementationMock);
+  });
+
   it('find interface', () => {
     const instanceMock = new ImplementationMock;
     const injector = new Injector({

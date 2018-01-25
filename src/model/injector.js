@@ -3,6 +3,7 @@ import { InjectorError } from '../error/injectorError';
 import { Container } from './container';
 import { inject, canImplement, generated } from '../providers/symbols';
 import { error } from '../utils/error';
+import { getReturn } from '../utils/getReturn';
 
 export class Injector {
 
@@ -79,7 +80,7 @@ export class Injector {
     return this.generated(this.set(impl, this.instantiate(impl)));
   }
   generated(inst) {
-    const data = inst && inst[generated] && inst[generated](this) || {};
+    const data = inst && getReturn(inst[generated])(this) || {};
     Object.keys(data).forEach(key => inst[key] = this.get(data[key]));
 
     return inst;
@@ -90,7 +91,7 @@ export class Injector {
     return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
   }
   inject(impl) {
-    return [].concat(impl && impl[inject] && impl[inject](this) || []).map(dependency => this.get(dependency));
+    return [].concat(impl && getReturn(impl[inject])(this) || []).map(dependency => this.get(dependency));
   }
 
   clear() {
