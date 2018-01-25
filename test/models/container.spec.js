@@ -1,4 +1,4 @@
-import { Container } from '../../src/model/container';
+import { Container } from '../../src/models/container';
 
 const container = new Container;
 

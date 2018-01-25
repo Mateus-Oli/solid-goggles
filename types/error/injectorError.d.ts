@@ -1,4 +1,4 @@
-import { Implementation, Interface } from '../model/container';
+import { Implementation, Interface } from '../models/container';
 
 export interface InjectorErrorConstructor {
   readonly GENERETA_ERROR: string;

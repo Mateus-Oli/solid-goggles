@@ -1,4 +1,4 @@
-import { InjectorEmitter } from '../../src/model/injectorEmitter';
+import { InjectorEmitter } from '../../src/models/injectorEmitter';
 
 class ImplementationMock {}
 

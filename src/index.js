@@ -1,4 +1,4 @@
-import { Injector } from './model/injector';
+import { Injector } from './models/injector';
 
 import { defaultFactory } from './providers/defaultFactory';
 import { defaultCanImplement } from './providers/defaultCanImplement';
@@ -6,9 +6,9 @@ import { defaultCanImplement } from './providers/defaultCanImplement';
 Injector.baseCanImplement = defaultCanImplement;
 Injector.baseFactory = defaultFactory;
 
-export * from './model/injector';
-export * from './model/container';
-export * from './model/injectorEmitter';
+export * from './models/injector';
+export * from './models/container';
+export * from './models/injectorEmitter';
 
 export * from './providers/symbols';
 

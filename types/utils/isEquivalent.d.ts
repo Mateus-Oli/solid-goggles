@@ -1,4 +1,4 @@
-import { Implementation } from "../model/container";
+import { Implementation } from "../models/container";
 
 type GenericFunction<R = any, A = any> = (...args: A[]) => R;
 type GenericObject<T extends {[k: string]: any} = {[k: string]: any}> = T;

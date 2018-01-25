@@ -1,6 +1,6 @@
-export * from './model/injector';
-export * from './model/container';
-export * from './model/injectorEmitter';
+export * from './models/injector';
+export * from './models/container';
+export * from './models/injectorEmitter';
 
 export * from './providers/symbols';
 
