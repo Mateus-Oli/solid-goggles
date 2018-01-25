@@ -5,11 +5,10 @@
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "prerelease": "webpack",
-    "release": "np",
     "test": "jest --coverage",
     "watch": "webpack --watch",
-    "start": "node ./dist"
+    "start": "node ./dist",
+    "prepublish": "webpack"
   },
   "keywords": [
     "di",
