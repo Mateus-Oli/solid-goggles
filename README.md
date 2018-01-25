@@ -12,6 +12,7 @@
 
 1. [Install](#install)
 1. [Basic Usage](#basic-usage)
+1. [Decorators](#decorators)
 1. [Methods](#methods)
 1. [Properites](#properties)
 1. [Clone Injector](#clone-injector)
@@ -45,6 +46,22 @@ class Interface {
 }
 
 const instance = injector.get(Interface);
+```
+
+## Decorators
+```javascript
+import { connect } from 'solid-goggles';
+
+class OtherImplementation {}
+
+class Implementation {
+
+  @connect(OtherImplementation) property;
+
+  constructor(
+    @connect(OtherImplementation) parameter
+  ) {}
+}
 ```
 
 ## Methods
