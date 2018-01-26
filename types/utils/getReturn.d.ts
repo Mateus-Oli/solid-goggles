@@ -1,2 +1,2 @@
-export function getReturn<T>(x: T): () => T;
-export function getReturn<T, P>(f: (...args: P[]) => T): (...args: P[]) => T;
+export function getReturn<T>(x: T): (...args: any[]) => T;
+export function getReturn<T, P, K extends (...args: P[]) => T>(f: K): K;
