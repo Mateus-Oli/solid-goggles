@@ -138,14 +138,14 @@ describe('Container', () => {
   });
 
   it('converts entries to object', () => {
-    expect(container.toEntry(['a', 'b', 'c'])).toMatchObject({
+    expect(container.toObject(['a', 'b', 'c'])).toMatchObject({
       [Container.INTERFACE]: 'a',
       [Container.IMPLEMENTATION]: 'b',
       [Container.INSTANCE]: 'c'
     });
 
-    expect(container.toEntry()).toBeInstanceOf(Object);
-    expect(container.toEntry({})).toBeInstanceOf(Object);
+    expect(container.toObject()).toBeInstanceOf(Object);
+    expect(container.toObject({})).toBeInstanceOf(Object);
   });
 
   it('calls findReturn function size times with [interface, implementation, instance]', () => {
