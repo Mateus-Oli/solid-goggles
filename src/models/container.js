@@ -7,14 +7,16 @@ export class Container {
   static get IMPLEMENTATION() { return 'implementation'; }
   static get INSTANCE() { return 'instance'; }
 
+  static get ENTRY() { return [ Container.INTERFACE, Container.IMPLEMENTATION, Container.INSTANCE ]; }
+
   get size() { return this[Container.IMPLEMENTATION].size; }
 
   constructor(container = [], MapConstructor = Map) {
     this.parent = container.parent;
-    [Container.INTERFACE, Container.IMPLEMENTATION, Container.INSTANCE].forEach(index => this[index] = new MapConstructor);
+    Container.ENTRY.forEach(index => this[index] = new MapConstructor);
 
     if (container.forEach) {
-      container.forEach(entry => this.set(this.toEntry(entry)));
+      container.forEach(entry => this.set(entry));
     }
   }
 
@@ -29,13 +31,13 @@ export class Container {
   }
 
   setInterface(impl, inter) {
-    return this.set({ [Container.INTERFACE]: inter, [Container.IMPLEMENTATION]: impl })[Container.INTERFACE];
+    return this.set([ inter, impl ])[Container.INTERFACE];
   }
   setImplementation(impl) {
-    return this.set({[ Container.IMPLEMENTATION]: impl })[Container.IMPLEMENTATION];
+    return this.set([, impl ])[Container.IMPLEMENTATION];
   }
   setInstance(impl, inst) {
-    return this.set({ [Container.IMPLEMENTATION]: impl, [Container.INSTANCE]: inst })[Container.INSTANCE];
+    return this.set([, impl, inst ])[Container.INSTANCE];
   }
 
   deleteInterface(value) {
@@ -73,7 +75,7 @@ export class Container {
     if (inter !== undefined) { this[Container.INTERFACE].set(inter, impl); }
     if (inst !== undefined) { this[Container.INSTANCE].set(inst, impl); }
 
-    return Object.assign(entry, value);
+    return Object.assign(entry, this.toObject(value));
   }
   delete(index, value) {
     const entry = this[Container.IMPLEMENTATION].get(this.get(Container.IMPLEMENTATION, value)) || {};
@@ -103,9 +105,9 @@ export class Container {
   }
 
   toArray(entry = {}) {
-    return Array.isArray(entry) ? entry : [ entry[Container.INTERFACE], entry[Container.IMPLEMENTATION], entry[Container.INSTANCE] ];
+    return Array.isArray(entry) ? entry : Container.ENTRY.map(index => entry[index]);
   }
-  toEntry(entry = []) {
-    return !Array.isArray(entry) ? entry : { [Container.INTERFACE]: entry[0], [Container.IMPLEMENTATION]: entry[1], [Container.INSTANCE]: entry[2] };
+  toObject(array = []) {
+    return !Array.isArray(array) ? array : array.reduce((entry, value, index) => Object.assign(entry, { [Container.ENTRY[index]]: value }), {});
   }
 }

@@ -126,7 +126,7 @@ describe('Container', () => {
     expect(container.getInstance(instanceMock)).toBe(undefined);
   });
 
-  it('converts entries', () => {
+  it('converts entries to array', () => {
     expect(container.toArray({
       [Container.INTERFACE]: 'a',
       [Container.IMPLEMENTATION]: 'b',
@@ -137,7 +137,7 @@ describe('Container', () => {
     expect(container.toArray([])).toBeInstanceOf(Array);
   });
 
-  it('converts entries', () => {
+  it('converts entries to object', () => {
     expect(container.toEntry(['a', 'b', 'c'])).toMatchObject({
       [Container.INTERFACE]: 'a',
       [Container.IMPLEMENTATION]: 'b',
