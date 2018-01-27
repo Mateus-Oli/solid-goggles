@@ -2,7 +2,7 @@ import { Container, Implementation, Interface, ContainerEquivalent, ContainerCon
 import { InjectorEmitter, Listener, InjectorEmitterEquivalent, InjectorEmitterConstructor } from './injectorEmitter';
 import { InjectorErrorConstructor } from '../errors/injectorError';
 
-interface Factory<T = any, V extends any[] = any> {
+interface Factory<T = any, V extends any[] = any[]> {
   (implementation: Implementation<T>, args: V, injector: Injector): T;
   (implementation: any, args: V, injector: Injector): T;
 }
@@ -42,7 +42,6 @@ export interface InjectorConstructor extends BaseDependencies {
 export interface Injector extends BaseDependencies {
 
   container: Container;
-  factories: Map<Implementation, Factory>;
   emitter: InjectorEmitter;
 
   get<T>(interface: Interface<T>): T;

@@ -79,14 +79,14 @@ export class Injector {
 
   generate(inter) {
     const impl = this.findImplementation(inter);
-    return this.properties(this.set(impl, this.instantiate(impl)));
+    const inst = this.set(impl, this.instantiate(impl));
+
+    return inst && Object.assign(inst, this.properties(inst));
   }
 
   properties(inst) {
     const data = inst && getReturn(inst[properties])(this) || {};
-    Object.keys(data).forEach(key => inst[key] = this.get(data[key]));
-
-    return inst;
+    return Object.keys(data).reduce((obj, key) => Object.assign(obj, { [key]:  this.get(data[key]) }), {});
   }
 
   instantiate(inter) {

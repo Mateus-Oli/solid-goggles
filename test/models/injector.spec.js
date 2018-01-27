@@ -60,7 +60,7 @@ describe('injector', () => {
   it('breaks without implementation', () => {
     const injector = Injector.of();
 
-    expect(() => injector.get(ImplementationMock)).toThrow();
+    expect(() => injector.get(InterfaceMock)).toThrow(`Could not instantiate interface 'InterfaceMock'`);
   });
 
   it('breaks when linking unmatching interface x implementation', () => {
@@ -69,7 +69,7 @@ describe('injector', () => {
       otherMethod() {}
     }
 
-    expect(() => injector.link(OtherInterface, ImplementationMock)).toThrow();
+    expect(() => injector.link(OtherInterface, ImplementationMock)).toThrow(`Implementation 'ImplementationMock' is not compatible with 'OtherInterface'`);
   });
 
   it('executes factory with implementation, args, injector', () => {
