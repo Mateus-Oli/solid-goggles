@@ -14,7 +14,7 @@
 1. [Basic Usage](#basic-usage)
 1. [Decorators](#decorators)
 1. [Methods](#methods)
-1. [Properites](#properties)
+1. [Properties](#properties)
 1. [Clone Injector](#clone-injector)
 1. [Factory](#factory)
 1. [Events](#events)
@@ -144,6 +144,10 @@ class Implementation {}
 
 const injector = new Injector;
 
+/* generic factory */
+injector.factory((implementation, args, injector) => new implementation(...args));
+
+/* specific implementation */
 injector.factory(Implementation, (implementation, args, injector) => new implementation(...args));
 ```
 

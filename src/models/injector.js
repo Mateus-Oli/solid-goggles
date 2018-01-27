@@ -55,7 +55,9 @@ export class Injector {
   }
 
   factory(impl, factory) {
+    if (!factory) { return this.baseFactory = impl; }
     this.factories.set(this.setImplementation(impl), factory);
+
     return factory;
   }
 
@@ -100,10 +102,9 @@ export class Injector {
   }
 
   findImplementation(inter) {
-    if (!inter) {
-      return inter;
-    }
+    if (!inter) { return inter; }
     const impl = this.container.getImplementation(inter);
+
     return impl || this.container.findReturn(([, impl]) => this.tryLink(inter, impl) && impl);
   }
   findInterface(impl) {

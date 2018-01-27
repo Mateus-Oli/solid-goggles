@@ -66,6 +66,7 @@ export interface Injector extends BaseDependencies {
   tryLink<T>(interface: Interface<T>, implementation: Implementation<T>): Interface<T>;
   tryLink<T>(interface: T, implementation: any): T;
 
+  factory<T>(factory: Factory<T>): Factory<T>;
   factory<T>(implementation: Implementation<T>, factory: Factory<T>): Factory<T>;
   factory<T>(implementation: any, factory: Factory<T>): Factory<T>;
 

@@ -94,6 +94,14 @@ describe('injector', () => {
 
     expect(injector.get(ImplementationMock)).toBe(instance);
   });
+  it('accepts one argument to factory as base factory', () => {
+    const injector = new Injector;
+
+    const factory = () => ({});
+
+    expect(injector.factory(factory)).toBe(factory);
+    expect(injector.baseFactory).toBe(factory);
+  });
 
   it('executes canImplement hook of interface with interface, implement, injector', () => {
     const injector = Injector.of(ImplementationMock);
