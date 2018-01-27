@@ -34,7 +34,7 @@ $ npm i solid-goggles
 
 ### Browser
 ```html
-<script src="node_modules/dist/browser.js"></script>
+<script src="node_modules/solid-goggles/dist/browser.js"></script>
 ```
 
 ### Common JS
@@ -44,7 +44,7 @@ const Sg = require('solid-goggles');
 
 ### ES6 Modules
 ```javascript
-import { Injector, connect } from 'solid-goggles';
+import * as Sg from 'solid-goggles';
 ```
 
 ## Basic Usage
