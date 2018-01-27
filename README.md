@@ -110,11 +110,11 @@ injector.onSet(Implementation, (instance, next) => next(instance));
 injector.onDelete(Implementation, (instance, next) => next(instance));
 injector.onInstantiate(Implementation, (instance, next) => next(instance));
 
-/** instantiate + set + generated */
+/** instantiate + set + properties */
 injector.generate(Implementation);
 injector.genereted(instance);
 
-/** factory + inject */
+/** factory + parameters */
 injector.instantiate(Implementation);
 injector.inject(Implementation);
 
@@ -192,21 +192,21 @@ injector.onGet(Implementation, (instance, next) => {
 
 ## Symbols
 ```javascript
-import { canImplement, inject, generated } from 'solid-goggles';
+import { canImplement, parameters, properties } from 'solid-goggles';
 ```
 
-## Manage
+## Injection Hooks
 
-### Inject
+### Parameters
 ```javascript
-import { inject } from 'solid-goggles';
+import { parameters } from 'solid-goggles';
 
 class OtherImplementation {}
 
 class Implementation {
 
   /** Warn: Unhandled Circular Dependency */
-  static [inject]() { return [ OtherImplementation ]; }
+  static [parameters]() { return [ OtherImplementation ]; }
 
   constructor(otherInstance) {
     this.otherInstance = otherInstance;
@@ -214,13 +214,13 @@ class Implementation {
 }
 ```
 
-### Generated
+### Properties
 ```javascript
-import { generated } from 'solid-goggles';
+import { properties } from 'solid-goggles';
 
 class Implementation {
 
-  [generated](injector) {
+  [properties](injector) {
 
     /** Allow circular dependencies */
 

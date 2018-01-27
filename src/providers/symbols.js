@@ -1,3 +1,3 @@
 export const canImplement = Symbol('canImplement');
-export const inject = Symbol('inject');
-export const generated = Symbol('generated');
+export const parameters = Symbol('parameters');
+export const properties = Symbol('properties');

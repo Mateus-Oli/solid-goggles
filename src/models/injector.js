@@ -1,7 +1,7 @@
 import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../errors/injectorError';
 import { Container } from './container';
-import { inject, canImplement, generated } from '../providers/symbols';
+import { canImplement, parameters, properties } from '../providers/symbols';
 import { error } from '../utils/error';
 import { getReturn } from '../utils/getReturn';
 
@@ -79,10 +79,11 @@ export class Injector {
 
   generate(inter) {
     const impl = this.findImplementation(inter);
-    return this.generated(this.set(impl, this.instantiate(impl)));
+    return this.properties(this.set(impl, this.instantiate(impl)));
   }
-  generated(inst) {
-    const data = inst && getReturn(inst[generated])(this) || {};
+
+  properties(inst) {
+    const data = inst && getReturn(inst[properties])(this) || {};
     Object.keys(data).forEach(key => inst[key] = this.get(data[key]));
 
     return inst;
@@ -90,10 +91,11 @@ export class Injector {
 
   instantiate(inter) {
     const impl = this.findImplementation(inter);
-    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.inject(impl), this));
+    return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.parameters(impl), this));
   }
-  inject(impl) {
-    return [].concat(impl && getReturn(impl[inject])(this) || []).map(dependency => this.get(dependency));
+
+  parameters(impl) {
+    return [].concat(impl && getReturn(impl[parameters])(this) || []).map(dependency => this.get(dependency));
   }
 
   clear() {

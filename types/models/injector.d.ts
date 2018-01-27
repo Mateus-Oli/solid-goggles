@@ -91,13 +91,15 @@ export interface Injector extends BaseDependencies {
   onInstantiate<T>(implementation: any, listener: Listener<T>): this;
 
   generate<T>(implementation: Implementation<T>): T;
-  generated<T>(instance: T): T;
-  generated<T>(instance: any): T;
+
+  properties<T>(instance: T): T;
+  properties<T>(instance: any): T;
 
   instantiate<T>(implementation: Implementation<T>): T;
   instantiate<T>(implementation: any): T;
-  inject<T, V extends any[]>(implementation: Implementation<T, V>): V;
-  inject<V extends any[]>(implementation: any): V;
+
+  parameters<T, V extends any[]>(implementation: Implementation<T, V>): V;
+  parameters<V extends any[]>(implementation: any): V;
 
   clear(): this;
 

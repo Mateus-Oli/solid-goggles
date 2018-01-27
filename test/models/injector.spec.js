@@ -1,4 +1,4 @@
-import { Injector, inject, generated, canImplement } from '../../src';
+import { Injector, parameters, properties, canImplement } from '../../src';
 
 class InterfaceMock extends null {
   methodMock() { return 0; }
@@ -143,22 +143,22 @@ describe('injector', () => {
     expect(injector.get(OtherInterface)).toBeInstanceOf(ImplementationMock);
   });
 
-  it('executes inject hook with injector as argument', () => {
+  it('executes parameters hook with injector as argument', () => {
     const injector = Injector.of();
 
     function InjectHook() {}
-    InjectHook[inject] = jest.fn(injectorArg => expect(injectorArg).toBe(injector));
+    InjectHook[parameters] = jest.fn(injectorArg => expect(injectorArg).toBe(injector));
     injector.setImplementation(InjectHook);
     injector.get(InjectHook);
 
-    expect(InjectHook[inject]).toHaveBeenCalledTimes(1);
+    expect(InjectHook[parameters]).toHaveBeenCalledTimes(1);
   });
 
-  it('uses returned value of inject hook as factory args', () => {
+  it('uses returned value of parameters hook as factory args', () => {
     const injector = Injector.of(ImplementationMock);
 
     class InjectHook {
-      static [inject]() {
+      static [parameters]() {
         return [ImplementationMock];
       }
     }
@@ -172,47 +172,47 @@ describe('injector', () => {
     expect(factory).toHaveBeenCalledTimes(1);
   });
 
-  it('executes generated hook with injector as argument', () => {
+  it('executes properties hook with injector as argument', () => {
     const injector = Injector.of();
 
-    class GeneratedHook {}
-    GeneratedHook.prototype[generated] = jest.fn(injectorArg => expect(injectorArg).toBe(injector));
+    class PropertiesHook {}
+    PropertiesHook.prototype[properties] = jest.fn(injectorArg => expect(injectorArg).toBe(injector));
 
-    injector.setImplementation(GeneratedHook);
-    injector.get(GeneratedHook);
+    injector.setImplementation(PropertiesHook);
+    injector.get(PropertiesHook);
 
-    expect(GeneratedHook.prototype[generated]).toHaveBeenCalledTimes(1);
+    expect(PropertiesHook.prototype[properties]).toHaveBeenCalledTimes(1);
   });
 
-  it('merges return value of generated hook with instance', () => {
+  it('merges return value of properties hook with instance', () => {
     const injector = Injector.of(ImplementationMock);
 
-    class GeneratedHook {
-      [generated]() {
+    class PropertiesHook {
+      [properties]() {
         return { instanceMock: ImplementationMock };
       }
     }
-    injector.setImplementation(GeneratedHook);
+    injector.setImplementation(PropertiesHook);
 
-    expect(injector.get(GeneratedHook).instanceMock).toBeInstanceOf(ImplementationMock);
+    expect(injector.get(PropertiesHook).instanceMock).toBeInstanceOf(ImplementationMock);
   });
 
-  it('allows generated and inject hooks to be values', () => {
+  it('allows properties and parameters hooks to be values', () => {
     const injector = Injector.of(ImplementationMock);
 
     class Hooks {
-      static get [inject]() { return [ImplementationMock]; }
-      get [generated]() { return { generatedInstance: ImplementationMock }; }
+      static get [parameters]() { return [ImplementationMock]; }
+      get [properties]() { return { propertiesInstance: ImplementationMock }; }
 
-      constructor(injectedInstance) {
-        this.injectedInstance = injectedInstance;
+      constructor(parametersInstance) {
+        this.parametersInstance = parametersInstance;
       }
     }
 
     injector.setImplementation(Hooks);
 
-    expect(injector.get(Hooks).generatedInstance).toBeInstanceOf(ImplementationMock);
-    expect(injector.get(Hooks).injectedInstance).toBeInstanceOf(ImplementationMock);
+    expect(injector.get(Hooks).propertiesInstance).toBeInstanceOf(ImplementationMock);
+    expect(injector.get(Hooks).parametersInstance).toBeInstanceOf(ImplementationMock);
   });
 
   it('find interface', () => {

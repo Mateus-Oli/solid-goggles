@@ -1,3 +1,3 @@
 export const canImplement: symbol;
-export const inject: symbol;
-export const generated: symbol;
+export const parameters: symbol;
+export const properties: symbol;
