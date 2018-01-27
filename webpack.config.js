@@ -2,15 +2,14 @@
 
 const path = require('path');
 
-module.exports = {
+const config = (libraryTarget, filename = 'index.js') => ({
   entry: './src/index',
   output: {
-    filename: 'index.js',
+    filename,
     path: path.resolve(__dirname, 'dist'),
-    library: 'Injector',
-    libraryTarget: 'commonjs2'
+    library: 'Sg',
+    libraryTarget
   },
-  devtool: 'source-map',
   resolve: {
     extensions: ['.js']
   },
@@ -28,4 +27,9 @@ module.exports = {
       }
     ]
   }
-};
+});
+
+module.exports = [
+  config('var', 'browser.js'),
+  config('commonjs2')
+];

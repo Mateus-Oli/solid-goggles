@@ -11,6 +11,7 @@
 [![perrDependencies](https://david-dm.org/Mateus-Oli/solid-goggles/peer-status.svg)](https://david-dm.org/Mateus-Oli/solid-goggles)
 
 1. [Install](#install)
+1. [Import](#import)
 1. [Basic Usage](#basic-usage)
 1. [Decorators](#decorators)
 1. [Methods](#methods)
@@ -22,14 +23,28 @@
 1. [Inject](#inject)
 1. [Overwrite](#overwrite)
 1. [Other Models](#other-models)
-    * [Container](#container)
-    * [Injector Emitter](#injector-emitter)
-    * [Injector Error](#injector-error)
 1. [Change Dependencies](#change-dependencies)
 
 ## Install
 ```bash
 $ npm i solid-goggles
+```
+
+## Import
+
+### Browser
+```html
+<script src="node_modules/dist/browser.js"></script>
+```
+
+### Common JS
+```javascript
+const Sg = require('solid-goggles');
+```
+
+### ES6 Modules
+```javascript
+import { Injector, connect } from 'solid-goggles';
 ```
 
 ## Basic Usage
