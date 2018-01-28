@@ -69,25 +69,25 @@ export interface Injector extends BaseDependencies {
   factory<T>(implementation: Implementation<T>, factory: Factory<T>): Factory<T>;
   factory<T>(implementation: any, factory: Factory<T>): Factory<T>;
 
-  onEvery<T>(listener: Listener<T>): this;
-  onEvery<T>(implementation: Implementation<T>, listener: Listener<T>): this;
-  onEvery<T>(implementation: any, listener: Listener<T>): this;
+  onEvery<T>(listener: Listener<T>): Listener<T>;
+  onEvery<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  onEvery<T>(implementation: any, listener: Listener<T>): Listener<T>;
 
-  onGet<T>(listener: Listener<T>): this;
-  onGet<T>(implementation: Implementation<T>, listener: Listener<T>): this;
-  onGet<T>(implementation: any, listener: Listener<T>): this;
+  onGet<T>(listener: Listener<T>): Listener<T>;
+  onGet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  onGet<T>(implementation: any, listener: Listener<T>): Listener<T>;
 
-  onSet<T>(listener: Listener<T>): this;
-  onSet<T>(implementation: Implementation<T>, listener: Listener<T>): this;
-  onSet<T>(implementation: any, listener: Listener<T>): this;
+  onSet<T>(listener: Listener<T>): Listener<T>;
+  onSet<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  onSet<T>(implementation: any, listener: Listener<T>): Listener<T>;
 
-  onDelete<T>(listener: Listener<T>): this;
-  onDelete<T>(implementation: Implementation<T>, listener: Listener<T>): this;
-  onDelete<T>(implementation: any, listener: Listener<T>): this;
+  onDelete<T>(listener: Listener<T>): Listener<T>;
+  onDelete<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  onDelete<T>(implementation: any, listener: Listener<T>): Listener<T>;
 
-  onInstantiate<T>(listener: Listener<T>): this;
-  onInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): this;
-  onInstantiate<T>(implementation: any, listener: Listener<T>): this;
+  onInstantiate<T>(listener: Listener<T>): Listener<T>;
+  onInstantiate<T>(implementation: Implementation<T>, listener: Listener<T>): Listener<T>;
+  onInstantiate<T>(implementation: any, listener: Listener<T>): Listener<T>;
 
   generate<T>(implementation: Implementation<T>): T;
 
