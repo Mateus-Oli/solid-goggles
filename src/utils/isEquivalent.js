@@ -23,12 +23,8 @@ export function isFunctionEquivalent(first, second) {
   return type === 'function' && type === typeof second && first.length === second.length;
 }
 
-export function isMethodEquivalent(first, second) {
-  return isFunctionEquivalent(first, second) && first.name === second.name;
-}
-
 export function isObjectMethodEquivalent(first, second) {
-  return getMethods(first).every(method => isMethodEquivalent(first[method], (second || {})[method]));
+  return getMethods(first).every(method => isFunctionEquivalent(first[method], (second || {})[method]));
 }
 
 export function isClassEquivalent(first, second) {
