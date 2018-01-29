@@ -1,4 +1,10 @@
-import { Injector, parameters, properties, canImplement } from '../../src';
+import { Injector } from '../../src/models/injector';
+import { canImplement, parameters, properties } from '../../src/providers/symbols';
+import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
+import { defaultFactory } from '../../src/providers/defaultFactory';
+
+Injector.baseCanImplement = defaultCanImplement;
+Injector.baseFactory = defaultFactory;
 
 class InterfaceMock extends null {
   methodMock() { return 0; }
