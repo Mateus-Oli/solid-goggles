@@ -91,6 +91,8 @@ class Implementation {}
 class Interface {}
 
 const injector = new Injector;
+
+injector.get(Implementation); /* throws InjectorError */
 injector.get(Interface);
 ```
 
@@ -246,7 +248,7 @@ class Implementation {
 }
 ```
 
-### Implemention From Interface
+### Register
 ```javascript
 import { getImplementation, Injector } from 'solid-goggles';
 
