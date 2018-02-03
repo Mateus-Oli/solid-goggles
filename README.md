@@ -81,18 +81,16 @@ class Implementation {
 }
 ```
 
-### Set Implementation
+### Register Implementation
 ```javascript
-import { Injector, implementation } from 'solid-goggles';
+import { Injector, register } from 'solid-goggles';
 
 class Implementation {}
 
-@implementation(Implementation)
+@register(Implementation)
 class Interface {}
 
 const injector = new Injector;
-
-/* Does not require registration */
 injector.get(Interface);
 ```
 
