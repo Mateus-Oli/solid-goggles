@@ -64,6 +64,8 @@ const instance = injector.get(Interface);
 ```
 
 ## Decorators
+
+### Connect Dependencies
 ```javascript
 import { connect } from 'solid-goggles';
 
@@ -77,6 +79,17 @@ class Implementation {
     @connect(OtherImplementation) parameter
   ) {}
 }
+```
+
+### Set Implementation
+```javascript
+import { implementation } from 'solid-goggles';
+
+
+class Implementation {}
+
+@implementation(Implementation)
+class Interface {}
 ```
 
 ## Methods
@@ -229,6 +242,22 @@ class Implementation {
     };
   }
 }
+```
+
+### Implemention From Interface
+```javascript
+import { getImplementation, Injector } from 'solid-goggles';
+
+class Implementation {}
+
+class Interface {
+
+  /* Must be static property */
+  static get [getImplementation]() { return Implementation; }
+}
+
+const injector = new Injector;
+injector.get(Inteface);
 ```
 
 ## Overwrite

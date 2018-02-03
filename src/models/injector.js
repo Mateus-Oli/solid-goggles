@@ -4,6 +4,7 @@ import { Container } from './container';
 import { canImplement, parameters, properties } from '../providers/symbols';
 import { error } from '../utils/error';
 import { getReturn } from '../utils/getReturn';
+import { getImplementation } from '../providers/symbols';
 
 export class Injector {
 
@@ -105,8 +106,9 @@ export class Injector {
 
   findImplementation(inter) {
     if (!inter) { return inter; }
-    const impl = this.container.getImplementation(inter);
+    if (inter[getImplementation]) { return this.setImplementation(inter[getImplementation]); }
 
+    const impl = this.container.getImplementation(inter);
     return impl || this.container.findReturn(([, impl]) => this.tryLink(inter, impl) && impl);
   }
   findInterface(impl) {

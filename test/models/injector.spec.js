@@ -1,5 +1,5 @@
 import { Injector } from '../../src/models/injector';
-import { canImplement, parameters, properties } from '../../src/providers/symbols';
+import { canImplement, parameters, properties, getImplementation } from '../../src/providers/symbols';
 import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
 import { defaultFactory } from '../../src/providers/defaultFactory';
 
@@ -221,7 +221,7 @@ describe('injector', () => {
     expect(injector.get(Hooks).parametersInstance).toBeInstanceOf(ImplementationMock);
   });
 
-  it('find interface', () => {
+  it('finds interface', () => {
     const instanceMock = new ImplementationMock;
     const injector = new Injector({
       container: [[InterfaceMock, ImplementationMock, instanceMock]]
@@ -232,7 +232,7 @@ describe('injector', () => {
     expect(injector.findInterface(instanceMock)).toBe(InterfaceMock);
   });
 
-  it('find implementation', () => {
+  it('finds implementation', () => {
     const instanceMock = new ImplementationMock;
     const injector = new Injector({
       container: [[InterfaceMock, ImplementationMock, instanceMock]]
@@ -243,7 +243,17 @@ describe('injector', () => {
     expect(injector.findImplementation(instanceMock)).toBe(ImplementationMock);
   });
 
-  it('find instance', () => {
+  it('finds implementation from getImplementation simbol', () => {
+    const injector = new Injector;
+
+    class OtherInterface {
+      static get [getImplementation]() { return ImplementationMock; }
+    }
+
+    expect(injector.findImplementation(OtherInterface)).toBe(ImplementationMock);
+  });
+
+  it('finds instance', () => {
     const instanceMock = new ImplementationMock;
     const injector = new Injector({
       container: [[InterfaceMock, ImplementationMock, instanceMock]]
