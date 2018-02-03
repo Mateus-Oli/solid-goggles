@@ -1,6 +1,6 @@
 {
   "name": "solid-goggles",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Inversion of Control for Javascript",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
