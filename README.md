@@ -83,13 +83,17 @@ class Implementation {
 
 ### Set Implementation
 ```javascript
-import { implementation } from 'solid-goggles';
-
+import { Injector, implementation } from 'solid-goggles';
 
 class Implementation {}
 
 @implementation(Implementation)
 class Interface {}
+
+const injector = new Injector;
+
+/* Does not require registration */
+injector.get(Interface);
 ```
 
 ## Methods
