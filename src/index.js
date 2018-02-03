@@ -13,6 +13,6 @@ export * from './models/injectorEmitter';
 export * from './providers/symbols';
 
 export * from './decorators/connect';
-export * from './decorators/implementation';
+export * from './decorators/register';
 
 export * from './errors/injectorError';
