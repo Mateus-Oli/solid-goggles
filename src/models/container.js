@@ -6,7 +6,14 @@ export class Container {
   static get IMPLEMENTATION() { return 'implementation'; }
   static get INSTANCE() { return 'instance'; }
 
-  static get ENTRY() { return [ Container.INTERFACE, Container.IMPLEMENTATION, Container.INSTANCE ]; }
+  static get ENTRY() { return [ this.INTERFACE, this.IMPLEMENTATION, this.INSTANCE ]; }
+
+  static toArray(entry = {}) {
+    return Array.isArray(entry) ? entry : this.ENTRY.map(index => entry[index]);
+  }
+  static toObject(array = []) {
+    return !Array.isArray(array) ? array : array.reduce((entry, value, index) => Object.assign(entry, { [this.ENTRY[index]]: value }), {});
+  }
 
   get size() { return this[Container.IMPLEMENTATION].size; }
 
@@ -64,14 +71,14 @@ export class Container {
     return (this[Container.IMPLEMENTATION].get(impl) || {})[index] || this.getFromParent(index, search);
   }
   set(value) {
-    const [ inter, impl,  inst ] = this.toArray(value);
+    const [ inter, impl,  inst ] = Container.toArray(value);
     const entry = this[Container.IMPLEMENTATION].get(impl) || {};
 
     this[Container.IMPLEMENTATION].set(impl, entry);
     if (inter !== undefined) { this[Container.INTERFACE].set(inter, impl); }
     if (inst !== undefined) { this[Container.INSTANCE].set(inst, impl); }
 
-    return Object.assign(entry, this.toObject(value));
+    return Object.assign(entry, Container.toObject(value));
   }
   delete(index, value) {
     const entry = this[Container.IMPLEMENTATION].get(this.get(Container.IMPLEMENTATION, value)) || {};
@@ -93,17 +100,10 @@ export class Container {
   }
 
   findReturn(func) {
-    return findReturn(this[Container.IMPLEMENTATION], ([, entry]) => func(this.toArray(entry), this));
+    return findReturn(this[Container.IMPLEMENTATION], ([, entry]) => func(Container.toArray(entry), this));
   }
 
   forEach(func) {
-    return this[Container.IMPLEMENTATION].forEach(entry => func(this.toArray(entry), this));
-  }
-
-  toArray(entry = {}) {
-    return Array.isArray(entry) ? entry : Container.ENTRY.map(index => entry[index]);
-  }
-  toObject(array = []) {
-    return !Array.isArray(array) ? array : array.reduce((entry, value, index) => Object.assign(entry, { [Container.ENTRY[index]]: value }), {});
+    return this[Container.IMPLEMENTATION].forEach(entry => func(Container.toArray(entry), this));
   }
 }

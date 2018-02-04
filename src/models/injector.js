@@ -8,7 +8,7 @@ import { getReturn } from '../utils/getReturn';
 export class Injector {
 
   static of(...impls) {
-    return new this({ container: impls.map(impl => [, impl]) });
+    return new this({ container: impls.map(impl => [, impl ]) });
   }
 
   constructor(injector = {}, ContainerConstructor = Container, EmitterConstructor = InjectorEmitter, MapConstructor = Map) {
