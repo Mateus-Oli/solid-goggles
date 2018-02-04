@@ -1,10 +1,9 @@
 import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../errors/injectorError';
 import { Container } from './container';
-import { canImplement, parameters, properties } from '../providers/symbols';
+import { canImplement, parameters, properties, getImplementation } from '../providers/symbols';
 import { error } from '../utils/error';
 import { getReturn } from '../utils/getReturn';
-import { getImplementation } from '../providers/symbols';
 
 export class Injector {
 

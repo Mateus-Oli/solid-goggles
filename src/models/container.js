@@ -60,9 +60,8 @@ export class Container {
   }
 
   get(index, search) {
-    if (this[index].has(search)) {
-      return search;
-    }
+    if (this[index].has(search)) { return search; }
+
     const impl = this[Container.INTERFACE].get(search) || this[Container.INSTANCE].get(search) || search;
     return (this[Container.IMPLEMENTATION].get(impl) || {})[index] || this.getFromParent(index, search);
   }
