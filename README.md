@@ -20,7 +20,7 @@
 1. [Factory](#factory)
 1. [Events](#events)
 1. [Symbols](#symbols)
-1. [Inject](#inject)
+1. [Injection Hooks](#injection-hooks)
 1. [Overwrite](#overwrite)
 1. [Other Models](#other-models)
 1. [Change Dependencies](#change-dependencies)
@@ -249,7 +249,7 @@ class Implementation {
 }
 ```
 
-### Register
+### Registration
 ```javascript
 import { getImplementation, Injector } from 'solid-goggles';
 
