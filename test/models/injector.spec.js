@@ -78,6 +78,16 @@ describe('injector', () => {
     expect(() => injector.link(OtherInterface, ImplementationMock)).toThrow(`Implementation 'ImplementationMock' is not compatible with 'OtherInterface'`);
   });
 
+  it('only sets implementation if equals interface', () => {
+    const object = {};
+    const injector = Injector.of();
+
+    injector.link(object, object);
+
+    expect(injector.findImplementation(object)).toBe(object);
+    expect(injector.findInterface(object)).toBe(undefined);
+  });
+
   it('executes factory with implementation, args, injector', () => {
     const injector = Injector.of();
     const factory = injector.factory(ImplementationMock, jest.fn((implementation, args, injectorArg) => {

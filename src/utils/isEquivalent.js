@@ -24,7 +24,7 @@ export function isFunctionEquivalent(first, second) {
 }
 
 export function isObjectMethodEquivalent(first, second) {
-  return getMethods(first).every(method => isFunctionEquivalent(first[method], (second || {})[method]));
+  return first === second || getMethods(first).every(method => isFunctionEquivalent(first[method], (second || {})[method]));
 }
 
 export function isClassEquivalent(first, second) {

@@ -14,9 +14,7 @@ export class Container {
     this.parent = container.parent;
     Container.ENTRY.forEach(index => this[index] = new MapConstructor);
 
-    if (container.forEach) {
-      container.forEach(entry => this.set(entry));
-    }
+    if (container.forEach) { container.forEach(entry => this.set(entry)); }
   }
 
   getInterface(value) {

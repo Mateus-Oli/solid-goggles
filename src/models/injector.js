@@ -1,5 +1,5 @@
-import { InjectorEmitter } from './injectorEmitter';
 import { InjectorError } from '../errors/injectorError';
+import { InjectorEmitter } from './injectorEmitter';
 import { Container } from './container';
 import { canImplement, parameters, properties, getImplementation } from '../providers/symbols';
 import { error } from '../utils/error';
@@ -8,10 +8,7 @@ import { getReturn } from '../utils/getReturn';
 export class Injector {
 
   static of(...impls) {
-    const injector = new this;
-    impls.forEach(impl => injector.setImplementation(impl));
-
-    return injector;
+    return new this({ container: impls.map(impl => [, impl]) });
   }
 
   constructor(injector = {}, ContainerConstructor = Container, EmitterConstructor = InjectorEmitter, MapConstructor = Map) {
@@ -51,11 +48,12 @@ export class Injector {
     return this.tryLink(inter, impl) || error(new InjectorError(inter, impl, InjectorError.LINK_ERROR));
   }
   tryLink(inter, impl) {
+    if (inter === impl) { return this.setImplementation(impl); }
     return this.canImplement(inter, impl) && this.container.setInterface(impl, inter);
   }
 
   factory(impl, factory) {
-    if (!factory) { return this.baseFactory = impl; }
+    if (factory === undefined) { return this.baseFactory = impl; }
     this.factories.set(this.setImplementation(impl), factory);
 
     return factory;
@@ -104,7 +102,7 @@ export class Injector {
   }
 
   findImplementation(inter) {
-    if (!inter) { return inter; }
+    if (!inter) { return undefined; }
     if (inter[getImplementation]) { return this.setImplementation(inter[getImplementation]); }
 
     const impl = this.container.getImplementation(inter);
