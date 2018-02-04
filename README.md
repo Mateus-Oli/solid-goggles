@@ -34,7 +34,8 @@ $ npm i solid-goggles
 
 ### Browser
 ```html
-<script src="node_modules/solid-goggles/dist/browser.js"></script>
+<!-- Instaled: --><script src="node_modules/solid-goggles/dist/browser.js"></script>
+<!-- CDN(unpkg): --><script src="https://unpkg.com/solid-goggles/dist/browser.js"></script>
 ```
 
 ### Common JS

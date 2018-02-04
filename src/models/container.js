@@ -1,6 +1,5 @@
 import { findReturn } from "../utils/findReturn";
 
-
 export class Container {
 
   static get INTERFACE() { return 'interface'; }
