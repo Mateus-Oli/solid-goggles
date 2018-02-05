@@ -102,7 +102,7 @@ import { Injector, implement } from 'solid-goggles';
 class Interface {}
 
 @implement(Interface)
-class Implementation{}
+class Implementation {}
 
 const injector = new Injector;
 injector.get(Interface);
