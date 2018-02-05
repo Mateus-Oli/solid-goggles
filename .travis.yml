@@ -3,7 +3,7 @@ env:
     - CC_TEST_REPORTER_ID=57d409ab83be84f6964ef5298e3dc9e77b01a254e302dcec597002ee6209d07e
 language: node_js
 node_js:
-- 9.4.0
+- 9.5.0
 - 8.9.4
 - 7.10.1
 - 6.12.3
