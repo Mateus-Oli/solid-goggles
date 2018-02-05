@@ -11,4 +11,11 @@ describe('implement', () => {
     expect(inter[getImplementation]).toBe(impl);
     expect(impl[getImplementation]).toBe(impl);
   });
+
+  it('allow implemet of implementation only', () => {
+    const impl = {};
+
+    implement()(impl);
+    expect(impl[getImplementation]).toBe(impl);
+  });
 });

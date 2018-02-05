@@ -1,1 +1,3 @@
-export const getReturn = f => (...args) => typeof f === 'function' ? f(...args) : f;
+export function getReturn(f) {
+  return (...args) => typeof f === 'function' ? f(...args) : f;
+}
