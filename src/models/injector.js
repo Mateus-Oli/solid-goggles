@@ -106,7 +106,7 @@ export class Injector {
     if (inter[getImplementation]) { return this.setImplementation(inter[getImplementation]); }
 
     const impl = this.container.getImplementation(inter);
-    return impl || this.container.findReturn(([, impl]) => this.tryLink(inter, impl) && impl);
+    return impl || this.container.findReturn(([, impl ]) => this.tryLink(inter, impl) && impl);
   }
   findInterface(impl) {
     return impl && this.container.getInterface(impl);
