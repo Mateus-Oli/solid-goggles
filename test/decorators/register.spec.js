@@ -1,19 +1,21 @@
-import { register } from "../../src/decorators/register";
 import { getImplementation } from "../../src/providers/symbols";
+import { register } from "../../src/decorators/register";
 
 describe('register', () => {
-  it('sets implementation to target', () => {
-    const target = {};
+  it('sets implementation to interface', () => {
+    const inter = {};
     const impl = {};
 
-    register(impl)(target);
-    expect(target[getImplementation]).toBe(impl);
+    register(impl)(inter);
+
+    expect(inter[getImplementation]).toBe(impl);
+    expect(impl[getImplementation]).toBe(impl);
   });
 
-  it('sets target as implementation when implementation not provided', () => {
-    const target = {};
+  it('allow registration of implementation only', () => {
+    const impl = {};
 
-    register()(target);
-    expect(target[getImplementation]).toBe(target);
+    register()(impl);
+    expect(impl[getImplementation]).toBe(impl);
   });
 });

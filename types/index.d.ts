@@ -6,5 +6,6 @@ export * from './providers/symbols';
 
 export * from './decorators/connect';
 export * from './decorators/register';
+export * from './decorators/implement';
 
 export * from './errors/injectorError';

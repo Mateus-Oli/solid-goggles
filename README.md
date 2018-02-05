@@ -92,8 +92,19 @@ class Implementation {}
 class Interface {}
 
 const injector = new Injector;
+injector.get(Interface);
+```
 
-injector.get(Implementation); /* throws InjectorError */
+### Implement Interface
+```javascript
+import { Injector, implement } from 'solid-goggles';
+
+class Interface {}
+
+@implement(Interface)
+class Implementation{}
+
+const injector = new Injector;
 injector.get(Interface);
 ```
 
