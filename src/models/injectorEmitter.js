@@ -50,9 +50,10 @@ export class InjectorEmitter {
 
   remove(e, i, l) {
     [i, l] = this.sortImplementation(i, l);
-    const index = this.listeners.findIndex(({ event, implementation, listener }) => e === event && i === implementation && l === listener);
+    const oldListeners = this.listeners;
+    this.listeners = this.listeners.filter(({ event, implementation, listener }) => e !== event || i !== implementation || l !== listener);
 
-    return index > -1 ? this.listeners.splice(index, 1)[0].listener : undefined;
+    return oldListeners.length === this.listeners.length ? undefined : l;
   }
 
   sortImplementation(implementation, value) {
