@@ -9,10 +9,12 @@ const getFactory = value => (factories.find(([ validator ]) => validator(value))
 
 const isLambda = value => isFunction(value) && !value.prototype;
 const isConstructor = value => isFunction(value) && value.prototype;
+const isObject = value => typeof value === 'object';
 
 const isFunction = value => typeof value === 'function';
 
 const factories = [
   [ isLambda, (value, args) => value(...args) ],
-  [ isConstructor, (value, args) => new value(...args) ]
+  [ isConstructor, (value, args) => new value(...args) ],
+  [ isObject, value => Object.create(value) ]
 ];
