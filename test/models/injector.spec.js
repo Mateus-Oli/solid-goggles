@@ -1,5 +1,5 @@
 import { Injector } from '../../src/models/injector';
-import { canImplement, parameters, properties, getImplementation } from '../../src/providers/symbols';
+import { canImplement, parameters, properties, findImplementation } from '../../src/providers/symbols';
 import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
 import { defaultFactory } from '../../src/providers/defaultFactory';
 
@@ -253,11 +253,11 @@ describe('injector', () => {
     expect(injector.findImplementation(instanceMock)).toBe(ImplementationMock);
   });
 
-  it('finds implementation from getImplementation simbol', () => {
+  it('finds implementation from findImplementation simbol', () => {
     const injector = new Injector;
 
     class OtherInterface {
-      static get [getImplementation]() { return ImplementationMock; }
+      static get [findImplementation]() { return ImplementationMock; }
     }
 
     expect(injector.findImplementation(OtherInterface)).toBe(ImplementationMock);

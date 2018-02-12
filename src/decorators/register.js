@@ -1,5 +1,5 @@
-import { getImplementation } from '../providers/symbols';
+import { findImplementation } from '../providers/symbols';
 
 export const register = impl => inter => {
-  inter[getImplementation] = (impl || inter)[getImplementation] = impl || inter;
+  inter[findImplementation] = (impl || inter)[findImplementation] = impl || inter;
 };

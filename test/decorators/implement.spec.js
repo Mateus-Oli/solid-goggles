@@ -1,4 +1,4 @@
-import { getImplementation } from "../../src/providers/symbols";
+import { findImplementation } from "../../src/providers/symbols";
 import { implement } from "../../src/decorators/implement";
 
 describe('implement', () => {
@@ -8,14 +8,14 @@ describe('implement', () => {
 
     implement(inter)(impl);
 
-    expect(inter[getImplementation]).toBe(impl);
-    expect(impl[getImplementation]).toBe(impl);
+    expect(inter[findImplementation]).toBe(impl);
+    expect(impl[findImplementation]).toBe(impl);
   });
 
   it('allow implemet of implementation only', () => {
     const impl = {};
 
     implement()(impl);
-    expect(impl[getImplementation]).toBe(impl);
+    expect(impl[findImplementation]).toBe(impl);
   });
 });

@@ -1,7 +1,7 @@
 import { InjectorError } from '../errors/injectorError';
 import { InjectorEmitter } from './injectorEmitter';
 import { Container } from './container';
-import { canImplement, parameters, properties, getImplementation } from '../providers/symbols';
+import { canImplement, parameters, properties, findImplementation } from '../providers/symbols';
 import { error } from '../utils/error';
 import { getReturn } from '../utils/getReturn';
 
@@ -103,7 +103,7 @@ export class Injector {
 
   findImplementation(inter) {
     if (!inter) { return undefined; }
-    if (inter[getImplementation]) { return this.setImplementation(inter[getImplementation]); }
+    if (inter[findImplementation]) { return this.setImplementation(inter[findImplementation]); }
 
     const impl = this.container.getImplementation(inter);
     return impl || this.container.findReturn(([, impl ]) => this.tryLink(inter, impl) && impl);

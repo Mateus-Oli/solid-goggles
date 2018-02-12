@@ -262,14 +262,14 @@ class Implementation {
 
 ### Registration
 ```javascript
-import { getImplementation, Injector } from 'solid-goggles';
+import { findImplementation, Injector } from 'solid-goggles';
 
 class Implementation {}
 
 class Interface {
 
   /* Must be static property */
-  static get [getImplementation]() { return Implementation; }
+  static get [findImplementation]() { return Implementation; }
 }
 
 const injector = new Injector;
