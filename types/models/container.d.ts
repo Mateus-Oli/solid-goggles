@@ -1,5 +1,5 @@
-export type Implementation<T = any, V = any> = new (...args: V[]) => T;
-export type Interface<T = any, V = any> = new (...args: V[]) => { [K in keyof T]: T[K] };
+export type Implementation<T = any> = new (...args: any[]) => T;
+export type Interface<T = any> = new (...args: any[]) => { [K in keyof T]: T[K] };
 
 export interface ContainerConstructor {
   new (container?: ContainerEquivalent): Container;
