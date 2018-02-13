@@ -9,17 +9,19 @@ const getMetadata = (target, property) => {
   if (typeof Reflect === 'undefined' || !Reflect.getMetadata) { return; }
 
   return isNumber(property) ?
-    (Reflect.getMetadata(PARAMETER, target) || [])[property] :
-    Reflect.getMetadata(PROPERTY, target, property);
+  (Reflect.getMetadata(PARAMETER, target) || [])[property] :
+  Reflect.getMetadata(PROPERTY, target, property);
 };
 
-const makeConnect = (hook, returnV) => (target, property, T) => {
-  target[hook] = target[hook] || returnV;
+const getContainer = property => isNumber(property) ? {} : [];
+
+const makeConnect = hook => (target, property, T) => {
+  target[hook] = target[hook] || getContainer(property);
   target[hook][property] = T || getMetadata(target, property);
 };
 
-const connectParameter = makeConnect(parameters, []);
-const connectProperty = makeConnect(properties, {});
+const connectParameter = makeConnect(parameters);
+const connectProperty = makeConnect(properties);
 
 export const connect = T => (target, property, length) => isNumber(length) ?
   connectParameter(target, length, T) :

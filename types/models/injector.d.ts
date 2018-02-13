@@ -106,8 +106,8 @@ export interface Injector extends BaseDependencies {
   instantiate<T>(implementation: T): T;
   instantiate<T>(implementation: any): T;
 
-  properties<T extends {[k: string]: any}>(instance: any): T;
-  parameters<V extends any[]>(implementation: any): V;
+  properties<T extends { [k: string]: any } = { [k: string]: any }>(instance: any): T;
+  parameters<V extends any[] = any[]>(implementation: any): V;
 
   clear(): this;
 
