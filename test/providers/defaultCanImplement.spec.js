@@ -3,13 +3,13 @@ import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
 class InterfaceMock {
 
   methodMock1() {}
-  methodMock2(arg1, arg2) {}
+  methodMock2(arg1, arg2) { return arg1 + arg2; }
 }
 
 class CorrectImplementation {
 
   methodMock1() {}
-  methodMock2(arg1, arg2) {}
+  methodMock2(arg1, arg2) { return arg1 + arg2; }
 
   ignoredMethod() {}
 }
@@ -17,7 +17,7 @@ class CorrectImplementation {
 const correctInstance = {
 
   methodMock1() {},
-  methodMock2(arg1, arg2) {}
+  methodMock2(arg1, arg2) { return arg1 + arg2; }
 };
 
 class IncorrectMethodName {

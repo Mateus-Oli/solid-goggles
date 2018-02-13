@@ -26,4 +26,56 @@ describe('connect', () => {
   it('return void', () => {
     expect(connect({})({}, 'property')).toBe(undefined);
   });
+
+  it('uses Reflect.getMetadata for parameters without provided type', () => {
+    const object = {};
+    const paramType = {};
+
+    const original = Reflect.getMetadata;
+    Reflect.getMetadata = jest.fn((type, target, property) => {
+      expect(type).toBe('design:paramtypes');
+      expect(target).toBe(object);
+      expect(property).toBe(undefined);
+
+      return [paramType];
+    });
+
+    connect()(object, undefined, 0);
+
+    expect(object[parameters][0]).toBe(paramType);
+    expect(Reflect.getMetadata).toHaveBeenCalledTimes(1);
+
+    Reflect.getMetadata = original;
+  });
+
+  it('uses Reflect.getMetadata for properties without provided type', () => {
+    const object = {};
+    const paramType = {};
+
+    const original = Reflect.getMetadata;
+    Reflect.getMetadata = jest.fn((type, target, property) => {
+      expect(type).toBe('design:type');
+      expect(target).toBe(object);
+      expect(property).toBe('property');
+
+      return paramType;
+    });
+
+    connect()(object, 'property');
+
+    expect(object[properties].property).toBe(paramType);
+    expect(Reflect.getMetadata).toHaveBeenCalledTimes(1);
+
+    Reflect.getMetadata = original;
+  });
+
+  it('returns undefined if no type provided and no Reflect.getMetadata', () => {
+    const object = {};
+
+    connect()(object, 'property');
+    expect(object[properties].property).toBe(undefined);
+
+    connect()(object, undefined, 0);
+    expect(object[parameters][0]).toBe(undefined);
+  });
 });
