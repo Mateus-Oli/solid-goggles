@@ -79,7 +79,7 @@ export class Injector {
     const impl = this.findImplementation(inter);
     const inst = this.set(impl, this.instantiate(impl));
 
-    return inst && Object.assign(inst, this.properties(inst));
+    return inst && inst[properties] ? Object.assign(inst, this.properties(inst)) : inst;
   }
 
   properties(inst) {
