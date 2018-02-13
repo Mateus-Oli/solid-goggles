@@ -9,8 +9,8 @@ const getMetadata = (target, property) => {
   if (typeof Reflect === 'undefined' || !Reflect.getMetadata) { return; }
 
   return isNumber(property) ?
-  (Reflect.getMetadata(PARAMETER, target) || [])[property] :
-  Reflect.getMetadata(PROPERTY, target, property);
+    (Reflect.getMetadata(PARAMETER, target) || [])[property] :
+    Reflect.getMetadata(PROPERTY, target, property);
 };
 
 const getContainer = property => isNumber(property) ? {} : [];
