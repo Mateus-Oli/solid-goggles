@@ -90,6 +90,7 @@ export class Injector {
   properties(inter) {
     const inst = this.findInstance(inter);
     const data = inst && asFunc(inst[properties])(this) || {};
+
     return Object.keys(data).reduce((obj, key) => Object.assign(obj, { [key]:  this.get(data[key]) }), {});
   }
 
