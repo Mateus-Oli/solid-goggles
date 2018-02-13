@@ -82,17 +82,19 @@ export class Injector {
     return inst && inst[properties] ? Object.assign(inst, this.properties(inst)) : inst;
   }
 
-  properties(inst) {
-    const data = inst && asFunc(inst[properties])(this) || {};
-    return Object.keys(data).reduce((obj, key) => Object.assign(obj, { [key]:  this.get(data[key]) }), {});
-  }
-
   instantiate(inter) {
     const impl = this.findImplementation(inter);
     return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.parameters(impl), this));
   }
 
-  parameters(impl) {
+  properties(inter) {
+    const inst = this.findInstance(inter);
+    const data = inst && asFunc(inst[properties])(this) || {};
+    return Object.keys(data).reduce((obj, key) => Object.assign(obj, { [key]:  this.get(data[key]) }), {});
+  }
+
+  parameters(inter) {
+    const impl = this.findImplementation(inter);
     return [].concat(impl && asFunc(impl[parameters])(this) || []).map(dependency => this.get(dependency));
   }
 
@@ -108,11 +110,11 @@ export class Injector {
     const impl = this.container.getImplementation(inter);
     return impl || this.container.findReturn(([, impl ]) => this.tryLink(inter, impl) && impl);
   }
-  findInterface(impl) {
-    return impl && this.container.getInterface(impl);
+  findInterface(inter) {
+    return inter && this.container.getInterface(inter);
   }
-  findInstance(impl) {
-    return impl && this.container.getInstance(impl);
+  findInstance(inter) {
+    return inter && this.container.getInstance(inter);
   }
 
   canImplement(inter, impl) {
