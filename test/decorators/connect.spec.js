@@ -2,6 +2,32 @@ import { connect } from '../../src/decorators/connect';
 import { properties, parameters } from '../../src/providers/symbols';
 
 describe('connect', () => {
+
+  it('creates correct containers', () => {
+    const object = {};
+
+    connect({})(object, 'property');
+    connect({})(object, undefined, 0);
+
+    expect(object[parameters]).toBeInstanceOf(Array);
+    expect(object[properties]).not.toBeInstanceOf(Array);
+  });
+
+  it('creates new containers for diferent objects', () => {
+    const first = {};
+    const second = {};
+
+    connect({})(first, 'property');
+    connect({})(second, 'property');
+
+    expect(first[properties]).not.toBe(second[properties]);
+
+    connect({})(first, undefined, 0);
+    connect({})(second, undefined, 0);
+
+    expect(first[parameters]).not.toBe(second[parameters]);
+  });
+
   it('set value to properties hook in property', () => {
     const target = {};
     const property = 'property';
@@ -94,20 +120,5 @@ describe('connect', () => {
 
     connect()(object, undefined, 0);
     expect(object[parameters][0]).toBe(undefined);
-  });
-
-  it('creates new containers for diferent objects', () => {
-    const first = {};
-    const second = {};
-
-    connect(0)(first, 'property');
-    connect(0)(second, 'property');
-
-    expect(first[properties]).not.toBe(second[properties]);
-
-    connect(0)(first, undefined, 0);
-    connect(0)(second, undefined, 0);
-
-    expect(first[parameters]).not.toBe(second[parameters]);
   });
 });
