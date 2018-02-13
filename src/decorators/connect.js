@@ -13,7 +13,7 @@ const getMetadata = (target, property) => {
     Reflect.getMetadata(PROPERTY, target, property);
 };
 
-const getContainer = property => isNumber(property) ? {} : [];
+const getContainer = property => isNumber(property) ? [] : {};
 
 const makeConnect = hook => (target, property, T) => {
   target[hook] = target[hook] || getContainer(property);
