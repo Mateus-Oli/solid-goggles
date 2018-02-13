@@ -1,4 +1,4 @@
-import { findReturn } from "../../src/utils/findReturn";
+import { findReturn } from '../../src/utils/findReturn';
 
 describe('find return', () => {
   it('executes with right parameters', () => findReturn([10], v => expect(v).toBe(10)));

@@ -3,7 +3,7 @@ import { InjectorEmitter } from './injectorEmitter';
 import { Container } from './container';
 import { canImplement, parameters, properties, findImplementation } from '../providers/symbols';
 import { error } from '../utils/error';
-import { getReturn } from '../utils/getReturn';
+import { asFunc } from '../utils/asFunc';
 
 export class Injector {
 
@@ -83,7 +83,7 @@ export class Injector {
   }
 
   properties(inst) {
-    const data = inst && getReturn(inst[properties])(this) || {};
+    const data = inst && asFunc(inst[properties])(this) || {};
     return Object.keys(data).reduce((obj, key) => Object.assign(obj, { [key]:  this.get(data[key]) }), {});
   }
 
@@ -93,7 +93,7 @@ export class Injector {
   }
 
   parameters(impl) {
-    return [].concat(impl && getReturn(impl[parameters])(this) || []).map(dependency => this.get(dependency));
+    return [].concat(impl && asFunc(impl[parameters])(this) || []).map(dependency => this.get(dependency));
   }
 
   clear() {

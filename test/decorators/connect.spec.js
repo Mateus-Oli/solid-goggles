@@ -1,6 +1,5 @@
-import { connect } from "../../src/decorators/connect";
-import { properties, parameters } from "../../src/providers/symbols";
-
+import { connect } from '../../src/decorators/connect';
+import { properties, parameters } from '../../src/providers/symbols';
 
 describe('connect', () => {
   it('set value to properties hook in property', () => {

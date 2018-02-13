@@ -1,23 +1,23 @@
-import { getReturn } from "../../src/utils/getReturn";
+import { asFunc } from '../../src/utils/asFunc';
 
-describe('get return', () => {
+describe('as function', () => {
   it('executes function', () => {
     const f = jest.fn();
-    getReturn(f)();
+    asFunc(f)();
     expect(f).toHaveBeenCalledTimes(1);
   });
 
   it('returns function return', () => {
-    expect(getReturn(() => 3)()).toBe(3);
+    expect(asFunc(() => 3)()).toBe(3);
   });
 
   it('execute function with args', () => {
     const f = jest.fn();
-    getReturn(f)(1, 2, 3);
+    asFunc(f)(1, 2, 3);
     expect(f).toHaveBeenCalledWith(1, 2, 3);
   });
 
   it('returns non function values', () => {
-    expect(getReturn(10)()).toBe(10);
+    expect(asFunc(10)()).toBe(10);
   });
 });

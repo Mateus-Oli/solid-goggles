@@ -1,5 +1,5 @@
-import { findImplementation } from "../../src/providers/symbols";
-import { implement } from "../../src/decorators/implement";
+import { findImplementation } from '../../src/providers/symbols';
+import { implement } from '../../src/decorators/implement';
 
 describe('implement', () => {
   it('sets implementation to interface', () => {
