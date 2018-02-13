@@ -82,6 +82,24 @@ class Implementation {
 }
 ```
 
+```typescript
+// TYPESCRIPT
+
+import 'reflect-metadata';
+import { connect } from 'solid-goggles';
+
+class OtherImplementation {}
+
+class Implementation {
+
+  @connect() property: OtherImplementation;
+
+  constructor(
+    @connect() parameter: OtherImplementation
+  ) {}
+}
+```
+
 ### Register Implementation
 ```javascript
 import { Injector, register } from 'solid-goggles';

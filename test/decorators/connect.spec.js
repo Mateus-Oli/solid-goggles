@@ -48,6 +48,24 @@ describe('connect', () => {
     Reflect.getMetadata = original;
   });
 
+  it('does not break without return of Reflect.getMetadata', () => {
+    const object = {};
+
+    const original = Reflect.getMetadata;
+    Reflect.getMetadata = jest.fn((type, target, property) => {
+      expect(type).toBe('design:paramtypes');
+      expect(target).toBe(object);
+      expect(property).toBe(undefined);
+    });
+
+    connect()(object, undefined, 0);
+
+    expect(object[parameters][0]).toBe(undefined);
+    expect(Reflect.getMetadata).toHaveBeenCalledTimes(1);
+
+    Reflect.getMetadata = original;
+  });
+
   it('uses Reflect.getMetadata for properties without provided type', () => {
     const object = {};
     const paramType = {};
