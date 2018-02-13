@@ -34,11 +34,6 @@ export function isClassEquivalent(first, second) {
   return isObjectMethodEquivalent(first, second);
 }
 
-export function isPrimitive(value) {
-  const type = typeof value;
-  return type !== 'object' && type !== 'function' && type !== 'undefined';
-}
-
 export function isEquivalent(first, second) {
-  return isPrimitive(first) ? first === second : isClassEquivalent(first, second);
+  return isClassEquivalent(first, second);
 }
