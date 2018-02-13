@@ -1,38 +1,34 @@
 export function isEquivalent(first, second) {
-  return isClassEquivalent(first, second);
+  return methodEquivalence(getObject(first), getObject(second));
 }
 
-function isClassEquivalent(first, second) {
-  return isObjectMethodEquivalent(getFuncPrototype(first), getFuncPrototype(second));
-}
-
-function getFuncPrototype(func) {
+function getObject(func) {
   return typeof func === 'function' ? func.prototype : func;
 }
 
-function isObjectMethodEquivalent(first, second) {
-  return first === second || getMethods(first).every(method => isFunctionEquivalent(first[method], (second || {})[method]));
+function methodEquivalence(first, second) {
+  return first === second || getMethods(first).every(method => functionEquivalence(first[method], (second || {})[method]));
 }
 
-function isFunctionEquivalent(first, second) {
+function functionEquivalence(first, second) {
   return typeof first === 'function' && typeof second === 'function' && first.length === second.length;
 }
 
-function getMethods(obj) {
-  return getAllKeys(obj).filter(v => v !== 'constructor' && typeof obj[v] === 'function');
+function getMethods(object) {
+  return getAllKeys(object).filter(v => v !== 'constructor' && typeof object[v] === 'function');
 }
 
-function getAllKeys(obj) {
+function getAllKeys(object) {
   let keys = [];
   do {
-    keys = keys.concat(getKeys(obj));
-  } while(obj = obj && Object.getPrototypeOf(obj));
+    keys = keys.concat(getKeys(object));
+  } while(object = object && Object.getPrototypeOf(object));
 
   return keys;
 }
 
-function getKeys(obj) {
-  return isObject(obj) ? Object.getOwnPropertyNames(obj) : [];
+function getKeys(object) {
+  return isObject(object) ? Object.getOwnPropertyNames(object) : [];
 }
 
 function isObject(object) {
