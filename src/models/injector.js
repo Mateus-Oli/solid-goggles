@@ -24,7 +24,7 @@ export class Injector {
     return this.tryGet(inter) || error(new InjectorError(inter));
   }
   set(inter, inst) {
-    const impl = this.findImplementation(inter);
+    const impl = this.findImplementation(inter) || inter;
     return inst && this.container.setInstance(impl, this.emitter.emitSet(impl, inst));
   }
   delete(inter) {
