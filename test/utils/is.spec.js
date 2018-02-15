@@ -1,6 +1,7 @@
 import {
   isBoolean,
   isComposite,
+  isEmpty,
   isFunction,
   isNumber,
   isObject,
@@ -38,6 +39,20 @@ describe('is', () => {
 
     expect(isComposite(null)).toBe(false);
     expect(isComposite()).toBe(false);
+  });
+
+  it('checks empty', () => {
+    expect(isEmpty(true)).toBe(false);
+    expect(isEmpty(false)).toBe(false);
+    expect(isEmpty('')).toBe(false);
+    expect(isEmpty(0)).toBe(false);
+    expect(isEmpty(Symbol())).toBe(false);
+
+    expect(isEmpty({})).toBe(false);
+    expect(isEmpty(() => {})).toBe(false);
+
+    expect(isEmpty(null)).toBe(true);
+    expect(isEmpty()).toBe(true);
   });
 
   it('checks boolean', () => {
