@@ -1,4 +1,4 @@
-import { isEquivalent } from '../../src/utils/isEquivalent';
+import { isEquivalent, isPrimitive } from '../../src/utils/isEquivalent';
 
 describe('is equivalent', () => {
   it('considers null and undefined as possessing no methods', () => {
@@ -52,5 +52,32 @@ describe('is equivalent', () => {
 
     expect(isEquivalent(First, Second)).toBe(true);
     expect(isEquivalent(First, Third)).toBe(false);
+  });
+});
+
+describe('is primitive', () => {
+  it('returns true for primitives', () => {
+
+    expect(isPrimitive(1)).toBe(true);
+    expect(isPrimitive(0)).toBe(true);
+
+    expect(isPrimitive('string')).toBe(true);
+    expect(isPrimitive('')).toBe(true);
+
+    expect(isPrimitive(true)).toBe(true);
+    expect(isPrimitive(false)).toBe(true);
+
+    expect(isPrimitive(Symbol('symbol'))).toBe(true);
+  });
+
+  it('returns false for composite', () => {
+
+    expect(isPrimitive({})).toBe(false);
+
+    expect(isPrimitive(() => {})).toBe(false);
+
+    expect(isPrimitive(/regexp/)).toBe(false);
+
+    expect(isPrimitive(new class {})).toBe(false);
   });
 });

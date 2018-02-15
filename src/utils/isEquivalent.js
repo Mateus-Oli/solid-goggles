@@ -36,5 +36,5 @@ function isObject(object) {
 }
 
 export function isPrimitive(object) {
-  return typeof object !== 'object' && typeof object !== 'function';
+  return !object || typeof object !== 'object' && typeof object !== 'function';
 }
