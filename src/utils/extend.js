@@ -1,4 +1,4 @@
-import { isPrimitive } from "util";
+import { isPrimitive } from './is';
 
 export const extend = (target, ...extensions) => isPrimitive(target) ?
   target :

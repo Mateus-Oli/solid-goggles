@@ -1,4 +1,4 @@
-import { objectMap } from "../../src/utils/objectMap";
+import { objectMap } from '../../src/utils/objectMap';
 
 describe('object map', () => {
   it('creates a new object', () => {

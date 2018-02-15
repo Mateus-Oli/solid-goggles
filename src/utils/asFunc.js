@@ -1,3 +1,5 @@
+import { isFunction } from './is';
+
 export function asFunc(f) {
-  return typeof f === 'function' ? f : () => f;
+  return isFunction(f) ? f : () => f;
 }

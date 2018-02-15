@@ -1,9 +1,11 @@
+import { isFunction, isObject } from './is';
+
 export function isEquivalent(first, second) {
   return methodEquivalence(getObject(first), getObject(second));
 }
 
 function getObject(func) {
-  return typeof func === 'function' ? func.prototype : func;
+  return isFunction(func) ? func.prototype : func;
 }
 
 function methodEquivalence(first, second) {
@@ -11,11 +13,11 @@ function methodEquivalence(first, second) {
 }
 
 function functionEquivalence(first, second) {
-  return typeof first === 'function' && typeof second === 'function' && first.length === second.length;
+  return isFunction(first) && isFunction(second) && first.length === second.length;
 }
 
 function getMethods(object) {
-  return getAllKeys(object).filter(v => v !== 'constructor' && typeof object[v] === 'function');
+  return getAllKeys(object).filter(v => v !== 'constructor' && isFunction(object[v]));
 }
 
 function getAllKeys(object) {
@@ -29,12 +31,4 @@ function getAllKeys(object) {
 
 function getKeys(object) {
   return isObject(object) ? Object.getOwnPropertyNames(object) : [];
-}
-
-function isObject(object) {
-  return object && typeof object === 'object';
-}
-
-export function isPrimitive(object) {
-  return !object || typeof object !== 'object' && typeof object !== 'function';
 }

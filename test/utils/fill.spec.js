@@ -1,4 +1,4 @@
-import { fill } from "../../src/utils/fill";
+import { fill } from '../../src/utils/fill';
 
 describe('fill', () => {
   it('returns empty array on empty call', () => {

@@ -1,5 +1,5 @@
-import { findImplementation } from '../../src/providers/symbols';
 import { register } from '../../src/decorators/register';
+import { findImplementation } from '../../src/providers/symbols';
 
 describe('register', () => {
   it('sets implementation to interface', () => {

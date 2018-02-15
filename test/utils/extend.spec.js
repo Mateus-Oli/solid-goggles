@@ -1,4 +1,4 @@
-import { extend } from "../../src/utils/extend";
+import { extend } from '../../src/utils/extend';
 
 describe('extend', () => {
   it('returns target', () => {

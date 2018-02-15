@@ -1,5 +1,5 @@
 import { connect } from '../../src/decorators/connect';
-import { properties, parameters, methods } from '../../src/providers/symbols';
+import { methods, parameters, properties } from '../../src/providers/symbols';
 
 describe('connect', () => {
 

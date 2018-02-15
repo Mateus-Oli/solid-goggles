@@ -1,15 +1,15 @@
-import { properties, parameters, methods } from '../providers/symbols';
+import { methods, parameters, properties } from '../providers/symbols';
+import { isFunction, isNumber, isString } from '../utils/is';
 
 const PARAMETER = 'design:paramtypes';
 const PROPERTY = 'design:type';
 
 const CONNECT = 1;
 
-const isNumber = x => typeof x === 'number';
-const isString = x => typeof x === 'string';
+const METADATA = () => typeof Reflect !== 'undefined' && isFunction(Reflect.getMetadata);
 
 const getMetadata = (target, property, length) => {
-  if (typeof Reflect === 'undefined' || !Reflect.getMetadata) { return; }
+  if (!METADATA()) { return; }
 
   return isNumber(length) ?
     (Reflect.getMetadata(PARAMETER, target, property) || [])[length] :

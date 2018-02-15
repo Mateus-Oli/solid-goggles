@@ -1,7 +1,7 @@
 import { Injector } from '../../src/models/injector';
-import { canImplement, parameters, properties, findImplementation, methods } from '../../src/providers/symbols';
 import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
 import { defaultFactory } from '../../src/providers/defaultFactory';
+import { canImplement, findImplementation, methods, parameters, properties } from '../../src/providers/symbols';
 
 Injector.baseCanImplement = defaultCanImplement;
 Injector.baseFactory = defaultFactory;
