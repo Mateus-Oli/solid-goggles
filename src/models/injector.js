@@ -4,6 +4,7 @@ import { Container } from './container';
 import { canImplement, parameters, properties, findImplementation } from '../providers/symbols';
 import { error } from '../utils/error';
 import { asFunc } from '../utils/asFunc';
+import { extend } from '../utils/extend';
 
 export class Injector {
 
@@ -79,7 +80,7 @@ export class Injector {
     const impl = this.findImplementation(inter);
     const inst = this.set(impl, this.instantiate(impl));
 
-    return inst && inst[properties] ? Object.assign(inst, this.properties(inst)) : inst;
+    return extend(inst, this.properties(inst));
   }
 
   instantiate(inter) {
