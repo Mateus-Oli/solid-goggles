@@ -1,28 +1,41 @@
-import { properties, parameters } from '../providers/symbols';
+import { properties, parameters, methods } from '../providers/symbols';
 
 const PARAMETER = 'design:paramtypes';
 const PROPERTY = 'design:type';
 
-const isNumber = x => typeof x === 'number';
+const CONNECT = 1;
 
-const getMetadata = (target, property) => {
+const isNumber = x => typeof x === 'number';
+const isString = x => typeof x === 'string';
+
+const getMetadata = (target, property, length) => {
   if (typeof Reflect === 'undefined' || !Reflect.getMetadata) { return; }
 
-  return isNumber(property) ?
-    (Reflect.getMetadata(PARAMETER, target) || [])[property] :
+  return isNumber(length) ?
+    (Reflect.getMetadata(PARAMETER, target, property) || [])[length] :
     Reflect.getMetadata(PROPERTY, target, property);
 };
 
-const getContainer = property => isNumber(property) ? [] : {};
+export const connect = type =>
+  (target, property, length) =>
+    getConnect(target, property, length)(type || getMetadata(target, property, length));
 
-const makeConnect = hook => (target, property, T) => {
-  target[hook] = target[hook] || getContainer(property);
-  target[hook][property] = T || getMetadata(target, property);
-};
+const getConnect = (target, property, length) => connectTypes
+  .find(([ validator ]) => validator(property, length))[CONNECT](target, property, length);
 
-const connectParameter = makeConnect(parameters);
-const connectProperty = makeConnect(properties);
+const decorateParameters = (property, length) => property === undefined && isNumber(length);
+const decorateProperties = (property, length) => isString(property) && !isNumber(length);
+const decorateMethods = (property, length) => isString(property) && isNumber(length);
 
-export const connect = T => (target, property, length) => isNumber(length) ?
-  connectParameter(target, length, T) :
-  connectProperty(target, property, T);
+const connectTypes = [
+  [decorateParameters, (target, _, length) => type => {
+    target[parameters] = Object.assign(target[parameters] || [], { [length]: type });
+  }],
+  [decorateProperties, (target, property) => type => {
+    target[properties] = Object.assign(target[properties] || {}, { [property]: type });
+  }],
+  [decorateMethods, (target, property, length) => type => {
+    target[methods] = target[methods] || {};
+    target[methods][property] = Object.assign(target[methods][property] || [], { [length]: type });
+  }]
+];

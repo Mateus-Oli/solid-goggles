@@ -1,5 +1,5 @@
 import { connect } from '../../src/decorators/connect';
-import { properties, parameters } from '../../src/providers/symbols';
+import { properties, parameters, methods } from '../../src/providers/symbols';
 
 describe('connect', () => {
 
@@ -28,7 +28,7 @@ describe('connect', () => {
     expect(first[parameters]).not.toBe(second[parameters]);
   });
 
-  it('set value to properties hook in property', () => {
+  it('sets value to properties hook in property', () => {
     const target = {};
     const property = 'property';
     const value = {};
@@ -38,7 +38,7 @@ describe('connect', () => {
     expect(target[properties][property]).toBe(value);
   });
 
-  it('set value to parameters hook in length', () => {
+  it('sets value to parameters hook in length', () => {
     const target = {};
     const length = 0;
     const value = {};
@@ -46,6 +46,17 @@ describe('connect', () => {
     connect(value)(target, undefined, length);
 
     expect(target[parameters][length]).toBe(value);
+  });
+
+  it('sets value to methods hook in property[length]', () => {
+    const target = {};
+    const property = 'property';
+    const length = 0;
+    const value = {};
+
+    connect(value)(target, property, length);
+
+    expect(target[methods][property][length]).toBe(value);
   });
 
   it('return void', () => {
