@@ -3,3 +3,4 @@ export const findImplementation: symbol;
 
 export const parameters: symbol;
 export const properties: symbol;
+export const methods: symbol;

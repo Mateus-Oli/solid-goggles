@@ -79,6 +79,8 @@ class Implementation {
   constructor(
     @connect(OtherImplementation) parameter
   ) {}
+
+  method(@connect(OtherImplementation) parameter) {}
 }
 ```
 
@@ -97,6 +99,9 @@ class Implementation {
   constructor(
     @connect() parameter: OtherImplementation
   ) {}
+
+  method(@connect() parameter: OtherImplementation) {}
+
 }
 ```
 
@@ -159,12 +164,14 @@ injector.onInstantiate(Implementation, (instance, next) => next(instance));
 
 /** instantiate + set + properties */
 injector.generate(Implementation);
-injector.genereted(instance);
 
 /** factory + parameters */
 injector.instantiate(Implementation);
-injector.inject(Implementation);
 
+injector.parameters(Implementation);
+
+injector.properties(instance);
+injector.methods(instance);
 
 /** delete all instances */
 injector.clear();
@@ -275,6 +282,23 @@ class Implementation {
       instance: Implementation
     };
   }
+}
+```
+
+### Methods
+```javascript
+import { methods } from 'solid-goggles';
+
+class Implementation {
+
+  [methods](injector) {
+
+    /** Allow circular dependencies */
+
+    return { method: [ Implementation ] };
+  }
+
+  method(instance) {}
 }
 ```
 
