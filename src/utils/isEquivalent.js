@@ -34,3 +34,7 @@ function getKeys(object) {
 function isObject(object) {
   return object && typeof object === 'object';
 }
+
+export function isPrimitive(object) {
+  return typeof object !== 'object' && typeof object !== 'function';
+}
