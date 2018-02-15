@@ -1,10 +1,12 @@
 import { InjectorError } from '../errors/injectorError';
-import { InjectorEmitter } from './injectorEmitter';
-import { Container } from './container';
-import { canImplement, parameters, properties, findImplementation } from '../providers/symbols';
-import { error } from '../utils/error';
+import { canImplement, findImplementation, methods, parameters, properties } from '../providers/symbols';
 import { asFunc } from '../utils/asFunc';
+import { error } from '../utils/error';
 import { extend } from '../utils/extend';
+import { fill } from '../utils/fill';
+import { objectMap } from '../utils/objectMap';
+import { Container } from './container';
+import { InjectorEmitter } from './injectorEmitter';
 
 export class Injector {
 
@@ -80,7 +82,7 @@ export class Injector {
     const impl = this.findImplementation(inter);
     const inst = this.set(impl, this.instantiate(impl));
 
-    return extend(inst, this.properties(inst));
+    return extend(inst, this.properties(inst), this.methods(inst));
   }
 
   instantiate(inter) {
@@ -88,16 +90,19 @@ export class Injector {
     return impl && this.emitter.emitInstantiate(impl, this.getFactory(impl)(impl, this.parameters(impl), this));
   }
 
-  properties(inter) {
-    const inst = this.findInstance(inter);
-    const data = inst && asFunc(inst[properties])(this) || {};
-
-    return Object.keys(data).reduce((obj, key) => Object.assign(obj, { [key]:  this.get(data[key]) }), {});
+  methods(inst = {}) {
+    return objectMap(asFunc(inst[methods])(this) || {})((dependencies, index) => {
+      const method = inst[index];
+      return (...args) => method.apply(inst, fill(dependencies.map(d => d && this.get(d)))(args));
+    });
   }
 
-  parameters(inter) {
-    const impl = this.findImplementation(inter);
-    return [].concat(impl && asFunc(impl[parameters])(this) || []).map(dependency => this.get(dependency));
+  properties(inst = {}) {
+    return objectMap(asFunc(inst[properties])(this) || {})(dependency => this.get(dependency));
+  }
+
+  parameters(impl = {}) {
+    return [].concat(asFunc(impl[parameters])(this) || []).map(dependency => this.get(dependency));
   }
 
   clear() {

@@ -1,5 +1,5 @@
 import { Injector } from '../../src/models/injector';
-import { canImplement, parameters, properties, findImplementation } from '../../src/providers/symbols';
+import { canImplement, parameters, properties, findImplementation, methods } from '../../src/providers/symbols';
 import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
 import { defaultFactory } from '../../src/providers/defaultFactory';
 
@@ -213,22 +213,61 @@ describe('injector', () => {
     expect(injector.get(PropertiesHook).instanceMock).toBeInstanceOf(ImplementationMock);
   });
 
-  it('allows properties and parameters hooks to be values', () => {
+  it('executes methods hook with injector as argument', () => {
+    const injector = Injector.of();
+
+    class MethodsHook {}
+    MethodsHook.prototype[methods] = jest.fn(injectorArg => expect(injectorArg).toBe(injector));
+
+    injector.setImplementation(MethodsHook);
+    injector.get(MethodsHook);
+
+    expect(MethodsHook.prototype[methods]).toHaveBeenCalledTimes(1);
+  });
+
+  it('connects array of parameters of methods hook with instance methods', () => {
+    const injector = Injector.of();
+
+    class MethodsHook {
+
+      [methods]() { return { method: [ 'connect', undefined, 'connect' ] }; }
+      method(...args) { return args; }
+    }
+
+    injector.setImplementation(MethodsHook);
+    injector.set('connect', 'CONNECT');
+
+    expect(injector.get(MethodsHook).method('CALLED')).toMatchObject(['CONNECT', 'CALLED', 'CONNECT']);
+  });
+
+  it('allows properties, parameters, methos hooks to be values', () => {
     const injector = Injector.of(ImplementationMock);
 
     class Hooks {
       static get [parameters]() { return [ImplementationMock]; }
       get [properties]() { return { propertiesInstance: ImplementationMock }; }
+      get [methods]() { return { method: [ ImplementationMock ] }; }
 
       constructor(parametersInstance) {
         this.parametersInstance = parametersInstance;
       }
+
+      method(methodInstance) { return methodInstance; }
     }
 
     injector.setImplementation(Hooks);
 
     expect(injector.get(Hooks).propertiesInstance).toBeInstanceOf(ImplementationMock);
     expect(injector.get(Hooks).parametersInstance).toBeInstanceOf(ImplementationMock);
+    expect(injector.get(Hooks).method()).toBeInstanceOf(ImplementationMock);
+  });
+
+  it('allows undefined to hook injector methods', () => {
+    const injector = Injector.of();
+
+    expect(injector.parameters()).toMatchObject([]);
+    expect(injector.properties()).toMatchObject({});
+    expect(injector.methods()).toMatchObject({});
   });
 
   it('finds interface', () => {
