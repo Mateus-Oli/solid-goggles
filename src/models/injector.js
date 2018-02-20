@@ -93,7 +93,7 @@ export class Injector {
   methods(inst = {}) {
     return objectMap(asFunc(inst[methods])(this) || {})((dependencies, index) => {
       const method = inst[index];
-      return (...args) => method.apply(inst, fill(dependencies.map(d => d && this.get(d)))(args));
+      return (...args) => method.apply(inst, fill([].concat(dependencies).map(d => d && this.get(d)))(args));
     });
   }
 

@@ -246,7 +246,7 @@ injector.onGet(Implementation, (instance, next) => {
 
 ## Symbols
 ```javascript
-import { canImplement, parameters, properties } from 'solid-goggles';
+import { canImplement, getImplementation, parameters, properties, methods } from 'solid-goggles';
 ```
 
 ## Injection Hooks
