@@ -2,7 +2,8 @@
 
 const path = require('path');
 
-const config = (libraryTarget, filename = 'index.js') => ({
+const config = (libraryTarget, filename, mode = 'production') => ({
+  mode,
   entry: './src/index',
   output: {
     filename,
@@ -31,5 +32,5 @@ const config = (libraryTarget, filename = 'index.js') => ({
 
 module.exports = [
   config('var', 'browser.js'),
-  config('commonjs2')
+  config('commonjs2', 'index.js')
 ];
