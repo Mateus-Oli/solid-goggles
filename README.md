@@ -246,7 +246,7 @@ injector.onGet(Implementation, (instance, next) => {
 
 ## Symbols
 ```javascript
-import { canImplement, getImplementation, parameters, properties, methods } from 'solid-goggles';
+import { canImplement, findImplementation, factory, parameters, properties, methods } from 'solid-goggles';
 ```
 
 ## Injection Hooks
@@ -320,7 +320,7 @@ injector.get(Inteface);
 
 ## Overwrite
 ```javascript
-import { Injector, canImplement } from 'solid-goggles';
+import { Injector, canImplement, factory } from 'solid-goggles';
 
 Injector.baseCanImplement = (interface, implementation, injector) => true;
 Injector.baseFactory = (implementation, args, injector) => new implementation(...args);
@@ -338,6 +338,10 @@ class Interface {
 class Implementation {
   static [canImplement](interface, implementation, injector) {
     return true;
+  }
+
+  static [factory](constructor, args, injector) {
+    return new constructor(...args);
   }
 }
 ```

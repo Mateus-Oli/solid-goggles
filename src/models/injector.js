@@ -1,5 +1,5 @@
 import { InjectorError } from '../errors/injectorError';
-import { canImplement, findImplementation, methods, parameters, properties } from '../providers/symbols';
+import { canImplement, findImplementation, methods, parameters, properties, factory } from '../providers/symbols';
 import { asFunc } from '../utils/asFunc';
 import { error } from '../utils/error';
 import { extend } from '../utils/extend';
@@ -129,7 +129,7 @@ export class Injector {
   }
 
   getFactory(impl) {
-    return this.factories.get(impl) || this.baseFactory ||  this.constructor.baseFactory;
+    return this.factories.get(impl) || (impl || {})[factory] || this.baseFactory ||  this.constructor.baseFactory;
   }
   getCanImplement(inter = {}, impl = {}) {
     return inter[canImplement] || impl[canImplement] || this.baseCanImplement || this.constructor.baseCanImplement;

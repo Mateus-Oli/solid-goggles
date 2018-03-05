@@ -1,7 +1,7 @@
 import { Injector } from '../../src/models/injector';
 import { defaultCanImplement } from '../../src/providers/defaultCanImplement';
 import { defaultFactory } from '../../src/providers/defaultFactory';
-import { canImplement, findImplementation, methods, parameters, properties } from '../../src/providers/symbols';
+import { canImplement, findImplementation, methods, parameters, properties, factory } from '../../src/providers/symbols';
 
 Injector.baseCanImplement = defaultCanImplement;
 Injector.baseFactory = defaultFactory;
@@ -186,6 +186,18 @@ describe('injector', () => {
 
     injector.get(InjectHook);
     expect(factory).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses factory hook as implementation factory', () => {
+    const instance = {};
+    class FactoryHook {}
+
+    FactoryHook[factory] = jest.fn(() => instance);
+
+    const injector = Injector.of(FactoryHook);
+
+    expect(injector.get(FactoryHook)).toBe(instance);
+    expect(FactoryHook[factory]).toHaveBeenCalledTimes(1);
   });
 
   it('executes properties hook with injector as argument', () => {
@@ -395,7 +407,7 @@ describe('injector', () => {
     injector.delete(ImplementationMock);
   });
 
-  it('gets use canImplement in order of interface, implementation, injector instance, injector constructor', () => {
+  it('gets canImplement in order of interface, implementation, injector instance, injector constructor', () => {
     const injector = new Injector;
 
     Injector.baseCanImplement = () => {};
@@ -408,5 +420,21 @@ describe('injector', () => {
     expect(injector.getCanImplement(mock, { [canImplement]: () => {} })).toBe(mock[canImplement]);
 
     expect(injector.getCanImplement({}, mock)).toBe(mock[canImplement]);
+  });
+
+  it('gets factory in order of injector factories, implementation factory, injector instance, injector constructor', () => {
+    const injector = new Injector;
+
+    Injector.baseFactory = () => {};
+    expect(injector.getFactory()).toBe(Injector.baseFactory);
+
+    injector.baseFactory = () => {};
+    expect(injector.getFactory()).toBe(injector.baseFactory);
+
+    const mock = { [factory]: () => {} };
+    expect(injector.getFactory(mock)).toBe(mock[factory]);
+
+    const factoryMock = injector.factory(mock, () => {});
+    expect(injector.getFactory(mock)).toBe(factoryMock);
   });
 });
