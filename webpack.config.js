@@ -1,13 +1,13 @@
 /* eslint-disable */
 
-const path = require('path');
+const { resolve } = require('path');
 
 const config = (libraryTarget, filename, mode = 'production') => ({
   mode,
   entry: './src/index',
   output: {
     filename,
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
     library: 'Sg',
     libraryTarget
   },
